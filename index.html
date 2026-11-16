@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover great deals on fashion, electronics, home essentials and more at BazaarHub.">
+  <meta name="theme-color" content="#ff5722">
+  <title>BazaarHub — Shop, Sell & Manage Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <!-- Top Announcement Strip with Quick Role Demo Bar -->
+  <div class="top-strip">
+    <div class="container top-strip__inner">
+      <div class="top-strip__left">
+        <span class="pulse-dot"></span>
+        <span>✨ Welcome to BazaarHub Nepal <b>·</b> Free delivery over Rs. 2,500</span>
+      </div>
+      <div class="top-strip__right">
+        <span class="role-bar-label">Quick Switch:</span>
+        <div class="role-bar-pills">
+          <button class="role-pill" data-quick-role="storefront" title="Back to Marketplace">🛒 Store</button>
+          <button class="role-pill" data-quick-role="customer" title="Switch to Customer">🛍️ Customer</button>
+          <button class="role-pill" data-quick-role="seller" title="Switch to Seller">🏪 Seller</button>
+          <button class="role-pill" data-quick-role="admin" title="Switch to Admin">🛡️ Admin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Site Header -->
+  <div id="site-header"></div>
+
+  <!-- Marketplace Storefront View -->
+  <main id="main-content">
+    <section class="hero-wrap container" aria-label="Featured offers">
+      <div class="hero-slider" id="hero-slider">
+        <article class="hero-slide is-active" data-slide="0">
+          <div class="hero-copy">
+            <span class="hero-kicker">THE BIG STYLE EDIT</span>
+            <h1>Find your<br><em>everyday</em> favourite.</h1>
+            <p>Fresh looks, smart essentials and little upgrades in sunset warm hues you'll love.</p>
+            <div class="hero-actions">
+              <a class="button button--light" href="#featured">Shop collection <span>↗</span></a>
+              <button class="button button--outline-light" id="hero-seller-btn">Sell on BazaarHub <span>🏪</span></button>
+            </div>
+          </div>
+          <div class="hero-art hero-art--fashion">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85" alt="Fashion shopping collection">
+          </div>
+          <span class="hero-index">01 <i>/ 03</i></span>
+        </article>
+
+        <article class="hero-slide hero-slide--dark" data-slide="1">
+          <div class="hero-copy">
+            <span class="hero-kicker">UPGRADE YOUR TECH</span>
+            <h1>Big ideas.<br><em>Better tech.</em></h1>
+            <p>Discover modern devices and electronics that keep you inspired and productive.</p>
+            <div class="hero-actions">
+              <a class="button button--primary" href="#trending">Explore tech <span>↗</span></a>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1000&q=85" alt="Modern electronics and gadgets">
+          </div>
+          <span class="hero-index">02 <i>/ 03</i></span>
+        </article>
+
+        <article class="hero-slide hero-slide--warm" data-slide="2">
+          <div class="hero-copy">
+            <span class="hero-kicker">MAKE ROOM FOR COMFORT</span>
+            <h1>Little things.<br><em>Lovely spaces.</em></h1>
+            <p>Thoughtful home and living finds to make every corner feel like yours.</p>
+            <div class="hero-actions">
+              <a class="button button--light" href="#categories">Shop home <span>↗</span></a>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=85" alt="Warm modern home interior">
+          </div>
+          <span class="hero-index">03 <i>/ 03</i></span>
+        </article>
+
+        <div class="slider-controls">
+          <button class="slider-arrow" id="slide-prev" aria-label="Previous slide">←</button>
+          <div class="slider-dots" id="slider-dots">
+            <button class="is-active" aria-label="Slide 1"></button>
+            <button aria-label="Slide 2"></button>
+            <button aria-label="Slide 3"></button>
+          </div>
+          <button class="slider-arrow" id="slide-next" aria-label="Next slide">→</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Role Showcase Banner -->
+    <section class="portal-cta-strip container">
+      <div class="portal-cta-box customer-box">
+        <span class="portal-icon">🛍️</span>
+        <div>
+          <h4>Customer Zone</h4>
+          <p>Track orders, manage wishlist & wallet</p>
+        </div>
+        <button class="portal-btn" data-open-dashboard="customer">Customer Portal →</button>
+      </div>
+      <div class="portal-cta-box seller-box">
+        <span class="portal-icon">🏪</span>
+        <div>
+          <h4>Seller Hub</h4>
+          <p>List products, fulfill orders & track revenue</p>
+        </div>
+        <button class="portal-btn" data-open-dashboard="seller">Seller Portal →</button>
+      </div>
+      <div class="portal-cta-box admin-box">
+        <span class="portal-icon">🛡️</span>
+        <div>
+          <h4>Admin Portal</h4>
+          <p>Approve sellers, moderate & oversee platform</p>
+        </div>
+        <button class="portal-btn" data-open-dashboard="admin">Admin Portal →</button>
+      </div>
+    </section>
+
+    <section class="benefits container">
+      <div>
+        <span>↗</span>
+        <p><b>Fast delivery</b><small>Doorstep in 24-48 hrs</small></p>
+      </div>
+      <div>
+        <span>◇</span>
+        <p><b>Verified sellers</b><small>100% authentic picks</small></p>
+      </div>
+      <div>
+        <span>♧</span>
+        <p><b>Easy returns</b><small>7-day hassle free return</small></p>
+      </div>
+      <div>
+        <span>⌑</span>
+        <p><b>Secure payments</b><small>eSewa, Khalti & COD</small></p>
+      </div>
+    </section>
+
+    <section class="section container" id="categories">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">BROWSE YOUR WAY</span>
+          <h2>Shop by category</h2>
+          <p>Discover top trending items across curated collections.</p>
+        </div>
+        <a class="text-link" href="#featured">Explore all <span>↗</span></a>
+      </div>
+      <div class="category-grid" id="category-grid"></div>
+    </section>
+
+    <section class="flash-section" id="deals">
+      <div class="container">
+        <div class="flash-head">
+          <div>
+            <span class="eyebrow eyebrow--orange">DON'T MISS OUT</span>
+            <h2>Flash <em>sale</em></h2>
+            <p>Limited-time heavy discounts on hot items.</p>
+          </div>
+          <div class="countdown-wrap">
+            <span>ENDS IN</span>
+            <div class="countdown" id="countdown"><b>08</b><i>:</i><b>24</b><i>:</i><b>36</b></div>
+          </div>
+        </div>
+        <div class="product-grid product-grid--flash" id="flash-products"></div>
+      </div>
+    </section>
+
+    <section class="section container" id="featured">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">HANDPICKED FOR YOU</span>
+          <h2>Featured products</h2>
+          <p>Customer favourites with verified reviews.</p>
+        </div>
+        <a class="text-link" href="#trending">See what's popular <span>↗</span></a>
+      </div>
+      <div class="product-grid" id="featured-products"></div>
+    </section>
+
+    <section class="trend-band" id="trending">
+      <div class="container trend-inner">
+        <div>
+          <span class="eyebrow">THE GOOD STUFF</span>
+          <h2>Trending right now.</h2>
+          <p>Fresh discoveries topping everyone's wishlist this week.</p>
+        </div>
+        <div class="trend-products" id="trending-products"></div>
+      </div>
+    </section>
+
+    <section class="newsletter">
+      <div class="container newsletter-inner">
+        <div>
+          <span class="eyebrow eyebrow--amber">BE IN THE KNOW</span>
+          <h2>Great deals, straight to your inbox.</h2>
+          <p>Get exclusive voucher codes, flash deals & seller highlights.</p>
+        </div>
+        <form id="newsletter-form">
+          <label class="visually-hidden" for="newsletter-email">Email address</label>
+          <input id="newsletter-email" type="email" placeholder="Enter your email address" required>
+          <button type="submit">Subscribe <span>→</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Dashboards View (Customer / Seller / Admin) -->
+  <div id="dashboard-view" class="dashboard-view" style="display: none;"></div>
+
+  <!-- Dynamic Site Footer -->
+  <div id="site-footer"></div>
+
+  <!-- Toast Notifications -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Shopping Cart Drawer -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <span class="eyebrow">YOUR BAG</span>
+        <h2>Shopping cart</h2>
+      </div>
+      <button id="close-cart" class="icon-button" aria-label="Close cart">×</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-bottom">
+      <div class="subtotal">
+        <span>Subtotal</span>
+        <strong id="cart-subtotal">Rs. 0</strong>
+      </div>
+      <p>Free delivery over Rs. 2,500. Taxes included.</p>
+      <button class="button button--primary checkout-button" id="checkout-button">
+        Continue to checkout <span>→</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Authentication Modal (Customer / Seller / Admin) -->
+  <div class="auth-overlay" id="auth-overlay"></div>
+  <div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <button class="auth-close-btn" id="close-auth" aria-label="Close modal">×</button>
+    
+    <div class="auth-modal-header">
+      <div class="auth-brand-badge">B</div>
+      <h3 id="auth-title">Welcome to BazaarHub</h3>
+      <p id="auth-subtitle">Select your account role to sign in</p>
+    </div>
+
+    <!-- Role Selection Tabs -->
+    <div class="auth-role-tabs" id="auth-role-tabs">
+      <button class="auth-role-tab is-active" data-role="customer">
+        <span class="auth-role-icon">🛍️</span>
+        <span class="auth-role-text">Customer</span>
+      </button>
+      <button class="auth-role-tab" data-role="seller">
+        <span class="auth-role-icon">🏪</span>
+        <span class="auth-role-text">Seller</span>
+      </button>
+      <button class="auth-role-tab" data-role="admin">
+        <span class="auth-role-icon">🛡️</span>
+        <span class="auth-role-text">Admin</span>
+      </button>
+    </div>
+
+    <!-- 1-Click Fast Demo Login Buttons -->
+    <div class="demo-quick-box">
+      <div class="demo-label">⚡ 1-Click Instant Demo Login:</div>
+      <div class="demo-buttons">
+        <button type="button" class="demo-btn" data-demo-role="customer">
+          🛍️ Sarah (Customer)
+        </button>
+        <button type="button" class="demo-btn" data-demo-role="seller">
+          🏪 Ram (Seller)
+        </button>
+        <button type="button" class="demo-btn" data-demo-role="admin">
+          🛡️ Admin (Control)
+        </button>
+      </div>
+    </div>
+
+    <!-- Standard Login / Register Form -->
+    <form id="auth-form" class="auth-form">
+      <div class="form-group" id="name-group" style="display: none;">
+        <label for="auth-name">Full Name</label>
+        <input type="text" id="auth-name" placeholder="e.g. Ramesh Thapa">
+      </div>
+      <div class="form-group">
+        <label for="auth-email">Email or Username</label>
+        <input type="email" id="auth-email" required placeholder="name@example.com" value="sarah@customer.com">
+      </div>
+      <div class="form-group">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" required placeholder="Enter your password" value="password123">
+      </div>
+      <div class="form-row-remember" id="remember-row">
+        <label class="remember-label">
+          <input type="checkbox" id="auth-remember" checked> Remember me
+        </label>
+        <a href="#forgot" class="forgot-link" id="auth-forgot">Forgot password?</a>
+      </div>
+      <button type="submit" class="button button--primary button--full" id="auth-submit-btn">
+        Sign In as Customer <span>→</span>
+      </button>
+    </form>
+
+    <div class="auth-modal-footer">
+      <p id="auth-toggle-text">
+        Don't have an account? <button type="button" id="toggle-auth-action" class="link-btn">Create one now</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- Add Product Modal for Seller -->
+  <div class="seller-modal-overlay" id="seller-product-overlay"></div>
+  <div class="auth-modal" id="seller-product-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+    <button class="auth-close-btn" id="close-product-modal" aria-label="Close modal">×</button>
+    <div class="auth-modal-header">
+      <div class="auth-brand-badge">＋</div>
+      <h3 id="product-modal-title">Add New Product</h3>
+      <p>List a new item directly on BazaarHub Marketplace</p>
+    </div>
+    <form id="seller-add-product-form" class="auth-form">
+      <div class="form-group">
+        <label for="new-product-name">Product Title</label>
+        <input type="text" id="new-product-name" required placeholder="e.g. Wireless Noise Canceling Earbuds">
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label for="new-product-category">Category</label>
+          <select id="new-product-category" required class="form-select">
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Home & Living">Home & Living</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Sports">Sports</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="new-product-price">Price (Rs.)</label>
+          <input type="number" id="new-product-price" required min="50" placeholder="2490">
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label for="new-product-old">Original Price (Rs.)</label>
+          <input type="number" id="new-product-old" required min="50" placeholder="3290">
+        </div>
+        <div class="form-group">
+          <label for="new-product-stock">Stock Units</label>
+          <input type="number" id="new-product-stock" required min="1" placeholder="45" value="45">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="new-product-image">Image Keyword or ID</label>
+        <input type="text" id="new-product-image" placeholder="photo-1505740420928-5e560c06d30e" value="photo-1546868871-7041f2a55e12">
+        <small class="form-hint">Unsplash photo ID or leave default for smart placeholder</small>
+      </div>
+      <button type="submit" class="button button--primary button--full">Publish Product to Storefront <span>✓</span></button>
+    </form>
+  </div>
+</body>
+</html>

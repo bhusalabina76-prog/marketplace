@@ -1,0 +1,22 @@
+{
+  "name": "bazaarhub-marketplace",
+  "version": "1.0.0",
+  "description": "BazaarHub — Modern Responsive E-Commerce & Multi-Role Marketplace Storefront",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . -l 3000",
+    "build": "echo 'Static build ready'"
+  },
+  "keywords": [
+    "bazaarhub",
+    "marketplace",
+    "ecommerce",
+    "storefront",
+    "html5",
+    "css3",
+    "vanilla-js"
+  ],
+  "author": "BazaarHub",
+  "license": "MIT"
+}
