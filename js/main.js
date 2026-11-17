@@ -1,31 +1,237 @@
-/* BazaarHub Phase 2 — Modern Orange & Midnight Multi-Role Storefront & Dashboards */
+/* BazaarHub — Modern Multi-Role E-Commerce Marketplace & Escrow System */
 "use strict";
 
 const BRAND_NAME = "BazaarHub";
-const money = n => `Rs. ${Number(n).toLocaleString("en-IN")}`;
+const money = n => `Rs. ${Number(n || 0).toLocaleString("en-IN")}`;
 
 // Image helper for Unsplash
-const imageUrl = id => id.includes(" ") || !id
-  ? "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
-  : `https://images.unsplash.com/${id}?auto=format&fit=crop&w=700&q=80`;
+const imageUrl = id => {
+  if (!id) return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80";
+  if (id.startsWith("http") || id.startsWith("data:")) return id;
+  return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=700&q=80`;
+};
 
-// Initial Product Catalog (stored in localStorage if modified)
+/* ============================================================
+   DEFAULT PERSISTED DATA STORES
+   ============================================================ */
 const defaultProducts = [
-  { id: 1, name: "CloudWalk Everyday Sneakers", category: "Fashion", price: 2890, old: 3990, tag: "-28%", rating: "4.8", reviews: 126, image: "photo-1542291026-7eec264c27ff", badge: "Best seller", stock: 32 },
-  { id: 2, name: "Aura Wireless Headphones", category: "Electronics", price: 3499, old: 4999, tag: "-30%", rating: "4.9", reviews: 84, image: "photo-1505740420928-5e560c06d30e", badge: "Hot pick", stock: 18 },
-  { id: 3, name: "Minimal Ceramic Table Lamp", category: "Home & Living", price: 1850, old: 2400, tag: "-23%", rating: "4.7", reviews: 53, image: "photo-1507473885765-e6ed057f782c", badge: "", stock: 24 },
-  { id: 4, name: "Everyday Classic Backpack", category: "Fashion", price: 2190, old: 2790, tag: "-21%", rating: "4.8", reviews: 91, image: "photo-1553062407-98eeb64c6a62", badge: "Popular", stock: 40 },
-  { id: 5, name: "Smart Fitness Watch Ultra", category: "Electronics", price: 4299, old: 5999, tag: "-28%", rating: "4.6", reviews: 72, image: "photo-1523275335684-37898b6baf30", badge: "", stock: 15 },
-  { id: 6, name: "Glow Skin Care Revival Set", category: "Beauty", price: 1590, old: 1990, tag: "-20%", rating: "4.9", reviews: 148, image: "photo-1608248543803-ba4f8c70ae0b", badge: "Top rated", stock: 55 },
-  { id: 7, name: "Soft Knit Warm Throw Blanket", category: "Home & Living", price: 1990, old: 2590, tag: "-23%", rating: "4.7", reviews: 38, image: "photo-1600210492486-724fe5c67fb0", badge: "", stock: 20 },
-  { id: 8, name: "Modern Polarized Sunglasses", category: "Accessories", price: 1290, old: 1790, tag: "-28%", rating: "4.5", reviews: 64, image: "photo-1511499767150-a48a237f0083", badge: "", stock: 50 },
-  { id: 9, name: "Portable Bass Bluetooth Speaker", category: "Electronics", price: 2490, old: 3290, tag: "-24%", rating: "4.8", reviews: 109, image: "photo-1608043152269-423dbba4e7e1", badge: "Trending", stock: 28 },
-  { id: 10, name: "Daily Canvas Cotton Tote Bag", category: "Fashion", price: 990, old: 1390, tag: "-29%", rating: "4.6", reviews: 42, image: "photo-1590874103328-eac38a683ce7", badge: "", stock: 65 },
-  { id: 11, name: "Hydrating Vitamin Face Serum", category: "Beauty", price: 890, old: 1190, tag: "-25%", rating: "4.7", reviews: 97, image: "photo-1620916566398-39f1143ab7be", badge: "", stock: 30 },
-  { id: 12, name: "Insulated Sports Travel Bottle", category: "Sports", price: 790, old: 1090, tag: "-28%", rating: "4.8", reviews: 118, image: "photo-1602143407151-7111542de6e8", badge: "", stock: 75 }
+  { id: 1, name: "CloudWalk Everyday Sneakers", category: "Fashion", price: 2890, old: 3990, tag: "-28%", rating: "4.8", reviews: 126, image: "photo-1542291026-7eec264c27ff", badge: "Best seller", stock: 32, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
+  { id: 2, name: "Aura Wireless Headphones", category: "Electronics", price: 3499, old: 4999, tag: "-30%", rating: "4.9", reviews: 84, image: "photo-1505740420928-5e560c06d30e", badge: "Hot pick", stock: 18, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
+  { id: 3, name: "Minimal Ceramic Table Lamp", category: "Home & Living", price: 1850, old: 2400, tag: "-23%", rating: "4.7", reviews: 53, image: "photo-1507473885765-e6ed057f782c", badge: "", stock: 24, sellerId: "SEL-103", sellerName: "Lalitpur Handicrafts" },
+  { id: 4, name: "Everyday Classic Backpack", category: "Fashion", price: 2190, old: 2790, tag: "-21%", rating: "4.8", reviews: 91, image: "photo-1553062407-98eeb64c6a62", badge: "Popular", stock: 40, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
+  { id: 5, name: "Smart Fitness Watch Ultra", category: "Electronics", price: 4299, old: 5999, tag: "-28%", rating: "4.6", reviews: 72, image: "photo-1523275335684-37898b6baf30", badge: "", stock: 15, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
+  { id: 6, name: "Glow Skin Care Revival Set", category: "Beauty", price: 1590, old: 1990, tag: "-20%", rating: "4.9", reviews: 148, image: "photo-1608248543803-ba4f8c70ae0b", badge: "Top rated", stock: 55, sellerId: "SEL-102", sellerName: "Pokhara Organic Teas" },
+  { id: 7, name: "Soft Knit Warm Throw Blanket", category: "Home & Living", price: 1990, old: 2590, tag: "-23%", rating: "4.7", reviews: 38, image: "photo-1600210492486-724fe5c67fb0", badge: "", stock: 20, sellerId: "SEL-103", sellerName: "Lalitpur Handicrafts" },
+  { id: 8, name: "Modern Polarized Sunglasses", category: "Accessories", price: 1290, old: 1790, tag: "-28%", rating: "4.5", reviews: 64, image: "photo-1511499767150-a48a237f0083", badge: "", stock: 50, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
+  { id: 9, name: "Portable Bass Bluetooth Speaker", category: "Electronics", price: 2490, old: 3290, tag: "-24%", rating: "4.8", reviews: 109, image: "photo-1608043152269-423dbba4e7e1", badge: "Trending", stock: 28, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
+  { id: 10, name: "Daily Canvas Cotton Tote Bag", category: "Fashion", price: 990, old: 1390, tag: "-29%", rating: "4.6", reviews: 42, image: "photo-1590874103328-eac38a683ce7", badge: "", stock: 65, sellerId: "SEL-103", sellerName: "Lalitpur Handicrafts" },
+  { id: 11, name: "Hydrating Vitamin Face Serum", category: "Beauty", price: 890, old: 1190, tag: "-25%", rating: "4.7", reviews: 97, image: "photo-1620916566398-39f1143ab7be", badge: "", stock: 30, sellerId: "SEL-102", sellerName: "Pokhara Organic Teas" },
+  { id: 12, name: "Insulated Sports Travel Bottle", category: "Sports", price: 790, old: 1090, tag: "-28%", rating: "4.8", reviews: 118, image: "photo-1602143407151-7111542de6e8", badge: "", stock: 75, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" }
 ];
 
-let products = JSON.parse(localStorage.getItem("bazaarhub-products") || "null") || defaultProducts;
+const defaultSellers = [
+  {
+    id: "SEL-101",
+    role: "seller",
+    name: "Ram Sharma",
+    storeName: "Himalayan Tech & Style",
+    email: "ram@kathmanducrafts.com",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+    phone: "+977 9812345678",
+    location: "Durbarmarg, Kathmandu",
+    category: "Electronics & Fashion",
+    status: "Approved",
+    rating: "4.9 ★ (215 reviews)",
+    revenue: 384500,
+    payoutAvailable: 72400,
+    bank: "Nabil Bank (A/C: 0192847291801)",
+    joined: "Mar 2024"
+  },
+  {
+    id: "SEL-102",
+    role: "seller",
+    name: "Anup Gurung",
+    storeName: "Pokhara Organic Teas",
+    email: "anup@pokharateas.np",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+    phone: "+977 9801234567",
+    location: "Lakeside, Pokhara",
+    category: "Food & Beauty",
+    status: "Approved",
+    rating: "4.8 ★ (94 reviews)",
+    revenue: 142000,
+    payoutAvailable: 24500,
+    bank: "Global IME Bank (A/C: 1102938475)",
+    joined: "May 2024"
+  },
+  {
+    id: "SEL-103",
+    role: "seller",
+    name: "Maya Maharjan",
+    storeName: "Lalitpur Handicrafts",
+    email: "maya@craftsnepal.com",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
+    phone: "+977 9860123456",
+    location: "Patan, Lalitpur",
+    category: "Home & Decor",
+    status: "Approved",
+    rating: "5.0 ★ (42 reviews)",
+    revenue: 89000,
+    payoutAvailable: 15300,
+    bank: "NIC Asia Bank (A/C: 2209384711)",
+    joined: "Aug 2024"
+  }
+];
+
+const defaultCustomers = [
+  {
+    id: "CUST-201",
+    role: "customer",
+    name: "Sarah Shrestha",
+    email: "sarah@customer.com",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+    phone: "+977 9841234567",
+    location: "New Baneshwor, Kathmandu",
+    tier: "🌟 Gold Shopper",
+    points: 1420,
+    wallet: 3850,
+    status: "Active",
+    joined: "Jan 2024",
+    totalOrders: 3,
+    totalSpent: 8239,
+    addresses: [
+      { id: 1, label: "Home", text: "House 42, Shanti Marga, New Baneshwor, Kathmandu", isDefault: true },
+      { id: 2, label: "Office", text: "Tech Park Level 3, Pulchowk, Lalitpur", isDefault: false }
+    ],
+    coupons: [
+      { code: "ORANGE20", discount: "20% OFF", desc: "Applicable on orders above Rs. 2,000", expiry: "30 Nov 2026" },
+      { code: "FREESHIP", discount: "Free Delivery", desc: "Valid for all marketplace categories", expiry: "15 Dec 2026" }
+    ]
+  },
+  {
+    id: "CUST-202",
+    role: "customer",
+    name: "Bikash Tamang",
+    email: "bikash@gmail.com",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
+    phone: "+977 9849876543",
+    location: "Chabahil, Kathmandu",
+    tier: "Silver Shopper",
+    points: 520,
+    wallet: 1200,
+    status: "Active",
+    joined: "Mar 2024",
+    totalOrders: 1,
+    totalSpent: 4299,
+    addresses: [{ id: 1, label: "Home", text: "Chabahil Chowk, Kathmandu", isDefault: true }],
+    coupons: []
+  },
+  {
+    id: "CUST-203",
+    role: "customer",
+    name: "Pooja Karki",
+    email: "pooja.k@outlook.com",
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+    phone: "+977 9811223344",
+    location: "Suryabinayak, Bhaktapur",
+    tier: "Bronze Shopper",
+    points: 210,
+    wallet: 500,
+    status: "Active",
+    joined: "Jun 2024",
+    totalOrders: 1,
+    totalSpent: 5780,
+    addresses: [{ id: 1, label: "Home", text: "Suryabinayak, Ward 5, Bhaktapur", isDefault: true }],
+    coupons: []
+  }
+];
+
+const defaultOrders = [
+  {
+    id: "ORD-9821",
+    date: "15 Nov 2026, 02:40 PM",
+    customerName: "Sarah Shrestha",
+    customerEmail: "sarah@customer.com",
+    customerPhone: "+977 9841234567",
+    customerAddress: "House 42, Shanti Marga, New Baneshwor, Kathmandu",
+    sellerId: "SEL-101",
+    sellerName: "Himalayan Tech & Style",
+    items: [
+      { id: 2, name: "Aura Wireless Headphones", price: 3499, qty: 1, image: "photo-1505740420928-5e560c06d30e" }
+    ],
+    total: 3499,
+    commissionRate: 10,
+    commissionAmount: 350,
+    sellerPayout: 3149,
+    paymentMethod: "eSewa QR",
+    txnRef: "TXN-87429184",
+    proofImage: "sample-receipt-1",
+    status: "In Transit",
+    step: 3,
+    settled: true,
+    remarks: "Admin verified TXN-87429184 and credited Rs. 3,149 to seller."
+  },
+  {
+    id: "ORD-9244",
+    date: "02 Nov 2026, 11:15 AM",
+    customerName: "Sarah Shrestha",
+    customerEmail: "sarah@customer.com",
+    customerPhone: "+977 9841234567",
+    customerAddress: "House 42, Shanti Marga, New Baneshwor, Kathmandu",
+    sellerId: "SEL-101",
+    sellerName: "Himalayan Tech & Style",
+    items: [
+      { id: 1, name: "CloudWalk Everyday Sneakers", price: 2890, qty: 1, image: "photo-1542291026-7eec264c27ff" }
+    ],
+    total: 2890,
+    commissionRate: 10,
+    commissionAmount: 289,
+    sellerPayout: 2601,
+    paymentMethod: "Khalti QR",
+    txnRef: "TXN-65829103",
+    proofImage: "sample-receipt-2",
+    status: "Delivered",
+    step: 4,
+    settled: true,
+    remarks: "Delivered successfully to customer."
+  },
+  {
+    id: "ORD-8710",
+    date: "19 Oct 2026, 04:20 PM",
+    customerName: "Sarah Shrestha",
+    customerEmail: "sarah@customer.com",
+    customerPhone: "+977 9841234567",
+    customerAddress: "House 42, Shanti Marga, New Baneshwor, Kathmandu",
+    sellerId: "SEL-103",
+    sellerName: "Lalitpur Handicrafts",
+    items: [
+      { id: 3, name: "Minimal Ceramic Table Lamp", price: 1850, qty: 1, image: "photo-1507473885765-e6ed057f782c" }
+    ],
+    total: 1850,
+    commissionRate: 10,
+    commissionAmount: 185,
+    sellerPayout: 1665,
+    paymentMethod: "Fonepay QR",
+    txnRef: "TXN-41920482",
+    proofImage: "sample-receipt-3",
+    status: "Delivered",
+    step: 4,
+    settled: true,
+    remarks: "Delivered successfully."
+  }
+];
+
+const defaultAdmin = {
+  role: "admin",
+  name: "BazaarHub Admin",
+  email: "admin@bazaarhub.com",
+  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+  platformGmv: 2490500,
+  commissionEarned: 199240,
+  commissionRate: 10, // 10%
+  escrowAccount: "BazaarHub Escrow Central (A/C: 0192847291801, Nabil Bank)",
+  fonepayId: "9841234567"
+};
 
 const categories = [
   { name: "Fashion", sub: "Style for every day", icon: "✳", tone: "lavender", image: "photo-1483985988355-763728e1935b" },
@@ -36,85 +242,360 @@ const categories = [
   { name: "Sports", sub: "Move your way", icon: "↗", tone: "green", image: "photo-1517836357463-d25dfeac3438" }
 ];
 
-// Predefined Demo Profiles
-const demoUsers = {
-  customer: {
-    role: "customer",
-    name: "Sarah Shrestha",
-    email: "sarah@customer.com",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
-    phone: "+977 9841234567",
-    location: "New Baneshwor, Kathmandu",
-    tier: "🌟 Gold Shopper",
-    points: 1420,
-    wallet: 3850,
-    orders: [
-      { id: "ORD-9821", date: "Nov 15, 2026", product: "Aura Wireless Headphones", price: 3499, qty: 1, status: "In Transit", step: 3, thumb: "photo-1505740420928-5e560c06d30e" },
-      { id: "ORD-9244", date: "Nov 02, 2026", product: "CloudWalk Everyday Sneakers", price: 2890, qty: 1, status: "Delivered", step: 4, thumb: "photo-1542291026-7eec264c27ff" },
-      { id: "ORD-8710", date: "Oct 19, 2026", product: "Minimal Ceramic Table Lamp", price: 1850, qty: 1, status: "Delivered", step: 4, thumb: "photo-1507473885765-e6ed057f782c" }
-    ],
-    addresses: [
-      { id: 1, label: "Home", text: "House 42, Shanti Marga, New Baneshwor, Kathmandu", isDefault: true },
-      { id: 2, label: "Office", text: "Tech Park Level 3, Pulchowk, Lalitpur", isDefault: false }
-    ],
-    coupons: [
-      { code: "ORANGE20", discount: "20% OFF", desc: "Applicable on orders above Rs. 2,000", expiry: "30 Nov 2026" },
-      { code: "FREESHIP", discount: "Free Delivery", desc: "Valid for all marketplace categories", expiry: "15 Dec 2026" }
-    ]
-  },
-  seller: {
-    role: "seller",
-    name: "Ram Sharma",
-    storeName: "Himalayan Tech & Style",
-    email: "ram@kathmanducrafts.com",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-    phone: "+977 9812345678",
-    rating: "4.9 ★ (215 reviews)",
-    verified: true,
-    revenue: 384500,
-    ordersToday: 18,
-    activeListings: 24,
-    pendingShipments: 4,
-    payoutAvailable: 72400,
-    bank: "Nabil Bank (A/C: **** 4921)",
-    incomingOrders: [
-      { id: "ORD-9821", buyer: "Sarah Shrestha", item: "Aura Wireless Headphones", qty: 1, total: 3499, status: "Shipped", date: "15 Nov 2026" },
-      { id: "ORD-9840", buyer: "Bikash Tamang", item: "Smart Fitness Watch Ultra", qty: 1, total: 4299, status: "Processing", date: "16 Nov 2026" },
-      { id: "ORD-9842", buyer: "Pooja Karki", item: "CloudWalk Everyday Sneakers", qty: 2, total: 5780, status: "Processing", date: "16 Nov 2026" }
-    ]
-  },
-  admin: {
-    role: "admin",
-    name: "BazaarHub Admin",
-    email: "admin@bazaarhub.com",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    platformGmv: 2490500,
-    totalSellers: 84,
-    totalCustomers: 16420,
-    commissionEarned: 199240,
-    sellerApplications: [
-      { id: "APP-101", store: "Pokhara Organic Teas", owner: "Anup Gurung", category: "Food & Beverage", docs: "PAN & Ward Verified", status: "Pending" },
-      { id: "APP-102", store: "Everest Outdoor Gears", owner: "Dawa Sherpa", category: "Sports & Trekking", docs: "VAT Registered", status: "Pending" },
-      { id: "APP-103", store: "Lalitpur Handicrafts", owner: "Maya Maharjan", category: "Handicrafts & Decor", docs: "Pending Inspection", status: "Pending" }
-    ],
-    moderationUsers: [
-      { id: 1, name: "Sarah Shrestha", email: "sarah@customer.com", role: "Customer", status: "Active", joined: "Jan 2024" },
-      { id: 2, name: "Ram Sharma", email: "ram@kathmanducrafts.com", role: "Seller", status: "Active", joined: "Mar 2024" },
-      { id: 3, name: "Kiran Basnet", email: "kiran@gadgethub.np", role: "Seller", status: "Active", joined: "Jul 2024" },
-      { id: 4, name: "Spam Bot 99", email: "cheapdeals@xyz.biz", role: "Customer", status: "Suspended", joined: "Nov 2026" }
-    ]
-  }
-};
+/* ============================================================
+   PERSISTENCE CONTROLLER
+   ============================================================ */
+let products = JSON.parse(localStorage.getItem("bazaarhub-products") || "null") || defaultProducts;
+let sellers = JSON.parse(localStorage.getItem("bazaarhub-sellers") || "null") || defaultSellers;
+let customers = JSON.parse(localStorage.getItem("bazaarhub-customers") || "null") || defaultCustomers;
+let orders = JSON.parse(localStorage.getItem("bazaarhub-orders") || "null") || defaultOrders;
+let adminStats = JSON.parse(localStorage.getItem("bazaarhub-admin") || "null") || defaultAdmin;
 
-// Application State
 let currentUser = JSON.parse(localStorage.getItem("bazaarhub-user") || "null");
 let currentView = "storefront"; // "storefront" | "dashboard"
 let activeSlide = 0;
 let slideTimer;
 let cart = JSON.parse(localStorage.getItem("bazaarhub-cart") || "[]");
-let activeDashboardSubtab = "main";
 let authModalRole = "customer";
 let authIsSignUp = false;
+
+// Staging temporary uploaded proof data URL
+let currentProofDataUrl = "";
+let viewingProofOrder = null;
+
+function saveAllData() {
+  localStorage.setItem("bazaarhub-products", JSON.stringify(products));
+  localStorage.setItem("bazaarhub-sellers", JSON.stringify(sellers));
+  localStorage.setItem("bazaarhub-customers", JSON.stringify(customers));
+  localStorage.setItem("bazaarhub-orders", JSON.stringify(orders));
+  localStorage.setItem("bazaarhub-admin", JSON.stringify(adminStats));
+  if (currentUser) {
+    localStorage.setItem("bazaarhub-user", JSON.stringify(currentUser));
+  }
+}
+
+/* ============================================================
+   SVG QR CODE GENERATOR (Crisp Nepal Fonepay/eSewa Style)
+   ============================================================ */
+function generateNepalQrSvg(amount, orderId = "ORD-DEMO") {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="175" height="175" style="border-radius:8px;">
+      <rect width="200" height="200" fill="#ffffff" rx="8"/>
+      <!-- Top Left Position Detection Box -->
+      <rect x="15" y="15" width="46" height="46" fill="#0b1329" rx="6"/>
+      <rect x="23" y="23" width="30" height="30" fill="#ffffff" rx="4"/>
+      <rect x="29" y="29" width="18" height="18" fill="#ff5722" rx="3"/>
+
+      <!-- Top Right Position Detection Box -->
+      <rect x="139" y="15" width="46" height="46" fill="#0b1329" rx="6"/>
+      <rect x="147" y="23" width="30" height="30" fill="#ffffff" rx="4"/>
+      <rect x="153" y="29" width="18" height="18" fill="#ff5722" rx="3"/>
+
+      <!-- Bottom Left Position Detection Box -->
+      <rect x="15" y="139" width="46" height="46" fill="#0b1329" rx="6"/>
+      <rect x="23" y="147" width="30" height="30" fill="#ffffff" rx="4"/>
+      <rect x="29" y="153" width="18" height="18" fill="#ff5722" rx="3"/>
+
+      <!-- Realistic Data Matrix Pixels -->
+      <rect x="70" y="20" width="8" height="8" fill="#0b1329"/>
+      <rect x="85" y="20" width="16" height="8" fill="#0b1329"/>
+      <rect x="110" y="20" width="8" height="8" fill="#0b1329"/>
+      <rect x="70" y="35" width="24" height="8" fill="#0b1329"/>
+      <rect x="105" y="35" width="18" height="8" fill="#0b1329"/>
+
+      <rect x="20" y="70" width="8" height="24" fill="#0b1329"/>
+      <rect x="35" y="80" width="18" height="8" fill="#0b1329"/>
+      <rect x="20" y="105" width="16" height="8" fill="#0b1329"/>
+      <rect x="45" y="115" width="8" height="16" fill="#0b1329"/>
+
+      <rect x="70" y="70" width="16" height="16" fill="#0b1329"/>
+      <rect x="115" y="70" width="14" height="16" fill="#0b1329"/>
+      <rect x="140" y="80" width="20" height="8" fill="#0b1329"/>
+      <rect x="170" y="70" width="15" height="14" fill="#0b1329"/>
+
+      <rect x="70" y="115" width="18" height="18" fill="#0b1329"/>
+      <rect x="95" y="140" width="16" height="16" fill="#0b1329"/>
+      <rect x="120" y="115" width="24" height="8" fill="#0b1329"/>
+      <rect x="150" y="135" width="15" height="15" fill="#0b1329"/>
+      <rect x="170" y="155" width="15" height="25" fill="#0b1329"/>
+      <rect x="115" y="160" width="20" height="12" fill="#0b1329"/>
+      <rect x="70" y="165" width="15" height="15" fill="#0b1329"/>
+
+      <!-- Center Logo Watermark: BazaarHub Nepal -->
+      <circle cx="100" cy="100" r="22" fill="#ffffff" stroke="#ff5722" stroke-width="3"/>
+      <text x="100" y="107" font-family="Arial, sans-serif" font-weight="900" font-size="20" fill="#ff5722" text-anchor="middle">B</text>
+    </svg>
+  `;
+}
+
+/* ============================================================
+   DEMO PAYMENT RECEIPT GENERATOR (eSewa / Fonepay Digital Slip)
+   ============================================================ */
+function generateDemoReceiptDataUrl(orderId, amount, txnRef, channel = "eSewa QR", payer = "Sarah Shrestha") {
+  const dateStr = new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 460" width="360" height="460">
+      <defs>
+        <linearGradient id="slipGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#059669"/>
+          <stop offset="100%" stop-color="#047857"/>
+        </linearGradient>
+      </defs>
+      <rect width="360" height="460" fill="#f8fafc" rx="16"/>
+      <!-- Header Banner -->
+      <rect width="360" height="110" fill="url(#slipGrad)" rx="16"/>
+      <circle cx="180" cy="45" r="22" fill="#ffffff"/>
+      <text x="180" y="53" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#059669" text-anchor="middle">✓</text>
+      <text x="180" y="86" font-family="Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">TRANSFER SUCCESSFUL</text>
+      <text x="180" y="102" font-family="Arial, sans-serif" font-size="11" fill="#ecfdf5" text-anchor="middle">${channel} · Nepal</text>
+
+      <!-- Amount Section -->
+      <rect x="20" y="125" width="320" height="70" fill="#ffffff" stroke="#e2e8f0" rx="12"/>
+      <text x="180" y="152" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#64748b" text-anchor="middle">TOTAL AMOUNT PAID</text>
+      <text x="180" y="180" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#0b1329" text-anchor="middle">NPR ${Number(amount).toLocaleString('en-IN')}</text>
+
+      <!-- Details List -->
+      <rect x="20" y="208" width="320" height="190" fill="#ffffff" stroke="#e2e8f0" rx="12"/>
+      <g font-family="Arial, sans-serif" font-size="11.5" fill="#475569">
+        <text x="36" y="235">Recipient:</text>
+        <text x="324" y="235" font-weight="800" fill="#0b1329" text-anchor="end">BazaarHub Escrow Central</text>
+
+        <text x="36" y="265">Bank / Account:</text>
+        <text x="324" y="265" font-weight="700" fill="#0b1329" text-anchor="end">Nabil Bank (0192847291801)</text>
+
+        <text x="36" y="295">Txn Reference ID:</text>
+        <text x="324" y="295" font-family="monospace" font-weight="800" fill="#ff5722" text-anchor="end">${txnRef}</text>
+
+        <text x="36" y="325">Order Reference:</text>
+        <text x="324" y="325" font-weight="700" fill="#0b1329" text-anchor="end">${orderId}</text>
+
+        <text x="36" y="355">Sender Payer:</text>
+        <text x="324" y="355" font-weight="700" fill="#0b1329" text-anchor="end">${payer}</text>
+
+        <text x="36" y="385">Payment Date:</text>
+        <text x="324" y="385" font-weight="600" fill="#64748b" text-anchor="end">${dateStr}</text>
+      </g>
+
+      <!-- Security Watermark Footer -->
+      <text x="180" y="425" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">🔒 SECURED BY NEPAL ESCROW GATEWAY</text>
+      <text x="180" y="442" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Official Verified Digital Receipt Slip</text>
+    </svg>
+  `;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+/* ============================================================
+   TOAST NOTIFICATION ENGINE
+   ============================================================ */
+let toastTimer;
+function showToast(message) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.innerHTML = `<span>✨</span> <span>${message}</span>`;
+  t.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("is-visible"), 3200);
+}
+
+/* ============================================================
+   SLIDER & COUNTDOWN TIMERS
+   ============================================================ */
+function startSlider() {
+  const slides = document.querySelectorAll(".hero-slide");
+  const dots = document.querySelectorAll("#slider-dots button");
+  if (!slides.length) return;
+
+  function goToSlide(n) {
+    slides.forEach((s, idx) => s.classList.toggle("is-active", idx === n));
+    dots.forEach((d, idx) => d.classList.toggle("is-active", idx === n));
+    activeSlide = n;
+  }
+
+  document.getElementById("slide-prev")?.addEventListener("click", () => {
+    goToSlide((activeSlide - 1 + slides.length) % slides.length);
+  });
+  document.getElementById("slide-next")?.addEventListener("click", () => {
+    goToSlide((activeSlide + 1) % slides.length);
+  });
+  dots.forEach((dot, idx) => dot.addEventListener("click", () => goToSlide(idx)));
+
+  clearInterval(slideTimer);
+  slideTimer = setInterval(() => {
+    goToSlide((activeSlide + 1) % slides.length);
+  }, 5000);
+}
+
+function startCountdown() {
+  let remaining = 8 * 3600 + 24 * 60 + 36;
+  const el = document.getElementById("countdown");
+  if (!el) return;
+  setInterval(() => {
+    remaining = remaining > 0 ? remaining - 1 : 8 * 3600 + 24 * 60 + 36;
+    const h = String(Math.floor(remaining / 3600)).padStart(2, "0");
+    const m = String(Math.floor((remaining % 3600) / 60)).padStart(2, "0");
+    const s = String(remaining % 60).padStart(2, "0");
+    el.innerHTML = `<b>${h}</b><i>:</i><b>${m}</b><i>:</i><b>${s}</b>`;
+  }, 1000);
+}
+
+/* ============================================================
+   PRODUCT CATALOG RENDERING & FILTERING
+   ============================================================ */
+function productCardHtml(p) {
+  return `
+    <article class="product-card" data-product-id="${p.id}">
+      <div class="product-media">
+        <img class="product-image" src="${imageUrl(p.image)}" alt="${p.name}" loading="lazy">
+        ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ""}
+        <button class="quick-add" data-add="${p.id}">＋ Quick Add</button>
+      </div>
+      <div class="product-info">
+        <span class="product-category">${p.category}</span>
+        <h3>${p.name}</h3>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <b>${p.rating}</b>
+          <small>(${p.reviews})</small>
+        </div>
+        <div class="price-row">
+          <strong>${money(p.price)}</strong>
+          ${p.old ? `<del>${money(p.old)}</del>` : ""}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function showDefaultProducts() {
+  const flash = document.getElementById("flash-products");
+  const feat = document.getElementById("featured-products");
+  const trend = document.getElementById("trending-products");
+
+  if (flash) flash.innerHTML = products.slice(0, 4).map(productCardHtml).join("");
+  if (feat) feat.innerHTML = products.slice(0, 8).map(productCardHtml).join("");
+  if (trend) trend.innerHTML = products.slice(4, 9).map(productCardHtml).join("");
+}
+
+function filterProducts(query) {
+  const q = query.toLowerCase().trim();
+  const matched = products.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.category.toLowerCase().includes(q)
+  );
+
+  const feat = document.getElementById("featured-products");
+  if (!feat) return;
+
+  if (matched.length === 0) {
+    feat.innerHTML = `
+      <div class="empty-results">
+        <span>🔍</span>
+        <h3>No matching products found</h3>
+        <p>Try searching for "sneakers", "headphones", "lamp", or clear your filter.</p>
+      </div>
+    `;
+  } else {
+    feat.innerHTML = matched.map(productCardHtml).join("");
+  }
+}
+
+function renderCategories() {
+  const grid = document.getElementById("category-grid");
+  if (!grid) return;
+  grid.innerHTML = categories.map(c => `
+    <a class="category-card" href="#featured" onclick="filterProducts('${c.name}')">
+      <img class="category-photo" src="${imageUrl(c.image)}" alt="${c.name}">
+      <span class="category-icon ${c.tone}">${c.icon}</span>
+      <div class="category-title">
+        <h3>${c.name}</h3>
+        <p>${c.sub}</p>
+      </div>
+    </a>
+  `).join("");
+}
+
+/* ============================================================
+   SHOPPING CART CONTROLLER
+   ============================================================ */
+function addToCart(productId) {
+  const id = Number(productId);
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+
+  const existing = cart.find(x => x.id === id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      sellerId: p.sellerId || "SEL-101",
+      sellerName: p.sellerName || "Himalayan Tech & Style",
+      qty: 1
+    });
+  }
+  updateCart();
+  openCart();
+  showToast(`Added “${p.name}” to your bag`);
+}
+
+function updateCart() {
+  localStorage.setItem("bazaarhub-cart", JSON.stringify(cart));
+  const counts = document.querySelectorAll(".cart-count");
+  const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+  counts.forEach(c => c.textContent = totalItems);
+
+  const list = document.getElementById("cart-items");
+  const subtotalEl = document.getElementById("cart-subtotal");
+  const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+  if (subtotalEl) subtotalEl.textContent = money(subtotal);
+
+  if (!list) return;
+
+  if (cart.length === 0) {
+    list.innerHTML = `
+      <div class="cart-empty">
+        <span>🛒</span>
+        <h3>Your shopping cart is empty</h3>
+        <p>Explore our trending marketplace collections and add everyday favorites.</p>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <img src="${imageUrl(item.image)}" alt="${item.name}">
+      <div>
+        <b>${item.name}</b>
+        <span>${money(item.price)}</span>
+        <small style="font-size:10.5px; color:#64748b;">Sold by: ${item.sellerName || 'Verified Merchant'}</small>
+        <div class="quantity">
+          <button data-qty="${item.id}" data-change="-1">−</button>
+          <span>${item.qty}</span>
+          <button data-qty="${item.id}" data-change="1">＋</button>
+        </div>
+      </div>
+      <button class="remove-item" data-remove="${item.id}" title="Remove item">×</button>
+    </div>
+  `).join("");
+}
+
+function openCart() {
+  document.getElementById("cart-drawer")?.classList.add("is-open");
+  document.getElementById("cart-overlay")?.classList.add("is-open");
+  document.body.classList.add("drawer-open");
+}
+
+function closeCart() {
+  document.getElementById("cart-drawer")?.classList.remove("is-open");
+  document.getElementById("cart-overlay")?.classList.remove("is-open");
+  document.body.classList.remove("drawer-open");
+}
 
 /* ============================================================
    HEADER & TOP BAR RENDERING
@@ -126,14 +607,14 @@ function renderHeader() {
   const userHtml = currentUser
     ? `<div class="header-actions-user">
         <button class="header-user-btn" id="open-user-dash" title="Open ${currentUser.role} dashboard">
-          <img src="${currentUser.avatar}" alt="" class="user-avatar-mini">
-          <span>${currentUser.name.split(" ")[0]}</span>
+          <img src="${currentUser.avatar || ''}" alt="" class="user-avatar-mini">
+          <span>${(currentUser.name || 'User').split(" ")[0]}</span>
           <span class="user-badge-role role--${currentUser.role}">${currentUser.role}</span>
         </button>
         <button class="action-btn-sm outline" id="btn-logout" title="Log out" style="padding: 6px 10px; font-size: 11px;">Logout</button>
        </div>`
     : `<button class="header-login-btn" id="open-auth-btn">
-        <span>👤 Sign In</span>
+        <span>👤 Sign In / Register</span>
        </button>`;
 
   target.innerHTML = `
@@ -147,7 +628,7 @@ function renderHeader() {
         <form class="search-form" id="search-form" role="search">
           <span class="search-symbol">⌕</span>
           <label class="visually-hidden" for="site-search">Search products</label>
-          <input id="site-search" type="search" placeholder="Search for products, tech, fashion and more…">
+          <input id="site-search" type="search" placeholder="Search for products, tech, fashion, home essentials…">
           <button type="submit">Search</button>
         </form>
 
@@ -163,7 +644,7 @@ function renderHeader() {
           ${userHtml}
         </div>
 
-        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button>
       </div>
 
       <div class="nav-row" id="nav-row">
@@ -174,47 +655,32 @@ function renderHeader() {
           <a href="#featured">Featured</a>
           <a href="#trending">Trending</a>
           <a href="#" id="nav-dashboard-link">
-            ${currentUser ? `My Dashboard (${currentUser.role})` : 'Portals & Dashboards'}
+            ${currentUser ? `My Portal (${currentUser.role.toUpperCase()})` : 'Multi-Role Portals'}
           </a>
-          <a href="#site-footer">Contact</a>
-          <span class="nav-note">✨ 2-Tone Sunset Orange & Midnight Edition</span>
+          <a href="#site-footer">Contact & Escrow</a>
+          <span class="nav-note">🇳🇵 Verified Nepali QR Escrow & Merchant Payouts</span>
         </nav>
       </div>
     </header>
   `;
 
-  // Attach event handlers
-  target.querySelector("#brand-link")?.addEventListener("click", e => {
-    e.preventDefault();
-    switchToStorefront();
-  });
-  target.querySelector("#nav-home")?.addEventListener("click", e => {
-    e.preventDefault();
-    switchToStorefront();
-  });
+  // Attach nav handlers
+  target.querySelector("#brand-link")?.addEventListener("click", e => { e.preventDefault(); switchToStorefront(); });
+  target.querySelector("#nav-home")?.addEventListener("click", e => { e.preventDefault(); switchToStorefront(); });
   target.querySelector("#nav-dashboard-link")?.addEventListener("click", e => {
     e.preventDefault();
-    if (currentUser) {
-      switchToDashboard(currentUser.role);
-    } else {
-      openAuthModal("customer");
-    }
+    if (currentUser) switchToDashboard(currentUser.role);
+    else openAuthModal("customer");
   });
 
   target.querySelector("#open-user-dash")?.addEventListener("click", () => {
-    switchToDashboard(currentUser.role);
+    if (currentUser) switchToDashboard(currentUser.role);
   });
-  target.querySelector("#btn-logout")?.addEventListener("click", () => {
-    logoutUser();
-  });
-  target.querySelector("#open-auth-btn")?.addEventListener("click", () => {
-    openAuthModal("customer");
-  });
+  target.querySelector("#btn-logout")?.addEventListener("click", logoutUser);
+  target.querySelector("#open-auth-btn")?.addEventListener("click", () => openAuthModal("customer"));
 
-  target.querySelector("#menu-toggle")?.addEventListener("click", e => {
-    const navRow = target.querySelector("#nav-row");
-    const open = navRow.classList.toggle("is-open");
-    e.currentTarget.setAttribute("aria-expanded", String(open));
+  target.querySelector("#menu-toggle")?.addEventListener("click", () => {
+    target.querySelector("#nav-row")?.classList.toggle("is-open");
   });
 
   target.querySelector("#search-form")?.addEventListener("submit", e => {
@@ -236,9 +702,6 @@ function renderHeader() {
   updateCart();
 }
 
-/* ============================================================
-   FOOTER RENDERING
-   ============================================================ */
 function renderFooter() {
   const el = document.querySelector("#site-footer");
   if (!el) return;
@@ -250,272 +713,41 @@ function renderFooter() {
             <span class="brand-mark">B</span>
             <span>Bazaar<span>Hub</span></span>
           </a>
-          <p>Your premier multi-role online marketplace in Nepal. Connecting shoppers, sellers and artisans in one vibrant community.</p>
-          <div class="socials">
-            <a href="#" aria-label="Instagram">ig</a>
-            <a href="#" aria-label="Facebook">fb</a>
-            <a href="#" aria-label="TikTok">tt</a>
-          </div>
+          <p>Nepal’s premier multi-role marketplace connecting verified local sellers and shoppers with direct QR payments and transparent escrow settlements.</p>
         </div>
         <div class="footer-col">
-          <h3>Marketplace Roles</h3>
-          <a href="#" class="footer-role-link" data-role="customer">🛍️ Customer Dashboard</a>
-          <a href="#" class="footer-role-link" data-role="seller">🏪 Seller Center</a>
-          <a href="#" class="footer-role-link" data-role="admin">🛡️ Platform Admin</a>
-          <a href="#deals">Flash Deals & Offers</a>
+          <h4>Customer Zone</h4>
+          <ul>
+            <li><a href="#" onclick="loginAsRole('customer'); return false;">Order Tracking & History</a></li>
+            <li><a href="#" onclick="loginAsRole('customer'); return false;">Wallet & Loyalty Points</a></li>
+            <li><a href="#" onclick="openAuthModal('customer'); return false;">Customer Registration</a></li>
+          </ul>
         </div>
         <div class="footer-col">
-          <h3>Customer Care</h3>
-          <a href="#help">Help Centre & FAQ</a>
-          <a href="#help">Delivery & Shipping</a>
-          <a href="#help">7-Day Return Policy</a>
-          <a href="#help">Track Your Order</a>
+          <h4>Merchant Seller Hub</h4>
+          <ul>
+            <li><a href="#" onclick="loginAsRole('seller'); return false;">Seller Portal & Inventory</a></li>
+            <li><a href="#" onclick="loginAsRole('seller'); return false;">Bank Payout Settlements</a></li>
+            <li><a href="#" onclick="openAuthModal('seller'); return false;">Open Merchant Store</a></li>
+          </ul>
         </div>
-        <div class="footer-col footer-contact">
-          <h3>Get In Touch</h3>
-          <p>Kathmandu, Nepal</p>
-          <a href="mailto:support@bazaarhub.com">✉ support@bazaarhub.com</a>
-          <span>◷ Sun – Fri, 9:00 AM – 7:00 PM</span>
+        <div class="footer-col">
+          <h4>Platform Governance</h4>
+          <ul>
+            <li><a href="#" onclick="loginAsRole('admin'); return false;">Admin Verification Queue</a></li>
+            <li><a href="#" onclick="loginAsRole('admin'); return false;">Customer & Seller Accounts</a></li>
+            <li><a href="#main-content">Escrow Commission Rules</a></li>
+          </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <div class="container">
-          <span>© ${new Date().getFullYear()} ${BRAND_NAME} Nepal. Built with Sunset Orange & Midnight Obsidian aesthetic.</span>
-          <span>Made for happy shopping & smart selling <b>♥</b></span>
+          <p>© 2026 BazaarHub Nepal Inc. All rights reserved.</p>
+          <p>Powered by <b>Nepal QR Pay</b> · Fonepay · eSewa · Khalti · Nabil Bank Escrow</p>
         </div>
       </div>
     </footer>
   `;
-
-  el.querySelectorAll(".footer-role-link").forEach(link => {
-    link.addEventListener("click", e => {
-      e.preventDefault();
-      loginAsRole(link.dataset.role);
-    });
-  });
-}
-
-/* ============================================================
-   PRODUCT CATALOG RENDERING
-   ============================================================ */
-function productCard(p) {
-  return `
-    <article class="product-card" data-product="${p.id}">
-      <div class="product-image">
-        <img src="${imageUrl(p.image)}" alt="${p.name}" loading="lazy">
-        <span class="discount-tag">${p.tag || '-20%'}</span>
-        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ""}
-        <button class="wish-button" aria-label="Add ${p.name} to wishlist">♡</button>
-        <button class="quick-add" data-add="${p.id}">＋ Quick add</button>
-      </div>
-      <div class="product-info">
-        <span class="product-category">${p.category}</span>
-        <h3>${p.name}</h3>
-        <div class="rating">
-          <span>★</span> ${p.rating || '4.8'} <small>(${p.reviews || 42})</small>
-        </div>
-        <div class="price-row">
-          <strong>${money(p.price)}</strong>
-          <del>${money(p.old || Math.round(p.price * 1.3))}</del>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function renderProducts(id, items) {
-  const el = document.getElementById(id);
-  if (el) el.innerHTML = items.map(p => productCard(p)).join("");
-}
-
-function renderCategories() {
-  const el = document.getElementById("category-grid");
-  if (!el) return;
-  el.innerHTML = categories.map(c => `
-    <button class="category-card ${c.tone}" data-category="${c.name}">
-      <span class="category-photo">
-        <img src="${imageUrl(c.image)}" alt="" loading="lazy">
-      </span>
-      <span class="category-icon">${c.icon}</span>
-      <b>${c.name}</b>
-      <small>${c.sub}</small>
-      <span class="category-arrow">↗</span>
-    </button>
-  `).join("");
-
-  el.addEventListener("click", e => {
-    const b = e.target.closest("[data-category]");
-    if (b) {
-      document.getElementById("site-search").value = b.dataset.category;
-      filterProducts(b.dataset.category);
-      document.getElementById("featured").scrollIntoView({ behavior: "smooth" });
-    }
-  });
-}
-
-function showDefaultProducts() {
-  renderProducts("featured-products", products.slice(0, 4));
-  renderProducts("flash-products", [products[1], products[0], products[4], products[8]]);
-  renderProducts("trending-products", [products[2], products[3], products[5]]);
-}
-
-function filterProducts(query) {
-  const q = query.toLowerCase().trim();
-  const found = products.filter(p => (p.name + " " + p.category).toLowerCase().includes(q));
-  const el = document.getElementById("featured-products");
-  if (!el) return;
-
-  el.innerHTML = found.length
-    ? found.map(productCard).join("")
-    : `<div class="empty-results">
-        <span>⌕</span>
-        <h3>No products found</h3>
-        <p>Try searching with another keyword or category name.</p>
-        <button class="button button--primary" id="clear-search" style="margin-top: 14px;">Show all products</button>
-       </div>`;
-
-  const heading = document.querySelector("#featured .section-head h2");
-  if (heading) heading.textContent = `Search results for “${query}”`;
-
-  document.getElementById("clear-search")?.addEventListener("click", () => {
-    if (heading) heading.textContent = "Featured products";
-    document.getElementById("site-search").value = "";
-    showDefaultProducts();
-  });
-}
-
-/* ============================================================
-   HERO SLIDER
-   ============================================================ */
-function changeSlide(next) {
-  const slides = [...document.querySelectorAll(".hero-slide")];
-  const dots = [...document.querySelectorAll(".slider-dots button")];
-  if (!slides.length) return;
-  activeSlide = (next + slides.length) % slides.length;
-  slides.forEach((s, i) => s.classList.toggle("is-active", i === activeSlide));
-  dots.forEach((d, i) => d.classList.toggle("is-active", i === activeSlide));
-}
-
-function startSlider() {
-  document.getElementById("slide-prev")?.addEventListener("click", () => {
-    changeSlide(activeSlide - 1);
-    resetSlider();
-  });
-  document.getElementById("slide-next")?.addEventListener("click", () => {
-    changeSlide(activeSlide + 1);
-    resetSlider();
-  });
-  document.getElementById("slider-dots")?.addEventListener("click", e => {
-    const i = [...e.currentTarget.children].indexOf(e.target);
-    if (i >= 0) {
-      changeSlide(i);
-      resetSlider();
-    }
-  });
-  const slider = document.getElementById("hero-slider");
-  if (slider) {
-    slider.addEventListener("mouseenter", () => clearInterval(slideTimer));
-    slider.addEventListener("mouseleave", resetSlider);
-  }
-  resetSlider();
-}
-
-function resetSlider() {
-  clearInterval(slideTimer);
-  slideTimer = setInterval(() => changeSlide(activeSlide + 1), 5500);
-}
-
-/* ============================================================
-   CART SYSTEM
-   ============================================================ */
-function updateCart() {
-  document.querySelectorAll(".cart-count").forEach(el => {
-    el.textContent = cart.reduce((n, x) => n + x.qty, 0);
-  });
-  const subtotalEl = document.getElementById("cart-subtotal");
-  if (subtotalEl) {
-    subtotalEl.textContent = money(cart.reduce((n, x) => n + x.price * x.qty, 0));
-  }
-  localStorage.setItem("bazaarhub-cart", JSON.stringify(cart));
-  const el = document.getElementById("cart-items");
-  if (!el) return;
-
-  el.innerHTML = cart.length
-    ? cart.map(x => `
-        <div class="cart-item">
-          <img src="${imageUrl(x.image)}" alt="">
-          <div>
-            <b>${x.name}</b>
-            <span>${money(x.price)}</span>
-            <div class="quantity">
-              <button data-qty="${x.id}" data-change="-1" aria-label="Decrease quantity">−</button>
-              <span>${x.qty}</span>
-              <button data-qty="${x.id}" data-change="1" aria-label="Increase quantity">+</button>
-            </div>
-          </div>
-          <button class="remove-item" data-remove="${x.id}" aria-label="Remove item">×</button>
-        </div>
-      `).join("")
-    : `
-        <div class="cart-empty">
-          <span>♧</span>
-          <h3>Your bag is empty</h3>
-          <p>Add some vibrant discoveries to get started.</p>
-        </div>
-      `;
-}
-
-function addToCart(id) {
-  const p = products.find(x => x.id === Number(id));
-  if (!p) return;
-  const existing = cart.find(x => x.id === p.id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ ...p, qty: 1 });
-  }
-  updateCart();
-  showToast(`Added “${p.name}” to your bag`);
-}
-
-function openCart() {
-  document.getElementById("cart-drawer")?.classList.add("is-open");
-  document.getElementById("cart-overlay")?.classList.add("is-open");
-  document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "false");
-  document.body.classList.add("drawer-open");
-}
-
-function closeCart() {
-  document.getElementById("cart-drawer")?.classList.remove("is-open");
-  document.getElementById("cart-overlay")?.classList.remove("is-open");
-  document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("drawer-open");
-}
-
-/* ============================================================
-   TOAST NOTIFICATION & COUNTDOWN
-   ============================================================ */
-let toastTimer;
-function showToast(message) {
-  const t = document.getElementById("toast");
-  if (!t) return;
-  t.innerHTML = `<span>✓</span> <span>${message}</span>`;
-  t.classList.add("is-visible");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("is-visible"), 2800);
-}
-
-function startCountdown() {
-  let remaining = 8 * 3600 + 24 * 60 + 36;
-  const el = document.getElementById("countdown");
-  if (!el) return;
-  setInterval(() => {
-    remaining = remaining > 0 ? remaining - 1 : 8 * 3600 + 24 * 60 + 36;
-    const h = String(Math.floor(remaining / 3600)).padStart(2, "0");
-    const m = String(Math.floor((remaining % 3600) / 60)).padStart(2, "0");
-    const s = String(remaining % 60).padStart(2, "0");
-    el.innerHTML = `<b>${h}</b><i>:</i><b>${m}</b><i>:</i><b>${s}</b>`;
-  }, 1000);
 }
 
 /* ============================================================
@@ -527,26 +759,19 @@ function openAuthModal(role = "customer") {
   const overlay = document.getElementById("auth-overlay");
   if (!modal || !overlay) return;
 
-  // Set active tab
   document.querySelectorAll(".auth-role-tab").forEach(tab => {
     tab.classList.toggle("is-active", tab.dataset.role === role);
   });
 
-  // Update prefilled credentials
   updateAuthFormFields(role);
 
   modal.classList.add("is-open");
   overlay.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
 }
 
 function closeAuthModal() {
-  const modal = document.getElementById("auth-modal");
-  const overlay = document.getElementById("auth-overlay");
-  if (!modal || !overlay) return;
-  modal.classList.remove("is-open");
-  overlay.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
+  document.getElementById("auth-modal")?.classList.remove("is-open");
+  document.getElementById("auth-overlay")?.classList.remove("is-open");
 }
 
 function updateAuthFormFields(role) {
@@ -554,35 +779,68 @@ function updateAuthFormFields(role) {
   const submitBtn = document.getElementById("auth-submit-btn");
   const subTitle = document.getElementById("auth-subtitle");
 
-  const roleNames = { customer: "Customer", seller: "Seller", admin: "Admin" };
+  const nameGroup = document.getElementById("name-group");
+  const phoneGroup = document.getElementById("phone-group");
+  const cityGroup = document.getElementById("city-group");
+  const storeGroup = document.getElementById("store-name-group");
+  const catGroup = document.getElementById("store-cat-group");
+  const rememberRow = document.getElementById("remember-row");
+
+  if (authIsSignUp) {
+    if (nameGroup) nameGroup.style.display = "block";
+    if (phoneGroup) phoneGroup.style.display = "block";
+    if (cityGroup) cityGroup.style.display = "block";
+    if (rememberRow) rememberRow.style.display = "none";
+
+    if (role === "seller") {
+      if (storeGroup) storeGroup.style.display = "block";
+      if (catGroup) catGroup.style.display = "block";
+    } else {
+      if (storeGroup) storeGroup.style.display = "none";
+      if (catGroup) catGroup.style.display = "none";
+    }
+  } else {
+    if (nameGroup) nameGroup.style.display = "none";
+    if (phoneGroup) phoneGroup.style.display = "none";
+    if (cityGroup) cityGroup.style.display = "none";
+    if (storeGroup) storeGroup.style.display = "none";
+    if (catGroup) catGroup.style.display = "none";
+    if (rememberRow) rememberRow.style.display = "flex";
+  }
+
+  const roleLabels = { customer: "Customer", seller: "Merchant Seller", admin: "Administrator" };
   const demoEmails = {
     customer: "sarah@customer.com",
     seller: "ram@kathmanducrafts.com",
     admin: "admin@bazaarhub.com"
   };
 
-  if (emailInput) emailInput.value = demoEmails[role] || "";
+  if (emailInput && !authIsSignUp) emailInput.value = demoEmails[role] || "";
   if (submitBtn) {
     submitBtn.innerHTML = authIsSignUp
-      ? `Create ${roleNames[role]} Account <span>→</span>`
-      : `Sign In as ${roleNames[role]} <span>→</span>`;
+      ? `Register as ${roleLabels[role]} <span>✓</span>`
+      : `Sign In as ${roleLabels[role]} <span>→</span>`;
   }
   if (subTitle) {
     subTitle.textContent = authIsSignUp
-      ? `Register a new ${roleNames[role]} account`
-      : `Sign in to access your ${roleNames[role]} workspace`;
+      ? `Create your ${roleLabels[role]} account on BazaarHub`
+      : `Select your role to sign into your account`;
   }
 }
 
 function loginAsRole(role) {
-  const user = demoUsers[role];
-  if (!user) return;
-  currentUser = user;
+  if (role === "customer") {
+    currentUser = customers[0];
+  } else if (role === "seller") {
+    currentUser = sellers[0];
+  } else if (role === "admin") {
+    currentUser = adminStats;
+  }
   localStorage.setItem("bazaarhub-user", JSON.stringify(currentUser));
   closeAuthModal();
   renderHeader();
   updateRolePillHighlights();
-  showToast(`Logged in successfully as ${user.name} (${role.toUpperCase()})`);
+  showToast(`Signed in as ${currentUser.name} (${role.toUpperCase()})`);
   switchToDashboard(role);
 }
 
@@ -616,8 +874,8 @@ function switchToStorefront() {
 
 function switchToDashboard(role = "customer") {
   if (!currentUser || currentUser.role !== role) {
-    currentUser = demoUsers[role];
-    localStorage.setItem("bazaarhub-user", JSON.stringify(currentUser));
+    loginAsRole(role);
+    return;
   }
   currentView = "dashboard";
   document.getElementById("main-content").style.display = "none";
@@ -630,25 +888,24 @@ function switchToDashboard(role = "customer") {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* ============================================================
-   MULTI-ROLE DASHBOARD RENDERING ENGINE
-   ============================================================ */
 function renderDashboard(role) {
   const container = document.getElementById("dashboard-view");
   if (!container) return;
-
   if (role === "customer") renderCustomerDashboard(container);
   else if (role === "seller") renderSellerDashboard(container);
   else if (role === "admin") renderAdminDashboard(container);
 }
 
-/* ------------------------------------------------------------
+/* ============================================================
    1. CUSTOMER DASHBOARD
-   ------------------------------------------------------------ */
+   ============================================================ */
 function renderCustomerDashboard(container) {
-  const u = demoUsers.customer;
+  const c = currentUser && currentUser.role === "customer" ? currentUser : customers[0];
+
+  // Filter orders made by this customer
+  const customerOrders = orders.filter(o => o.customerEmail === c.email || o.customerName === c.name);
+
   container.innerHTML = `
-    <!-- Top Action Nav -->
     <div class="dash-navbar">
       <div class="container dash-navbar__inner">
         <button class="dash-back-btn" id="dash-back-store">
@@ -665,17 +922,16 @@ function renderCustomerDashboard(container) {
       </div>
     </div>
 
-    <!-- Header Banner -->
     <div class="container dash-header-banner">
       <div class="dash-header-card">
         <div class="dash-user-meta">
-          <img src="${u.avatar}" alt="${u.name}" class="dash-avatar-large">
+          <img src="${c.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'}" alt="" class="dash-avatar-large">
           <div class="dash-user-info">
-            <h2>Welcome back, ${u.name}!</h2>
-            <p>✉ ${u.email} &nbsp;·&nbsp; 📍 ${u.location}</p>
+            <h2>Welcome back, ${c.name}!</h2>
+            <p>✉ ${c.email} &nbsp;·&nbsp; 📍 ${c.location || 'Kathmandu, Nepal'}</p>
             <div class="dash-badge-row">
-              <span class="dash-tag dash-tag--orange">${u.tier}</span>
-              <span class="dash-tag dash-tag--green">✓ Phone Verified</span>
+              <span class="dash-tag dash-tag--orange">${c.tier || '🌟 Verified Shopper'}</span>
+              <span class="dash-tag dash-tag--green">✓ Phone Verified (${c.phone || '+977 984XXXXXXX'})</span>
             </div>
           </div>
         </div>
@@ -692,7 +948,7 @@ function renderCustomerDashboard(container) {
           <div class="kpi-icon-wrap orange">💳</div>
           <div class="kpi-text">
             <span>BazaarHub Wallet</span>
-            <strong>${money(u.wallet)}</strong>
+            <strong>${money(c.wallet || 3850)}</strong>
             <small>Instant checkout ready</small>
           </div>
         </div>
@@ -700,32 +956,32 @@ function renderCustomerDashboard(container) {
           <div class="kpi-icon-wrap amber">⭐</div>
           <div class="kpi-text">
             <span>Reward Points</span>
-            <strong>${u.points} pts</strong>
+            <strong>${c.points || 1420} pts</strong>
             <small>Redeemable for Rs. 350 discount</small>
           </div>
         </div>
         <div class="dash-kpi-card">
           <div class="kpi-icon-wrap blue">📦</div>
           <div class="kpi-text">
-            <span>Total Orders</span>
-            <strong>${u.orders.length} placed</strong>
-            <small>1 order currently on way</small>
+            <span>Orders Placed</span>
+            <strong>${customerOrders.length} orders</strong>
+            <small>${customerOrders.filter(o => o.status !== 'Delivered').length} active shipments</small>
           </div>
         </div>
         <div class="dash-kpi-card">
           <div class="kpi-icon-wrap green">🎟️</div>
           <div class="kpi-text">
             <span>Active Coupons</span>
-            <strong>${u.coupons.length} vouchers</strong>
+            <strong>${(c.coupons || []).length} vouchers</strong>
             <small>Up to 20% savings available</small>
           </div>
         </div>
       </div>
 
-      <!-- Inner Tabs & Content -->
+      <!-- Subtabs -->
       <div class="dash-content-area">
         <div class="dash-subtabs">
-          <button class="dash-subtab is-active" data-tab="orders">📦 My Orders (${u.orders.length})</button>
+          <button class="dash-subtab is-active" data-tab="orders">📦 My Orders (${customerOrders.length})</button>
           <button class="dash-subtab" data-tab="wishlist">♡ Saved Wishlist</button>
           <button class="dash-subtab" data-tab="addresses">📍 Delivery Addresses</button>
           <button class="dash-subtab" data-tab="coupons">🎟️ Available Coupons</button>
@@ -736,72 +992,95 @@ function renderCustomerDashboard(container) {
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Recent Purchases & Delivery Status</h3>
-                <p>Track your parcels live across Nepal</p>
+                <h3>My Purchases & Nepal QR Escrow Deliveries</h3>
+                <p>Track your parcels live from order placement to verified delivery</p>
               </div>
             </div>
 
-            <!-- Active Order Tracker Preview -->
-            <div style="background: #fff8f5; border: 1.5px solid var(--primary-border); border-radius: 12px; padding: 20px; margin-bottom: 22px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Live Tracking Active</span>
-                  <h4 style="margin:2px 0 0; font-size:15px; font-weight:800;">Order #ORD-9821 · Aura Wireless Headphones</h4>
+            <!-- Active Order Live Tracker -->
+            ${customerOrders.length > 0 ? `
+              <div style="background: #fff8f5; border: 1.5px solid var(--primary-border); border-radius: 12px; padding: 20px; margin-bottom: 22px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <span style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Live Escrow Tracking Active</span>
+                    <h4 style="margin:2px 0 0; font-size:15px; font-weight:800;">Order #${customerOrders[0].id} · ${customerOrders[0].items[0]?.name || 'Item'}</h4>
+                  </div>
+                  <span class="status-badge ${
+                    customerOrders[0].step === 1 ? 'pending-verification' :
+                    customerOrders[0].step === 2 ? 'active' :
+                    customerOrders[0].step === 3 ? 'in-transit' : 'delivered'
+                  }">
+                    ${customerOrders[0].status}
+                  </span>
                 </div>
-                <span class="status-badge in-transit">🚚 In Transit</span>
+
+                <div class="order-tracker">
+                  <div class="tracker-step ${customerOrders[0].step >= 1 ? 'done' : ''}">
+                    <div class="tracker-dot">${customerOrders[0].step > 1 ? '✓' : '1'}</div>
+                    <span>1. QR Paid & Proof Sent</span>
+                  </div>
+                  <div class="tracker-step ${customerOrders[0].step > 2 ? 'done' : (customerOrders[0].step === 2 ? 'current' : '')}">
+                    <div class="tracker-dot">${customerOrders[0].step > 2 ? '✓' : (customerOrders[0].step === 2 ? '●' : '2')}</div>
+                    <span>2. Admin Verified & Packing</span>
+                  </div>
+                  <div class="tracker-step ${customerOrders[0].step > 3 ? 'done' : (customerOrders[0].step === 3 ? 'current' : '')}">
+                    <div class="tracker-dot">${customerOrders[0].step > 3 ? '✓' : (customerOrders[0].step === 3 ? '●' : '3')}</div>
+                    <span>3. In Transit Courier</span>
+                  </div>
+                  <div class="tracker-step ${customerOrders[0].step >= 4 ? 'done' : ''}">
+                    <div class="tracker-dot">${customerOrders[0].step >= 4 ? '✓' : '4'}</div>
+                    <span>4. Delivered & Settled</span>
+                  </div>
+                </div>
+
+                <p style="margin:8px 0 0; font-size:11.5px; color:#64748b; text-align:center;">
+                  Status Note: <b>${customerOrders[0].remarks || 'Payment proof is being reviewed by BazaarHub Admin.'}</b>
+                </p>
               </div>
-              
-              <div class="order-tracker">
-                <div class="tracker-step done">
-                  <div class="tracker-dot">✓</div>
-                  <span>Order Placed</span>
-                </div>
-                <div class="tracker-step done">
-                  <div class="tracker-dot">✓</div>
-                  <span>Packed & Ready</span>
-                </div>
-                <div class="tracker-step current">
-                  <div class="tracker-dot">●</div>
-                  <span>Out for Delivery</span>
-                </div>
-                <div class="tracker-step">
-                  <div class="tracker-dot">○</div>
-                  <span>Delivered</span>
-                </div>
-              </div>
-              <p style="margin:0; font-size:11.5px; color:#64748b; text-align:center;">Estimated Delivery: <b>Tomorrow by 2:00 PM (Kathmandu Valley)</b></p>
-            </div>
+            ` : ""}
 
             <div class="dash-table-wrap">
               <table class="dash-table">
                 <thead>
                   <tr>
                     <th>Order ID</th>
-                    <th>Product</th>
+                    <th>Product Item</th>
                     <th>Date</th>
                     <th>Total</th>
+                    <th>Payment</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Slip / Invoice</th>
                   </tr>
                 </thead>
                 <tbody>
-                  ${u.orders.map(o => `
+                  ${customerOrders.length === 0 ? `
+                    <tr><td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">No orders placed yet. Add items to cart and pay via Nepal QR!</td></tr>
+                  ` : customerOrders.map(o => `
                     <tr>
                       <td><b>#${o.id}</b></td>
                       <td>
                         <div class="product-cell">
-                          <img src="${imageUrl(o.thumb)}" alt="">
+                          <img src="${imageUrl(o.items[0]?.image || 'photo-1542291026-7eec264c27ff')}" alt="">
                           <div>
-                            <b>${o.product}</b>
-                            <small>Qty: ${o.qty}</small>
+                            <b>${o.items[0]?.name || 'Product'}</b>
+                            <small>${o.items.length > 1 ? `+${o.items.length - 1} more items` : `Qty: ${o.items[0]?.qty || 1}`}</small>
                           </div>
                         </div>
                       </td>
                       <td>${o.date}</td>
-                      <td><b>${money(o.price)}</b></td>
-                      <td><span class="status-badge ${o.status.toLowerCase().replace(' ', '-')}">${o.status}</span></td>
+                      <td><b>${money(o.total)}</b></td>
+                      <td><span style="font-size:11px; font-weight:700; color:#0369a1;">${o.paymentMethod || 'Nepal QR'}</span></td>
                       <td>
-                        <button class="action-btn-sm outline" onclick="alert('Viewing invoice for ${o.id}')">Invoice</button>
+                        <span class="status-badge ${
+                          o.step === 1 ? 'pending-verification' :
+                          o.step === 2 ? 'active' :
+                          o.step === 3 ? 'in-transit' : 'delivered'
+                        }">
+                          ${o.status}
+                        </span>
+                      </td>
+                      <td>
+                        <button class="action-btn-sm outline" onclick="viewOrderSlipCustomer('${o.id}')">View Slip</button>
                       </td>
                     </tr>
                   `).join("")}
@@ -817,7 +1096,7 @@ function renderCustomerDashboard(container) {
             <div class="dash-card-header">
               <div>
                 <h3>My Saved Items</h3>
-                <p>Items you saved to buy later</p>
+                <p>Items you saved to purchase later</p>
               </div>
             </div>
             <div class="dash-grid-cards">
@@ -839,22 +1118,18 @@ function renderCustomerDashboard(container) {
             <div class="dash-card-header">
               <div>
                 <h3>Saved Delivery Addresses</h3>
-                <p>Manage your home, work and pickup locations</p>
+                <p>Manage your home, work and pickup locations in Nepal</p>
               </div>
-              <button class="action-btn-sm primary" onclick="showToast('New address modal opened')">＋ Add New Address</button>
+              <button class="action-btn-sm primary" onclick="showToast('New delivery address added')">＋ Add New Address</button>
             </div>
             <div class="dash-grid-cards">
-              ${u.addresses.map(a => `
+              ${(c.addresses || []).map(a => `
                 <div class="dash-card-item">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <span class="dash-tag ${a.isDefault ? 'dash-tag--orange' : ''}">${a.label}</span>
                     ${a.isDefault ? '<small style="color:var(--primary); font-weight:700;">Default</small>' : ''}
                   </div>
                   <p style="font-size:13px; color:var(--ink); line-height:1.5;">${a.text}</p>
-                  <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button class="action-btn-sm outline">Edit</button>
-                    ${!a.isDefault ? '<button class="action-btn-sm outline" onclick="showToast(\'Address set as default\')">Set Default</button>' : ''}
-                  </div>
                 </div>
               `).join("")}
             </div>
@@ -866,20 +1141,20 @@ function renderCustomerDashboard(container) {
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Your Active Coupons & Discounts</h3>
-                <p>Apply these voucher codes during checkout</p>
+                <h3>Active Marketplace Discount Coupons</h3>
+                <p>Apply these voucher codes during QR checkout</p>
               </div>
             </div>
             <div class="dash-grid-cards">
-              ${u.coupons.map(c => `
+              ${(c.coupons || []).map(cp => `
                 <div class="dash-card-item" style="border:1.5px dashed var(--primary-border); background:#fff9f5;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <strong style="color:var(--primary); font-size:16px;">${c.code}</strong>
-                    <span class="dash-tag dash-tag--orange">${c.discount}</span>
+                    <strong style="color:var(--primary); font-size:16px;">${cp.code}</strong>
+                    <span class="dash-tag dash-tag--orange">${cp.discount}</span>
                   </div>
-                  <p style="margin-bottom:8px;">${c.desc}</p>
-                  <small style="color:var(--muted); display:block; margin-bottom:12px;">Valid until: ${c.expiry}</small>
-                  <button class="action-btn-sm outline" onclick="navigator.clipboard?.writeText('${c.code}'); showToast('Coupon code copied: ${c.code}')">Copy Voucher Code</button>
+                  <p style="margin-bottom:8px;">${cp.desc}</p>
+                  <small style="color:var(--muted); display:block; margin-bottom:12px;">Valid until: ${cp.expiry}</small>
+                  <button class="action-btn-sm outline" onclick="navigator.clipboard?.writeText('${cp.code}'); showToast('Coupon code copied: ${cp.code}')">Copy Voucher</button>
                 </div>
               `).join("")}
             </div>
@@ -892,13 +1167,19 @@ function renderCustomerDashboard(container) {
   attachDashboardEvents(container, "customer");
 }
 
-/* ------------------------------------------------------------
+/* ============================================================
    2. SELLER DASHBOARD (MERCHANT HUB)
-   ------------------------------------------------------------ */
+   ============================================================ */
 function renderSellerDashboard(container) {
-  const s = demoUsers.seller;
+  const s = currentUser && currentUser.role === "seller" ? currentUser : sellers[0];
+
+  // Find products listed by this seller
+  const sellerProducts = products.filter(p => !p.sellerId || p.sellerId === s.id || p.sellerName === s.storeName);
+
+  // Find incoming orders for this seller
+  const sellerOrders = orders.filter(o => !o.sellerId || o.sellerId === s.id || o.sellerName === s.storeName);
+
   container.innerHTML = `
-    <!-- Top Action Nav -->
     <div class="dash-navbar">
       <div class="container dash-navbar__inner">
         <button class="dash-back-btn" id="dash-back-store">
@@ -915,17 +1196,17 @@ function renderSellerDashboard(container) {
       </div>
     </div>
 
-    <!-- Header Banner -->
     <div class="container dash-header-banner">
       <div class="dash-header-card">
         <div class="dash-user-meta">
-          <img src="${s.avatar}" alt="${s.name}" class="dash-avatar-large">
+          <img src="${s.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'}" alt="" class="dash-avatar-large">
           <div class="dash-user-info">
             <h2>${s.storeName}</h2>
-            <p>Merchant: ${s.name} &nbsp;·&nbsp; ✉ ${s.email} &nbsp;·&nbsp; 📞 ${s.phone}</p>
+            <p>Merchant Owner: ${s.name} &nbsp;·&nbsp; ✉ ${s.email} &nbsp;·&nbsp; 📞 ${s.phone}</p>
             <div class="dash-badge-row">
-              <span class="dash-tag dash-tag--green">✓ Verified Merchant</span>
-              <span class="dash-tag dash-tag--orange">${s.rating}</span>
+              <span class="dash-tag dash-tag--green">✓ ${s.status || 'Verified Merchant'}</span>
+              <span class="dash-tag dash-tag--orange">${s.rating || '4.9 ★ (215 reviews)'}</span>
+              <span class="dash-tag" style="background:#f1f5f9; color:#475569;">${s.category || 'Retail'}</span>
             </div>
           </div>
         </div>
@@ -943,23 +1224,23 @@ function renderSellerDashboard(container) {
           <div class="kpi-text">
             <span>Total Sales Revenue</span>
             <strong>${money(s.revenue)}</strong>
-            <small>▲ +18.4% growth this month</small>
+            <small>Gross sales across storefront</small>
           </div>
         </div>
         <div class="dash-kpi-card">
           <div class="kpi-icon-wrap amber">📦</div>
           <div class="kpi-text">
-            <span>Orders Today</span>
-            <strong>${s.ordersToday} orders</strong>
-            <small>4 orders pending dispatch</small>
+            <span>Orders to Fulfill</span>
+            <strong>${sellerOrders.filter(o => o.status !== 'Delivered').length} orders</strong>
+            <small>Active shipments in progress</small>
           </div>
         </div>
         <div class="dash-kpi-card">
           <div class="kpi-icon-wrap blue">🏷️</div>
           <div class="kpi-text">
             <span>Active Listings</span>
-            <strong>${products.length} products</strong>
-            <small>Live on Marketplace</small>
+            <strong>${sellerProducts.length} items</strong>
+            <small>Live on BazaarHub Storefront</small>
           </div>
         </div>
         <div class="dash-kpi-card">
@@ -972,12 +1253,12 @@ function renderSellerDashboard(container) {
         </div>
       </div>
 
-      <!-- Inner Tabs & Content -->
+      <!-- Inner Tabs -->
       <div class="dash-content-area">
         <div class="dash-subtabs">
-          <button class="dash-subtab is-active" data-tab="products">🏷️ Product Inventory (${products.length})</button>
-          <button class="dash-subtab" data-tab="orders">📦 Orders to Fulfill (${s.incomingOrders.length})</button>
-          <button class="dash-subtab" data-tab="finance">💵 Payouts & Finance</button>
+          <button class="dash-subtab is-active" data-tab="products">🏷️ Store Inventory (${sellerProducts.length})</button>
+          <button class="dash-subtab" data-tab="orders">📦 Orders to Fulfill (${sellerOrders.length})</button>
+          <button class="dash-subtab" data-tab="finance">💵 Bank Settlements & Finance</button>
         </div>
 
         <!-- Inventory Tab -->
@@ -986,7 +1267,7 @@ function renderSellerDashboard(container) {
             <div class="dash-card-header">
               <div>
                 <h3>Store Product Catalog</h3>
-                <p>Manage your listings, prices, discounts and stock units</p>
+                <p>Manage items, prices, discounts, and real-time inventory units</p>
               </div>
               <button class="action-btn-sm primary" id="btn-seller-add-quick">＋ Add Product</button>
             </div>
@@ -1004,7 +1285,7 @@ function renderSellerDashboard(container) {
                   </tr>
                 </thead>
                 <tbody>
-                  ${products.map(p => `
+                  ${sellerProducts.map(p => `
                     <tr id="seller-row-${p.id}">
                       <td>
                         <div class="product-cell">
@@ -1018,7 +1299,7 @@ function renderSellerDashboard(container) {
                       <td>${p.category}</td>
                       <td><b>${money(p.price)}</b></td>
                       <td><b>${p.stock || 25} units</b></td>
-                      <td><span class="status-badge active">● Live</span></td>
+                      <td><span class="status-badge active">● Live on Store</span></td>
                       <td>
                         <button class="action-btn-sm danger" onclick="deleteProductAsSeller(${p.id})">Delete</button>
                       </td>
@@ -1035,8 +1316,8 @@ function renderSellerDashboard(container) {
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Orders Awaiting Dispatch</h3>
-                <p>Pack items carefully and hand them to the courier</p>
+                <h3>Orders Awaiting Fulfillment</h3>
+                <p>Ship verified customer orders and dispatch parcels across Nepal</p>
               </div>
             </div>
             <div class="dash-table-wrap">
@@ -1044,28 +1325,46 @@ function renderSellerDashboard(container) {
                 <thead>
                   <tr>
                     <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Item Ordered</th>
-                    <th>Total</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Fulfill</th>
+                    <th>Customer Name</th>
+                    <th>Item(s)</th>
+                    <th>Gross Total</th>
+                    <th>Net Payout (90%)</th>
+                    <th>Payment Status</th>
+                    <th>Ship / Fulfill</th>
                   </tr>
                 </thead>
-                <tbody id="seller-orders-tbody">
-                  ${s.incomingOrders.map(o => `
+                <tbody>
+                  ${sellerOrders.length === 0 ? `
+                    <tr><td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">No incoming orders yet.</td></tr>
+                  ` : sellerOrders.map(o => `
                     <tr>
                       <td><b>#${o.id}</b></td>
-                      <td>${o.buyer}</td>
-                      <td>${o.item} (x${o.qty})</td>
-                      <td><b>${money(o.total)}</b></td>
-                      <td>${o.date}</td>
-                      <td><span class="status-badge ${o.status === 'Shipped' ? 'delivered' : 'pending'}">${o.status}</span></td>
                       <td>
-                        ${o.status === 'Processing'
-                          ? `<button class="action-btn-sm primary" onclick="markOrderShipped('${o.id}', this)">Ship Order</button>`
-                          : `<span style="color:#059669; font-weight:700; font-size:11px;">✓ Shipped</span>`
-                        }
+                        <b>${o.customerName}</b><br>
+                        <small style="color:#64748b;">${o.customerPhone || ''}</small>
+                      </td>
+                      <td>${o.items[0]?.name || 'Item'} (x${o.items[0]?.qty || 1})</td>
+                      <td>${money(o.total)}</td>
+                      <td><b style="color:#059669;">${money(o.sellerPayout || (o.total * 0.9))}</b></td>
+                      <td>
+                        <span class="status-badge ${
+                          o.step === 1 ? 'pending-verification' :
+                          o.step === 2 ? 'active' :
+                          o.step === 3 ? 'in-transit' : 'delivered'
+                        }">
+                          ${o.status}
+                        </span>
+                      </td>
+                      <td>
+                        ${o.step === 1 ? `
+                          <small style="color:#b45309; font-weight:700;">Awaiting Admin QR Check</small>
+                        ` : o.step === 2 ? `
+                          <button class="action-btn-sm primary" onclick="advanceOrderStatus('${o.id}', 3)">🚚 Ship Order</button>
+                        ` : o.step === 3 ? `
+                          <button class="action-btn-sm outline" onclick="advanceOrderStatus('${o.id}', 4)">✓ Mark Delivered</button>
+                        ` : `
+                          <span style="color:#059669; font-weight:800; font-size:11px;">✓ Settled</span>
+                        `}
                       </td>
                     </tr>
                   `).join("")}
@@ -1080,22 +1379,22 @@ function renderSellerDashboard(container) {
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Earnings & Bank Settlements</h3>
-                <p>Settled weekly directly into your bank account</p>
+                <h3>Bank Settlements & Payout Receipts</h3>
+                <p>Automated weekly net payout transfer directly into your verified bank account</p>
               </div>
-              <button class="action-btn-sm primary" onclick="showToast('Payout request of ${money(s.payoutAvailable)} initiated successfully')">Withdraw Now</button>
+              <button class="action-btn-sm primary" onclick="showToast('Withdrawal request of ${money(s.payoutAvailable)} initiated to ${s.bank}')">Withdraw Balance</button>
             </div>
             <div class="dash-grid-cards">
               <div class="dash-card-item">
-                <span class="dash-tag dash-tag--orange">Linked Payout Account</span>
+                <span class="dash-tag dash-tag--orange">Linked Nepali Bank Account</span>
                 <h4 style="margin-top:10px;">${s.bank}</h4>
-                <p>Account Holder: Ram Sharma<br>Branch: Durbarmarg, Kathmandu</p>
-                <button class="action-btn-sm outline">Update Account</button>
+                <p>Account Holder: <b>${s.name}</b><br>Branch: Kathmandu Central</p>
+                <button class="action-btn-sm outline" onclick="showToast('Bank details update modal')">Update Bank Account</button>
               </div>
               <div class="dash-card-item">
-                <span class="dash-tag dash-tag--green">Next Scheduled Payout</span>
-                <h4 style="margin-top:10px;">Friday, Nov 20, 2026</h4>
-                <p>Estimated Transfer: <b>${money(s.payoutAvailable)}</b><br>Platform commission fee (8%) already deducted.</p>
+                <span class="dash-tag dash-tag--green">Escrow Payout Settlement</span>
+                <h4 style="margin-top:10px;">90.0% Net Payout</h4>
+                <p>Available Balance: <b>${money(s.payoutAvailable)}</b><br>Platform commission fee (10%) is already deducted upon Admin verification.</p>
               </div>
             </div>
           </div>
@@ -1106,25 +1405,24 @@ function renderSellerDashboard(container) {
 
   attachDashboardEvents(container, "seller");
 
-  // Open product modal
   container.querySelector("#btn-seller-add-product")?.addEventListener("click", openSellerProductModal);
   container.querySelector("#btn-seller-add-quick")?.addEventListener("click", openSellerProductModal);
 }
 
-/* ------------------------------------------------------------
-   3. ADMIN DASHBOARD (PLATFORM CONTROL)
-   ------------------------------------------------------------ */
+/* ============================================================
+   3. ADMIN DASHBOARD (PLATFORM GOVERNANCE & PAYMENT ESCROW)
+   ============================================================ */
 function renderAdminDashboard(container) {
-  const a = demoUsers.admin;
+  const pendingCount = orders.filter(o => o.step === 1).length;
+
   container.innerHTML = `
-    <!-- Top Action Nav -->
     <div class="dash-navbar">
       <div class="container dash-navbar__inner">
         <button class="dash-back-btn" id="dash-back-store">
           <span>←</span> Back to Storefront
         </button>
         <div class="dash-role-indicator">
-          <span class="dash-role-badge admin">🛡️ Platform Administration</span>
+          <span class="dash-role-badge admin">🛡️ Platform Administration & Escrow</span>
         </div>
         <div class="dash-switcher-tabs">
           <button class="dash-tab-pill" data-switch="customer">Customer</button>
@@ -1134,22 +1432,21 @@ function renderAdminDashboard(container) {
       </div>
     </div>
 
-    <!-- Header Banner -->
     <div class="container dash-header-banner">
       <div class="dash-header-card" style="background: linear-gradient(135deg, #0b1329 0%, #152244 100%); color: #ffffff;">
         <div class="dash-user-meta">
-          <img src="${a.avatar}" alt="${a.name}" class="dash-avatar-large" style="border-color:#ff9800;">
+          <img src="${adminStats.avatar}" alt="" class="dash-avatar-large" style="border-color:#ff9800;">
           <div class="dash-user-info">
-            <h2 style="color:#ffffff;">Marketplace Master Portal</h2>
-            <p style="color:#94a3b8;">Administrator: ${a.name} &nbsp;·&nbsp; ✉ ${a.email} &nbsp;·&nbsp; Full Platform Control</p>
+            <h2 style="color:#ffffff;">Marketplace Master Control</h2>
+            <p style="color:#94a3b8;">Administrator: ${adminStats.name} &nbsp;·&nbsp; ✉ ${adminStats.email} &nbsp;·&nbsp; Full Platform Control</p>
             <div class="dash-badge-row">
               <span class="dash-tag" style="background:#ff9800; color:#ffffff;">Super Administrator</span>
-              <span class="dash-tag" style="background:rgba(255,255,255,0.15); color:#ffffff;">Nepal Gateway Online</span>
+              <span class="dash-tag" style="background:rgba(255,255,255,0.15); color:#ffffff;">Nepal QR Escrow Online</span>
             </div>
           </div>
         </div>
         <div class="dash-actions-right">
-          <button class="button button--primary" onclick="showToast('Platform cache purged & refreshed')">
+          <button class="button button--primary" onclick="showToast('Platform statistics refreshed')">
             Refresh Platform Stats ⟳
           </button>
         </div>
@@ -1161,81 +1458,113 @@ function renderAdminDashboard(container) {
           <div class="kpi-icon-wrap orange">📈</div>
           <div class="kpi-text">
             <span>Marketplace GMV</span>
-            <strong>${money(a.platformGmv)}</strong>
+            <strong>${money(adminStats.platformGmv)}</strong>
             <small>Total gross transactions</small>
           </div>
         </div>
         <div class="dash-kpi-card">
-          <div class="kpi-icon-wrap amber">🏪</div>
+          <div class="kpi-icon-wrap amber">💵</div>
           <div class="kpi-text">
-            <span>Registered Merchants</span>
-            <strong>${a.totalSellers} sellers</strong>
-            <small>3 applications pending review</small>
+            <span>Platform Revenue (10%)</span>
+            <strong>${money(adminStats.commissionEarned)}</strong>
+            <small>10% Commission retained</small>
           </div>
         </div>
         <div class="dash-kpi-card">
-          <div class="kpi-icon-wrap blue">👥</div>
+          <div class="kpi-icon-wrap blue">🏪</div>
+          <div class="kpi-text">
+            <span>Registered Sellers</span>
+            <strong>${sellers.length} merchants</strong>
+            <small>Dedicated Seller Management</small>
+          </div>
+        </div>
+        <div class="dash-kpi-card">
+          <div class="kpi-icon-wrap green">👥</div>
           <div class="kpi-text">
             <span>Registered Shoppers</span>
-            <strong>${Number(a.totalCustomers).toLocaleString()} users</strong>
-            <small>+342 new shoppers this week</small>
-          </div>
-        </div>
-        <div class="dash-kpi-card">
-          <div class="kpi-icon-wrap green">💵</div>
-          <div class="kpi-text">
-            <span>Platform Revenue</span>
-            <strong>${money(a.commissionEarned)}</strong>
-            <small>8.0% standard commission cut</small>
+            <strong>${customers.length} customers</strong>
+            <small>Dedicated Customer Management</small>
           </div>
         </div>
       </div>
 
-      <!-- Inner Tabs & Content -->
+      <!-- Inner Tabs: Distinct Dedicated Pages for Payments, Sellers, Customers -->
       <div class="dash-content-area">
         <div class="dash-subtabs">
-          <button class="dash-subtab is-active" data-tab="approvals">📋 Seller Verification Queue (${a.sellerApplications.length})</button>
-          <button class="dash-subtab" data-tab="users">👥 User Moderation (${a.moderationUsers.length})</button>
-          <button class="dash-subtab" data-tab="controls">⚙ Platform Settings</button>
+          <button class="dash-subtab is-active" data-tab="payments">
+            📋 Payment Verifications ${pendingCount > 0 ? `<span class="badge-counter">${pendingCount}</span>` : ""}
+          </button>
+          <button class="dash-subtab" data-tab="sellers">🏪 Sellers Management (${sellers.length})</button>
+          <button class="dash-subtab" data-tab="customers">🛍️ Customers Management (${customers.length})</button>
+          <button class="dash-subtab" data-tab="products">📦 Live Store Products (${products.length})</button>
+          <button class="dash-subtab" data-tab="settings">⚙ Platform Settings</button>
         </div>
 
-        <!-- Approvals Panel -->
-        <div id="admin-panel-approvals" class="dash-panel">
+        <!-- 1. PAYMENT VERIFICATIONS TAB -->
+        <div id="admin-panel-payments" class="dash-panel">
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Merchant Verification Queue</h3>
-                <p>Verify business documents and approve stores to sell on BazaarHub</p>
+                <h3>Customer QR Payment Verifications & Seller Escrow Settlements</h3>
+                <p>Inspect uploaded screenshot slips, verify transaction reference numbers, deduct 10% platform commission, and transfer net payouts</p>
               </div>
             </div>
+
             <div class="dash-table-wrap">
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th>Store Name</th>
-                    <th>Owner</th>
-                    <th>Category</th>
-                    <th>Verification Docs</th>
+                    <th>Order ID</th>
+                    <th>Customer Payer</th>
+                    <th>Gross Total</th>
+                    <th>Platform Cut (10%)</th>
+                    <th>Seller Net Payout (90%)</th>
+                    <th>Destination Seller</th>
+                    <th>Payment Slip</th>
                     <th>Status</th>
-                    <th>Review Action</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody id="admin-approvals-tbody">
-                  ${a.sellerApplications.map(app => `
-                    <tr id="row-${app.id}">
-                      <td><b>${app.store}</b></td>
-                      <td>${app.owner}</td>
-                      <td>${app.category}</td>
-                      <td><span style="color:#0284c7; font-weight:700;">${app.docs}</span></td>
-                      <td><span class="status-badge ${app.status === 'Approved' ? 'active' : (app.status === 'Rejected' ? 'suspended' : 'pending')}">${app.status}</span></td>
+                <tbody>
+                  ${orders.length === 0 ? `
+                    <tr><td colspan="9" style="text-align:center; padding:30px; color:#94a3b8;">No orders in system yet.</td></tr>
+                  ` : orders.map(o => `
+                    <tr id="admin-order-row-${o.id}">
+                      <td><b>#${o.id}</b><br><small style="color:#64748b;">${o.date}</small></td>
                       <td>
-                        ${app.status === 'Pending' ? `
+                        <b>${o.customerName}</b><br>
+                        <small style="color:#0284c7;">${o.paymentMethod || 'Nepal QR'}</small>
+                      </td>
+                      <td><b>${money(o.total)}</b></td>
+                      <td><b style="color:#059669;">+${money(o.commissionAmount || Math.round(o.total * 0.1))}</b></td>
+                      <td><b style="color:var(--primary);">${money(o.sellerPayout || Math.round(o.total * 0.9))}</b></td>
+                      <td><b>${o.sellerName || 'Himalayan Tech'}</b></td>
+                      <td>
+                        <button class="action-btn-sm outline" onclick="openProofModal('${o.id}')">
+                          🔍 View Slip
+                        </button>
+                      </td>
+                      <td>
+                        <span class="status-badge ${
+                          o.step === 1 ? 'pending-verification' :
+                          o.step === 2 ? 'active' :
+                          o.step === 3 ? 'in-transit' : 'delivered'
+                        }">
+                          ${o.status}
+                        </span>
+                      </td>
+                      <td>
+                        ${o.step === 1 ? `
                           <div style="display:flex; gap:6px;">
-                            <button class="action-btn-sm primary" onclick="approveSeller('${app.id}', '${app.store}')">Approve ✓</button>
-                            <button class="action-btn-sm danger" onclick="rejectSeller('${app.id}', '${app.store}')">Reject ✕</button>
+                            <button class="action-btn-sm primary" onclick="approveAndSettleOrder('${o.id}')" title="Deduct commission and credit seller">
+                              Approve & Pay Seller ✓
+                            </button>
+                            <button class="action-btn-sm danger" onclick="rejectOrder('${o.id}')">
+                              Reject ✕
+                            </button>
                           </div>
                         ` : `
-                          <span style="font-weight:700; font-size:11.5px; color:${app.status === 'Approved' ? '#059669' : '#b91c1c'}">${app.status}</span>
+                          <span style="color:#059669; font-weight:800; font-size:11.5px;">✓ Settled & Paid</span>
                         `}
                       </td>
                     </tr>
@@ -1246,39 +1575,63 @@ function renderAdminDashboard(container) {
           </div>
         </div>
 
-        <!-- User Moderation Panel -->
-        <div id="admin-panel-users" class="dash-panel" style="display: none;">
+        <!-- 2. SELLERS MANAGEMENT TAB (Dedicated Seller Page) -->
+        <div id="admin-panel-sellers" class="dash-panel" style="display: none;">
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>User Accounts & Moderation</h3>
-                <p>Manage access, verify identities or suspend abusive accounts</p>
+                <h3>Registered Sellers & Merchant Stores</h3>
+                <p>Complete directory of marketplace vendors, sales volume, bank details, and payout balances</p>
               </div>
+              <button class="action-btn-sm primary" id="btn-admin-add-seller">
+                ＋ Add New Seller
+              </button>
             </div>
+
             <div class="dash-table-wrap">
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Joined</th>
+                    <th>Store Name</th>
+                    <th>Merchant Owner</th>
+                    <th>Contact Info</th>
+                    <th>Category</th>
+                    <th>Total Sales</th>
+                    <th>Available Payout</th>
+                    <th>Bank Account</th>
                     <th>Status</th>
                     <th>Moderation</th>
                   </tr>
                 </thead>
-                <tbody>
-                  ${a.moderationUsers.map(u => `
-                    <tr>
-                      <td><b>${u.name}</b></td>
-                      <td>${u.email}</td>
-                      <td><span class="dash-tag ${u.role === 'Seller' ? 'dash-tag--orange' : (u.role === 'Admin' ? 'dash-tag--green' : '')}">${u.role}</span></td>
-                      <td>${u.joined}</td>
-                      <td><span class="status-badge ${u.status === 'Active' ? 'active' : 'suspended'}">${u.status}</span></td>
+                <tbody id="admin-sellers-tbody">
+                  ${sellers.map(s => `
+                    <tr id="admin-seller-row-${s.id}">
                       <td>
-                        <button class="action-btn-sm ${u.status === 'Active' ? 'danger' : 'primary'}" onclick="toggleUserStatus(${u.id}, this)">
-                          ${u.status === 'Active' ? 'Suspend' : 'Activate'}
-                        </button>
+                        <div class="product-cell">
+                          <img src="${s.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'}" alt="">
+                          <div>
+                            <b>${s.storeName}</b>
+                            <small>ID: ${s.id}</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td><b>${s.name}</b></td>
+                      <td>
+                        ✉ ${s.email}<br>
+                        📞 ${s.phone}
+                      </td>
+                      <td><span class="dash-tag">${s.category || 'Retail'}</span></td>
+                      <td><b>${money(s.revenue)}</b></td>
+                      <td><b style="color:#059669;">${money(s.payoutAvailable)}</b></td>
+                      <td><small style="color:#64748b;">${s.bank}</small></td>
+                      <td><span class="status-badge ${s.status === 'Approved' ? 'active' : 'suspended'}">${s.status}</span></td>
+                      <td>
+                        <div style="display:flex; gap:6px;">
+                          <button class="action-btn-sm ${s.status === 'Approved' ? 'danger' : 'primary'}" onclick="toggleSellerStatus('${s.id}')">
+                            ${s.status === 'Approved' ? 'Suspend' : 'Activate'}
+                          </button>
+                          <button class="action-btn-sm outline" onclick="deleteSeller('${s.id}')">Delete</button>
+                        </div>
                       </td>
                     </tr>
                   `).join("")}
@@ -1288,36 +1641,145 @@ function renderAdminDashboard(container) {
           </div>
         </div>
 
-        <!-- Platform Controls Panel -->
-        <div id="admin-panel-controls" class="dash-panel" style="display: none;">
+        <!-- 3. CUSTOMERS MANAGEMENT TAB (Dedicated Customer Page) -->
+        <div id="admin-panel-customers" class="dash-panel" style="display: none;">
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Marketplace Configuration</h3>
-                <p>Adjust system-wide marketplace parameters</p>
+                <h3>Registered Shopper Customer Accounts</h3>
+                <p>Complete directory of shoppers, order counts, lifetime spending, and wallet credits</p>
+              </div>
+              <button class="action-btn-sm primary" id="btn-admin-add-customer">
+                ＋ Add New Customer
+              </button>
+            </div>
+
+            <div class="dash-table-wrap">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Customer Name</th>
+                    <th>Email Address</th>
+                    <th>Phone</th>
+                    <th>City / Address</th>
+                    <th>Orders Placed</th>
+                    <th>Lifetime Spent</th>
+                    <th>Wallet Balance</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-customers-tbody">
+                  ${customers.map(c => `
+                    <tr id="admin-customer-row-${c.id}">
+                      <td>
+                        <div class="product-cell">
+                          <img src="${c.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'}" alt="">
+                          <div>
+                            <b>${c.name}</b>
+                            <small>${c.tier || 'Shopper'}</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>${c.email}</td>
+                      <td>${c.phone || '+977 984XXXXXXX'}</td>
+                      <td>${c.location || 'Kathmandu, Nepal'}</td>
+                      <td><b>${c.totalOrders || 1}</b></td>
+                      <td><b>${money(c.totalSpent || 2890)}</b></td>
+                      <td><b style="color:#059669;">${money(c.wallet || 1000)}</b></td>
+                      <td><span class="status-badge ${c.status === 'Active' ? 'active' : 'suspended'}">${c.status || 'Active'}</span></td>
+                      <td>
+                        <div style="display:flex; gap:6px;">
+                          <button class="action-btn-sm outline" onclick="creditCustomerWallet('${c.id}')">+ Rs. 500</button>
+                          <button class="action-btn-sm ${c.status === 'Active' ? 'danger' : 'primary'}" onclick="toggleCustomerStatus('${c.id}')">
+                            ${c.status === 'Active' ? 'Suspend' : 'Activate'}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. PRODUCTS MODERATION TAB -->
+        <div id="admin-panel-products" class="dash-panel" style="display: none;">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <div>
+                <h3>Platform Marketplace Inventory</h3>
+                <p>All items currently published and visible on the storefront</p>
+              </div>
+            </div>
+            <div class="dash-table-wrap">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Store / Seller</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${products.map(p => `
+                    <tr>
+                      <td>
+                        <div class="product-cell">
+                          <img src="${imageUrl(p.image)}" alt="">
+                          <div>
+                            <b>${p.name}</b>
+                            <small>SKU: BH-${p.id}</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>${p.category}</td>
+                      <td><b>${money(p.price)}</b></td>
+                      <td><b>${p.sellerName || 'Verified Merchant'}</b></td>
+                      <td>${p.stock || 20}</td>
+                      <td>
+                        <button class="action-btn-sm danger" onclick="deleteProductAsSeller(${p.id})">Remove</button>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. PLATFORM SETTINGS TAB -->
+        <div id="admin-panel-settings" class="dash-panel" style="display: none;">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <div>
+                <h3>Escrow & Platform Commission Parameters</h3>
+                <p>Adjust marketplace system commission and payout rules</p>
               </div>
             </div>
             <div class="dash-grid-cards">
               <div class="dash-card-item">
-                <h4>Platform Commission Rate</h4>
-                <p>Current commission charged to sellers per transaction: <b>8.0%</b></p>
-                <div style="display:flex; gap:8px; align-items:center;">
-                  <input type="range" min="3" max="15" value="8" style="accent-color:var(--primary); width:100%;" oninput="this.nextElementSibling.textContent = this.value + '%'">
-                  <b style="font-size:14px; color:var(--primary);">8%</b>
+                <h4>Platform Escrow Commission Rate</h4>
+                <p>Current fee retained per transaction: <b>10.0%</b></p>
+                <div style="display:flex; gap:8px; align-items:center; margin-top:10px;">
+                  <input type="range" min="5" max="20" value="10" style="accent-color:var(--primary); width:100%;" oninput="this.nextElementSibling.textContent = this.value + '%'">
+                  <b style="font-size:15px; color:var(--primary);">10%</b>
                 </div>
-                <button class="action-btn-sm primary" style="margin-top:12px;" onclick="showToast('Commission rate updated')">Save Rate</button>
+                <button class="action-btn-sm primary" style="margin-top:12px;" onclick="showToast('Commission rate saved at 10%')">Save Commission Rate</button>
               </div>
-
               <div class="dash-card-item">
-                <h4>Flash Sale Timer</h4>
-                <p>Control the homepage countdown timer duration.</p>
-                <button class="action-btn-sm outline" onclick="showToast('Flash sale timer reset to 8 hours')">Reset Countdown (8h)</button>
+                <h4>Free Delivery Threshold</h4>
+                <p>Orders above this amount qualify for free delivery across Nepal: <b>Rs. 2,500</b></p>
+                <button class="action-btn-sm outline" onclick="showToast('Delivery threshold confirmed at Rs. 2,500')">Update Delivery Rules</button>
               </div>
-
               <div class="dash-card-item">
-                <h4>Platform Announcement</h4>
-                <p>Top strip ticker message for all shoppers.</p>
-                <button class="action-btn-sm outline" onclick="showToast('Announcement ticker broadcast updated')">Update Broadcast</button>
+                <h4>Reset Demo Data</h4>
+                <p>Restore default products, orders, and balances.</p>
+                <button class="action-btn-sm danger" onclick="resetAllDemoData()">Reset All Demo Stores</button>
               </div>
             </div>
           </div>
@@ -1327,18 +1789,18 @@ function renderAdminDashboard(container) {
   `;
 
   attachDashboardEvents(container, "admin");
+
+  // Admin Add Seller & Add Customer button handlers
+  container.querySelector("#btn-admin-add-seller")?.addEventListener("click", () => openAdminUserModal("seller"));
+  container.querySelector("#btn-admin-add-customer")?.addEventListener("click", () => openAdminUserModal("customer"));
 }
 
 /* ============================================================
-   DASHBOARD ACTIONS & EVENT BINDINGS
+   DASHBOARD NAVIGATION & SUBTAB SWITCHER
    ============================================================ */
 function attachDashboardEvents(container, currentRole) {
-  // Back to store
-  container.querySelector("#dash-back-store")?.addEventListener("click", () => {
-    switchToStorefront();
-  });
+  container.querySelector("#dash-back-store")?.addEventListener("click", switchToStorefront);
 
-  // Switch role pills in header
   container.querySelectorAll(".dash-tab-pill").forEach(pill => {
     pill.addEventListener("click", () => {
       const targetRole = pill.dataset.switch;
@@ -1346,7 +1808,6 @@ function attachDashboardEvents(container, currentRole) {
     });
   });
 
-  // Subtab switching
   container.querySelectorAll(".dash-subtab").forEach(tab => {
     tab.addEventListener("click", () => {
       container.querySelectorAll(".dash-subtab").forEach(t => t.classList.remove("is-active"));
@@ -1359,70 +1820,333 @@ function attachDashboardEvents(container, currentRole) {
     });
   });
 
-  // Browse more button
-  container.querySelector("#btn-browse-more")?.addEventListener("click", () => {
-    switchToStorefront();
-  });
+  container.querySelector("#btn-browse-more")?.addEventListener("click", switchToStorefront);
 }
 
-// Global functions for inline action buttons
+/* ============================================================
+   ADMIN ACTIONS (Approve, Reject, Settle, Moderation)
+   ============================================================ */
+window.approveAndSettleOrder = function(orderId) {
+  const o = orders.find(x => x.id === orderId);
+  if (!o) return;
+
+  const commission = Math.round(o.total * 0.1);
+  const payout = o.total - commission;
+
+  o.step = 2;
+  o.status = "Payment Verified & Processing";
+  o.settled = true;
+  o.commissionAmount = commission;
+  o.sellerPayout = payout;
+  o.remarks = `Admin verified payment on ${new Date().toLocaleTimeString()} and settled Rs. ${payout.toLocaleString()} to ${o.sellerName}.`;
+
+  // Credit admin platform revenue
+  adminStats.commissionEarned += commission;
+  adminStats.platformGmv += o.total;
+
+  // Credit seller payout
+  const targetSeller = sellers.find(s => s.id === o.sellerId || s.storeName === o.sellerName) || sellers[0];
+  targetSeller.revenue += o.total;
+  targetSeller.payoutAvailable += payout;
+
+  saveAllData();
+  showToast(`✓ Payment for #${orderId} verified! Rs. ${money(commission)} commission earned, Rs. ${money(payout)} transferred to ${targetSeller.storeName}.`);
+
+  // Close proof modal if open
+  closeProofModal();
+
+  // Re-render Admin view
+  if (currentView === "dashboard" && currentUser?.role === "admin") {
+    renderAdminDashboard(document.getElementById("dashboard-view"));
+  }
+};
+
+window.rejectOrder = function(orderId) {
+  const reason = prompt("Enter reason for rejection (e.g. Invalid transaction code, unreadable screenshot):", "Invalid transaction slip or amount mismatch");
+  if (!reason) return;
+
+  const o = orders.find(x => x.id === orderId);
+  if (!o) return;
+
+  o.status = "Payment Rejected";
+  o.step = 1;
+  o.remarks = `Payment rejected: ${reason}`;
+  saveAllData();
+
+  showToast(`Order #${orderId} payment proof rejected.`);
+  closeProofModal();
+
+  if (currentView === "dashboard" && currentUser?.role === "admin") {
+    renderAdminDashboard(document.getElementById("dashboard-view"));
+  }
+};
+
+window.advanceOrderStatus = function(orderId, nextStep) {
+  const o = orders.find(x => x.id === orderId);
+  if (!o) return;
+
+  o.step = nextStep;
+  if (nextStep === 3) {
+    o.status = "In Transit";
+    o.remarks = `Order handed over to courier. Estimated delivery in 24-48 hours.`;
+    showToast(`Order #${orderId} marked as Shipped! Customer can track it live.`);
+  } else if (nextStep === 4) {
+    o.status = "Delivered";
+    o.remarks = `Parcel successfully delivered to ${o.customerName}.`;
+    showToast(`Order #${orderId} marked as Delivered!`);
+  }
+
+  saveAllData();
+
+  if (currentView === "dashboard") {
+    renderDashboard(currentUser?.role || "seller");
+  }
+};
+
 window.deleteProductAsSeller = function(id) {
-  if (!confirm("Are you sure you want to remove this product from your inventory?")) return;
+  if (!confirm("Are you sure you want to remove this product from the storefront?")) return;
   products = products.filter(p => p.id !== id);
-  localStorage.setItem("bazaarhub-products", JSON.stringify(products));
+  saveAllData();
   showToast("Product removed from catalog");
   showDefaultProducts();
-  const row = document.getElementById(`seller-row-${id}`);
-  if (row) row.remove();
-};
-
-window.markOrderShipped = function(orderId, btn) {
-  const seller = demoUsers.seller;
-  const order = seller.incomingOrders.find(o => o.id === orderId);
-  if (order) order.status = "Shipped";
-  btn.parentElement.innerHTML = `<span style="color:#059669; font-weight:700; font-size:11px;">✓ Shipped</span>`;
-  showToast(`Order #${orderId} marked as Shipped`);
-};
-
-window.approveSeller = function(appId, storeName) {
-  const app = demoUsers.admin.sellerApplications.find(a => a.id === appId);
-  if (app) app.status = "Approved";
-  const row = document.getElementById(`row-${appId}`);
-  if (row) {
-    row.querySelector("td:nth-child(5)").innerHTML = `<span class="status-badge active">Approved</span>`;
-    row.querySelector("td:nth-child(6)").innerHTML = `<span style="color:#059669; font-weight:700; font-size:11.5px;">✓ Approved</span>`;
+  if (currentView === "dashboard") {
+    renderDashboard(currentUser?.role || "seller");
   }
-  showToast(`Store “${storeName}” has been approved to sell!`);
 };
 
-window.rejectSeller = function(appId, storeName) {
-  const app = demoUsers.admin.sellerApplications.find(a => a.id === appId);
-  if (app) app.status = "Rejected";
-  const row = document.getElementById(`row-${appId}`);
-  if (row) {
-    row.querySelector("td:nth-child(5)").innerHTML = `<span class="status-badge suspended">Rejected</span>`;
-    row.querySelector("td:nth-child(6)").innerHTML = `<span style="color:#b91c1c; font-weight:700; font-size:11.5px;">✕ Rejected</span>`;
+window.toggleSellerStatus = function(sellerId) {
+  const s = sellers.find(x => x.id === sellerId);
+  if (!s) return;
+  s.status = s.status === "Approved" ? "Suspended" : "Approved";
+  saveAllData();
+  showToast(`Seller ${s.storeName} status changed to ${s.status}`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+};
+
+window.deleteSeller = function(sellerId) {
+  if (!confirm("Are you sure you want to remove this merchant?")) return;
+  sellers = sellers.filter(x => x.id !== sellerId);
+  saveAllData();
+  showToast("Seller removed");
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+};
+
+window.toggleCustomerStatus = function(customerId) {
+  const c = customers.find(x => x.id === customerId);
+  if (!c) return;
+  c.status = c.status === "Active" ? "Suspended" : "Active";
+  saveAllData();
+  showToast(`Customer ${c.name} is now ${c.status}`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+};
+
+window.creditCustomerWallet = function(customerId) {
+  const c = customers.find(x => x.id === customerId);
+  if (!c) return;
+  c.wallet = (c.wallet || 0) + 500;
+  saveAllData();
+  showToast(`Credited Rs. 500 to ${c.name}'s wallet!`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+};
+
+window.resetAllDemoData = function() {
+  if (!confirm("Reset all products, orders, and accounts to default seed data?")) return;
+  localStorage.clear();
+  products = defaultProducts;
+  sellers = defaultSellers;
+  customers = defaultCustomers;
+  orders = defaultOrders;
+  adminStats = defaultAdmin;
+  currentUser = customers[0];
+  saveAllData();
+  showToast("Demo data reset to fresh state!");
+  setTimeout(() => location.reload(), 600);
+};
+
+/* ============================================================
+   PROOF LIGHTBOX INSPECTION MODAL (Admin)
+   ============================================================ */
+window.openProofModal = function(orderId) {
+  const o = orders.find(x => x.id === orderId);
+  if (!o) return;
+  viewingProofOrder = o;
+
+  const modal = document.getElementById("proof-modal");
+  const overlay = document.getElementById("proof-overlay");
+  if (!modal || !overlay) return;
+
+  const commission = Math.round(o.total * 0.1);
+  const payout = o.total - commission;
+
+  document.getElementById("admin-proof-order-id").textContent = `#${o.id}`;
+  document.getElementById("admin-proof-customer-name").textContent = o.customerName;
+  document.getElementById("admin-proof-customer-phone").textContent = o.customerPhone || "+977 98XXXXXXXX";
+  document.getElementById("admin-proof-channel").textContent = o.paymentMethod || "Nepal QR";
+  document.getElementById("admin-proof-txn").textContent = o.txnRef || "TXN-NOT-PROVIDED";
+  document.getElementById("admin-proof-gross").textContent = money(o.total);
+  document.getElementById("admin-proof-commission").textContent = `+${money(commission)}`;
+  document.getElementById("admin-proof-payout").textContent = money(payout);
+  document.getElementById("admin-proof-seller-name").textContent = o.sellerName || "Himalayan Tech & Style";
+
+  const imgEl = document.getElementById("admin-view-proof-img");
+  if (imgEl) {
+    imgEl.src = (o.proofImage && o.proofImage.startsWith("data:"))
+      ? o.proofImage
+      : generateDemoReceiptDataUrl(o.id, o.total, o.txnRef || "TXN-87429184", o.paymentMethod || "eSewa QR", o.customerName);
   }
-  showToast(`Application for “${storeName}” was rejected.`);
+
+  const badgeEl = document.getElementById("proof-order-badge");
+  if (badgeEl) {
+    badgeEl.innerHTML = `<span class="status-badge ${o.step === 1 ? 'pending-verification' : 'active'}">${o.status}</span>`;
+  }
+
+  // Bind actions
+  const approveBtn = document.getElementById("btn-admin-approve-proof");
+  const rejectBtn = document.getElementById("btn-admin-reject-proof");
+
+  if (approveBtn) {
+    approveBtn.onclick = () => approveAndSettleOrder(o.id);
+  }
+  if (rejectBtn) {
+    rejectBtn.onclick = () => rejectOrder(o.id);
+  }
+
+  modal.classList.add("is-open");
+  overlay.classList.add("is-open");
 };
 
-window.toggleUserStatus = function(userId, btn) {
-  const user = demoUsers.admin.moderationUsers.find(u => u.id === userId);
-  if (!user) return;
-  if (user.status === "Active") {
-    user.status = "Suspended";
-    btn.textContent = "Activate";
-    btn.className = "action-btn-sm primary";
-    btn.closest("tr").querySelector("td:nth-child(5)").innerHTML = `<span class="status-badge suspended">Suspended</span>`;
-    showToast(`User ${user.name} suspended`);
+window.closeProofModal = function() {
+  document.getElementById("proof-modal")?.classList.remove("is-open");
+  document.getElementById("proof-overlay")?.classList.remove("is-open");
+};
+
+window.viewOrderSlipCustomer = function(orderId) {
+  openProofModal(orderId);
+};
+
+/* ============================================================
+   CHECKOUT & NEPAL QR PAYMENT MODAL CONTROLLER
+   ============================================================ */
+function openCheckoutModal() {
+  if (cart.length === 0) {
+    showToast("Your shopping bag is empty.");
+    return;
+  }
+
+  if (!currentUser || currentUser.role !== "customer") {
+    showToast("Please sign in as a Customer to proceed with payment.");
+    openAuthModal("customer");
+    return;
+  }
+
+  closeCart();
+
+  const modal = document.getElementById("checkout-modal");
+  const overlay = document.getElementById("checkout-overlay");
+  if (!modal || !overlay) return;
+
+  const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+  const delivery = subtotal >= 2500 ? 0 : 150;
+  const grandTotal = subtotal + delivery;
+
+  // Populate items
+  const itemsList = document.getElementById("checkout-items-list");
+  if (itemsList) {
+    itemsList.innerHTML = cart.map(i => `
+      <div class="checkout-summary-row">
+        <span>${i.name} (x${i.qty})</span>
+        <b>${money(i.price * i.qty)}</b>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("checkout-items-count").textContent = `${cart.length} item(s)`;
+  document.getElementById("checkout-subtotal").textContent = money(subtotal);
+  document.getElementById("checkout-delivery").textContent = delivery === 0 ? "FREE (Orders over Rs. 2,500)" : money(delivery);
+  document.getElementById("checkout-grand-total").textContent = money(grandTotal);
+
+  // Pre-fill user details
+  const nameInput = document.getElementById("checkout-name");
+  const phoneInput = document.getElementById("checkout-phone");
+  const addressInput = document.getElementById("checkout-address");
+
+  if (nameInput) nameInput.value = currentUser.name || "";
+  if (phoneInput) phoneInput.value = currentUser.phone || "+977 9841234567";
+  if (addressInput) addressInput.value = (currentUser.addresses && currentUser.addresses[0]?.text) || currentUser.location || "New Baneshwor, Kathmandu";
+
+  // Render QR Graphic
+  const qrContainer = document.getElementById("qr-code-container");
+  if (qrContainer) {
+    qrContainer.innerHTML = generateNepalQrSvg(grandTotal);
+  }
+  const qrAmountDisplay = document.getElementById("qr-display-amount");
+  if (qrAmountDisplay) {
+    qrAmountDisplay.textContent = `Pay Exact: ${money(grandTotal)}`;
+  }
+
+  // Reset proof state
+  currentProofDataUrl = "";
+  document.getElementById("proof-preview-wrap").style.display = "none";
+  document.getElementById("proof-upload-prompt").style.display = "block";
+  document.getElementById("checkout-txn-ref").value = "";
+
+  modal.classList.add("is-open");
+  overlay.classList.add("is-open");
+}
+
+function closeCheckoutModal() {
+  document.getElementById("checkout-modal")?.classList.remove("is-open");
+  document.getElementById("checkout-overlay")?.classList.remove("is-open");
+}
+
+/* ============================================================
+   ADMIN: ADD USER / SELLER MODAL CONTROLLER
+   ============================================================ */
+function openAdminUserModal(type = "customer") {
+  const modal = document.getElementById("admin-user-modal");
+  const overlay = document.getElementById("admin-user-overlay");
+  if (!modal || !overlay) return;
+
+  const isSeller = type === "seller";
+  document.getElementById("admin-new-user-type").value = type;
+
+  const btnCustomer = document.getElementById("btn-toggle-add-customer");
+  const btnSeller = document.getElementById("btn-toggle-add-seller");
+  const storeGroup = document.getElementById("admin-store-name-group");
+  const catGroup = document.getElementById("admin-store-category-group");
+  const balanceGroup = document.getElementById("admin-initial-balance-group");
+  const badge = document.getElementById("admin-modal-badge");
+  const title = document.getElementById("admin-user-modal-title");
+  const submitBtn = document.getElementById("admin-submit-user-btn");
+
+  if (isSeller) {
+    btnCustomer?.classList.remove("is-active");
+    btnSeller?.classList.add("is-active");
+    if (storeGroup) storeGroup.style.display = "block";
+    if (catGroup) catGroup.style.display = "block";
+    if (balanceGroup) balanceGroup.style.display = "none";
+    if (badge) badge.textContent = "🏪";
+    if (title) title.textContent = "Add New Merchant Seller";
+    if (submitBtn) submitBtn.innerHTML = `Register & Approve Seller <span>✓</span>`;
   } else {
-    user.status = "Active";
-    btn.textContent = "Suspend";
-    btn.className = "action-btn-sm danger";
-    btn.closest("tr").querySelector("td:nth-child(5)").innerHTML = `<span class="status-badge active">Active</span>`;
-    showToast(`User ${user.name} activated`);
+    btnCustomer?.classList.add("is-active");
+    btnSeller?.classList.remove("is-active");
+    if (storeGroup) storeGroup.style.display = "none";
+    if (catGroup) catGroup.style.display = "none";
+    if (balanceGroup) balanceGroup.style.display = "block";
+    if (badge) badge.textContent = "🛍️";
+    if (title) title.textContent = "Add New Customer Account";
+    if (submitBtn) submitBtn.innerHTML = `Create & Register Customer <span>✓</span>`;
   }
-};
+
+  modal.classList.add("is-open");
+  overlay.classList.add("is-open");
+}
+
+function closeAdminUserModal() {
+  document.getElementById("admin-user-modal")?.classList.remove("is-open");
+  document.getElementById("admin-user-overlay")?.classList.remove("is-open");
+}
 
 /* ============================================================
    SELLER: ADD NEW PRODUCT MODAL
@@ -1438,14 +2162,14 @@ function closeSellerProductModal() {
 }
 
 /* ============================================================
-   SETUP & EVENT LISTENERS
+   GLOBAL DOM INITIALIZATION & EVENT LISTENERS
    ============================================================ */
 document.addEventListener("click", e => {
   // Add to cart
   const add = e.target.closest("[data-add]");
   if (add) addToCart(add.dataset.add);
 
-  // Cart quantity changes
+  // Cart quantity controls
   const qty = e.target.closest("[data-qty]");
   if (qty) {
     const item = cart.find(x => x.id === Number(qty.dataset.qty));
@@ -1467,11 +2191,8 @@ document.addEventListener("click", e => {
   const pill = e.target.closest("[data-quick-role]");
   if (pill) {
     const role = pill.dataset.quickRole;
-    if (role === "storefront") {
-      switchToStorefront();
-    } else {
-      loginAsRole(role);
-    }
+    if (role === "storefront") switchToStorefront();
+    else loginAsRole(role);
   }
 
   // Open dashboard from homepage cards
@@ -1480,16 +2201,16 @@ document.addEventListener("click", e => {
     loginAsRole(portal.dataset.openDashboard);
   }
 
-  // Auth role tab inside modal
+  // Auth role tab inside auth modal
   const authTab = e.target.closest(".auth-role-tab");
-  if (authTab) {
+  if (authTab && authTab.dataset.role) {
     document.querySelectorAll(".auth-role-tab").forEach(t => t.classList.remove("is-active"));
     authTab.classList.add("is-active");
     authModalRole = authTab.dataset.role;
     updateAuthFormFields(authModalRole);
   }
 
-  // 1-Click fast demo login in modal
+  // 1-Click demo logins
   const demoBtn = e.target.closest("[data-demo-role]");
   if (demoBtn) {
     loginAsRole(demoBtn.dataset.demoRole);
@@ -1506,55 +2227,281 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCart();
   updateRolePillHighlights();
 
-  // Cart modal controls
+  // Cart Drawer controls
   document.getElementById("close-cart")?.addEventListener("click", closeCart);
   document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
-  document.getElementById("checkout-button")?.addEventListener("click", () => {
-    showToast(cart.length ? "Checkout will process order in the next phase." : "Your bag is empty.");
+  document.getElementById("checkout-button")?.addEventListener("click", openCheckoutModal);
+
+  // Checkout Modal controls
+  document.getElementById("close-checkout-modal")?.addEventListener("click", closeCheckoutModal);
+  document.getElementById("checkout-overlay")?.addEventListener("click", closeCheckoutModal);
+  document.getElementById("btn-cancel-checkout")?.addEventListener("click", closeCheckoutModal);
+
+  // Proof Modal controls
+  document.getElementById("close-proof-modal")?.addEventListener("click", closeProofModal);
+  document.getElementById("proof-overlay")?.addEventListener("click", closeProofModal);
+
+  // Admin User Modal controls
+  document.getElementById("close-admin-user-modal")?.addEventListener("click", closeAdminUserModal);
+  document.getElementById("admin-user-overlay")?.addEventListener("click", closeAdminUserModal);
+  document.getElementById("btn-toggle-add-customer")?.addEventListener("click", () => openAdminUserModal("customer"));
+  document.getElementById("btn-toggle-add-seller")?.addEventListener("click", () => openAdminUserModal("seller"));
+
+  // Screenshot Upload Handler
+  const fileInput = document.getElementById("payment-screenshot-file");
+  fileInput?.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        currentProofDataUrl = ev.target.result;
+        const img = document.getElementById("proof-preview-img");
+        if (img) img.src = currentProofDataUrl;
+        document.getElementById("proof-upload-prompt").style.display = "none";
+        document.getElementById("proof-preview-wrap").style.display = "flex";
+        showToast("Payment screenshot loaded successfully!");
+      };
+      reader.readAsDataURL(file);
+    }
   });
 
-  // Newsletter form
-  document.getElementById("newsletter-form")?.addEventListener("submit", e => {
+  // Use Demo Slip Button
+  document.getElementById("btn-use-demo-receipt")?.addEventListener("click", () => {
+    const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+    const delivery = subtotal >= 2500 ? 0 : 150;
+    const total = subtotal + delivery;
+    const randomTxn = `TXN-${Math.floor(10000000 + Math.random() * 90000000)}`;
+
+    currentProofDataUrl = generateDemoReceiptDataUrl(
+      `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+      total,
+      randomTxn,
+      document.getElementById("checkout-wallet-app")?.value || "eSewa QR",
+      document.getElementById("checkout-name")?.value || "Sarah Shrestha"
+    );
+
+    const img = document.getElementById("proof-preview-img");
+    if (img) img.src = currentProofDataUrl;
+    document.getElementById("proof-upload-prompt").style.display = "none";
+    document.getElementById("proof-preview-wrap").style.display = "flex";
+    document.getElementById("checkout-txn-ref").value = randomTxn;
+
+    showToast("Verified demo payment slip & transaction reference generated!");
+  });
+
+  // Remove uploaded proof
+  document.getElementById("btn-remove-proof")?.addEventListener("click", () => {
+    currentProofDataUrl = "";
+    document.getElementById("proof-preview-wrap").style.display = "none";
+    document.getElementById("proof-upload-prompt").style.display = "block";
+    if (fileInput) fileInput.value = "";
+  });
+
+  // Checkout Form Submission (Creates Order & Sends to Admin)
+  document.getElementById("checkout-payment-form")?.addEventListener("submit", e => {
     e.preventDefault();
-    showToast("Thanks for subscribing! Check your email for special codes.");
-    e.target.reset();
+
+    if (!currentProofDataUrl) {
+      alert("Please upload your payment screenshot or click '⚡ Use Instant Demo Payment Receipt' to proceed.");
+      return;
+    }
+
+    const txnRef = document.getElementById("checkout-txn-ref").value.trim();
+    if (!txnRef) {
+      alert("Please enter the transaction reference code from your payment slip.");
+      return;
+    }
+
+    const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+    const delivery = subtotal >= 2500 ? 0 : 150;
+    const grandTotal = subtotal + delivery;
+    const newOrderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
+    const dateStr = new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+    const newOrder = {
+      id: newOrderId,
+      date: dateStr,
+      customerName: document.getElementById("checkout-name").value.trim(),
+      customerEmail: currentUser?.email || "customer@bazaarhub.com",
+      customerPhone: document.getElementById("checkout-phone").value.trim(),
+      customerAddress: document.getElementById("checkout-address").value.trim(),
+      sellerId: cart[0]?.sellerId || "SEL-101",
+      sellerName: cart[0]?.sellerName || "Himalayan Tech & Style",
+      items: JSON.parse(JSON.stringify(cart)),
+      total: grandTotal,
+      commissionRate: 10,
+      commissionAmount: Math.round(grandTotal * 0.1),
+      sellerPayout: grandTotal - Math.round(grandTotal * 0.1),
+      paymentMethod: document.getElementById("checkout-wallet-app").value,
+      txnRef: txnRef,
+      proofImage: currentProofDataUrl,
+      status: "Pending Verification",
+      step: 1,
+      settled: false,
+      remarks: "Customer submitted QR payment slip. Awaiting Admin verification."
+    };
+
+    orders.unshift(newOrder);
+
+    // Empty cart
+    cart = [];
+    saveAllData();
+    updateCart();
+    closeCheckoutModal();
+
+    showToast(`🎉 Order #${newOrderId} placed! Sent to Admin for payment verification.`);
+
+    // Switch to customer dashboard to view the live tracker
+    switchToDashboard("customer");
   });
 
-  // Hero seller button
-  document.getElementById("hero-seller-btn")?.addEventListener("click", () => {
-    loginAsRole("seller");
+  // Admin Add User / Seller Form Submission
+  document.getElementById("admin-add-user-form")?.addEventListener("submit", e => {
+    e.preventDefault();
+    const type = document.getElementById("admin-new-user-type").value;
+    const name = document.getElementById("admin-user-name").value.trim();
+    const email = document.getElementById("admin-user-email").value.trim();
+    const phone = document.getElementById("admin-user-phone").value.trim();
+    const loc = document.getElementById("admin-user-location").value.trim();
+
+    if (type === "seller") {
+      const storeName = document.getElementById("admin-store-name").value.trim() || `${name}'s Store`;
+      const cat = document.getElementById("admin-store-category").value;
+      const newSeller = {
+        id: `SEL-${Math.floor(100 + Math.random() * 900)}`,
+        role: "seller",
+        name: name,
+        storeName: storeName,
+        email: email,
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+        phone: phone,
+        location: loc,
+        category: cat,
+        status: "Approved",
+        rating: "5.0 ★ (New Store)",
+        revenue: 0,
+        payoutAvailable: 0,
+        bank: "Nabil Bank (A/C: **** 1092)",
+        joined: "Nov 2026"
+      };
+      sellers.unshift(newSeller);
+      saveAllData();
+      closeAdminUserModal();
+      showToast(`Merchant Store “${storeName}” registered and approved!`);
+    } else {
+      const balance = Number(document.getElementById("admin-user-balance").value) || 1000;
+      const newCustomer = {
+        id: `CUST-${Math.floor(100 + Math.random() * 900)}`,
+        role: "customer",
+        name: name,
+        email: email,
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+        phone: phone,
+        location: loc,
+        tier: "Standard Shopper",
+        points: 100,
+        wallet: balance,
+        status: "Active",
+        joined: "Nov 2026",
+        totalOrders: 0,
+        totalSpent: 0,
+        addresses: [{ id: 1, label: "Home", text: loc, isDefault: true }],
+        coupons: [{ code: "WELCOME10", discount: "10% OFF", desc: "Welcome voucher", expiry: "31 Dec 2026" }]
+      };
+      customers.unshift(newCustomer);
+      saveAllData();
+      closeAdminUserModal();
+      showToast(`Customer account for “${name}” created!`);
+    }
+
+    if (currentView === "dashboard" && currentUser?.role === "admin") {
+      renderAdminDashboard(document.getElementById("dashboard-view"));
+    }
   });
 
-  // Auth modal controls
-  document.getElementById("close-auth")?.addEventListener("click", closeAuthModal);
-  document.getElementById("auth-overlay")?.addEventListener("click", closeAuthModal);
+  // Auth Modal (Sign In / Register) Form Submission
+  document.getElementById("auth-form")?.addEventListener("submit", e => {
+    e.preventDefault();
+    if (authIsSignUp) {
+      const name = document.getElementById("auth-name").value.trim() || "New User";
+      const email = document.getElementById("auth-email").value.trim();
+      const phone = document.getElementById("auth-phone").value.trim() || "+977 98XXXXXXXX";
+      const city = document.getElementById("auth-city").value.trim() || "Kathmandu";
 
-  // Toggle between Sign In and Sign Up in modal
+      if (authModalRole === "seller") {
+        const storeName = document.getElementById("auth-store-name").value.trim() || `${name}'s Store`;
+        const cat = document.getElementById("auth-store-cat").value;
+        const newSeller = {
+          id: `SEL-${Math.floor(100 + Math.random() * 900)}`,
+          role: "seller",
+          name: name,
+          storeName: storeName,
+          email: email,
+          avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+          phone: phone,
+          location: city,
+          category: cat,
+          status: "Approved",
+          rating: "5.0 ★ (New Store)",
+          revenue: 0,
+          payoutAvailable: 0,
+          bank: "Nabil Bank (A/C: **** 9081)",
+          joined: "Nov 2026"
+        };
+        sellers.unshift(newSeller);
+        currentUser = newSeller;
+        saveAllData();
+        closeAuthModal();
+        renderHeader();
+        updateRolePillHighlights();
+        showToast(`Welcome! Merchant Store “${storeName}” registered.`);
+        switchToDashboard("seller");
+      } else {
+        const newCustomer = {
+          id: `CUST-${Math.floor(100 + Math.random() * 900)}`,
+          role: "customer",
+          name: name,
+          email: email,
+          avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+          phone: phone,
+          location: city,
+          tier: "New Shopper",
+          points: 150,
+          wallet: 1000,
+          status: "Active",
+          joined: "Nov 2026",
+          totalOrders: 0,
+          totalSpent: 0,
+          addresses: [{ id: 1, label: "Home", text: city, isDefault: true }],
+          coupons: [{ code: "WELCOME10", discount: "10% OFF", desc: "Welcome coupon", expiry: "31 Dec 2026" }]
+        };
+        customers.unshift(newCustomer);
+        currentUser = newCustomer;
+        saveAllData();
+        closeAuthModal();
+        renderHeader();
+        updateRolePillHighlights();
+        showToast(`Welcome to BazaarHub, ${name}!`);
+        switchToDashboard("customer");
+      }
+    } else {
+      loginAsRole(authModalRole);
+    }
+  });
+
+  // Toggle between Sign In and Sign Up in Auth Modal
   document.getElementById("toggle-auth-action")?.addEventListener("click", () => {
     authIsSignUp = !authIsSignUp;
-    const nameGroup = document.getElementById("name-group");
-    const rememberRow = document.getElementById("remember-row");
     const toggleText = document.getElementById("auth-toggle-text");
-
-    if (authIsSignUp) {
-      nameGroup.style.display = "flex";
-      rememberRow.style.display = "none";
-      toggleText.innerHTML = `Already have an account? <button type="button" id="toggle-auth-action" class="link-btn">Sign in</button>`;
-    } else {
-      nameGroup.style.display = "none";
-      rememberRow.style.display = "flex";
-      toggleText.innerHTML = `Don't have an account? <button type="button" id="toggle-auth-action" class="link-btn">Create one now</button>`;
+    if (toggleText) {
+      toggleText.innerHTML = authIsSignUp
+        ? `Already have an account? <button type="button" id="toggle-auth-action" class="link-btn">Sign in</button>`
+        : `Don't have an account? <button type="button" id="toggle-auth-action" class="link-btn">Create one now</button>`;
     }
     updateAuthFormFields(authModalRole);
   });
 
-  // Auth form submit
-  document.getElementById("auth-form")?.addEventListener("submit", e => {
-    e.preventDefault();
-    loginAsRole(authModalRole);
-  });
-
-  // Seller add product modal controls
+  // Seller Add Product Modal controls
   document.getElementById("close-product-modal")?.addEventListener("click", closeSellerProductModal);
   document.getElementById("seller-product-overlay")?.addEventListener("click", closeSellerProductModal);
 
@@ -1567,6 +2514,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const stock = Number(document.getElementById("new-product-stock").value) || 30;
     const img = document.getElementById("new-product-image").value.trim() || "photo-1546868871-7041f2a55e12";
 
+    const s = currentUser && currentUser.role === "seller" ? currentUser : sellers[0];
+
     const newProd = {
       id: Date.now(),
       name: title,
@@ -1578,20 +2527,31 @@ document.addEventListener("DOMContentLoaded", () => {
       reviews: 1,
       image: img,
       badge: "New",
-      stock: stock
+      stock: stock,
+      sellerId: s.id,
+      sellerName: s.storeName
     };
 
     products.unshift(newProd);
-    localStorage.setItem("bazaarhub-products", JSON.stringify(products));
+    saveAllData();
     closeSellerProductModal();
     e.target.reset();
 
-    showToast(`Published “${title}” to BazaarHub marketplace!`);
+    showToast(`Published “${title}” to storefront!`);
     showDefaultProducts();
 
-    // If currently on seller dashboard, re-render it
-    if (currentView === "dashboard" && currentUser && currentUser.role === "seller") {
+    if (currentView === "dashboard" && currentUser?.role === "seller") {
       renderSellerDashboard(document.getElementById("dashboard-view"));
     }
+  });
+
+  // Hero seller CTA
+  document.getElementById("hero-seller-btn")?.addEventListener("click", () => loginAsRole("seller"));
+
+  // Newsletter form
+  document.getElementById("newsletter-form")?.addEventListener("submit", e => {
+    e.preventDefault();
+    showToast("Subscribed! Check your email for special discount vouchers.");
+    e.target.reset();
   });
 });

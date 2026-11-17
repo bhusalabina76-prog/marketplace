@@ -214,6 +214,8 @@
   .auth-modal { padding: 22px 18px; }
   .order-tracker { flex-wrap: wrap; gap: 12px; }
   .order-tracker::before { display: none; }
+  .checkout-layout { grid-template-columns: 1fr; gap: 16px; }
+  .proof-view-grid { grid-template-columns: 1fr; gap: 16px; }
 }
 
 @media (max-width: 400px) {
