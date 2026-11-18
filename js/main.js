@@ -243,8 +243,20 @@ const categories = [
 ];
 
 /* ============================================================
-   PERSISTENCE CONTROLLER
+   PERSISTENCE CONTROLLER & AUTO CACHE INVALIDATION
    ============================================================ */
+const APP_VERSION = "2.2";
+if (localStorage.getItem("bazaarhub-app-version") !== APP_VERSION) {
+  // Clear stale cache and previous schema data
+  localStorage.removeItem("bazaarhub-products");
+  localStorage.removeItem("bazaarhub-orders");
+  localStorage.removeItem("bazaarhub-sellers");
+  localStorage.removeItem("bazaarhub-customers");
+  localStorage.removeItem("bazaarhub-admin");
+  localStorage.removeItem("bazaarhub-user");
+  localStorage.setItem("bazaarhub-app-version", APP_VERSION);
+}
+
 let products = JSON.parse(localStorage.getItem("bazaarhub-products") || "null") || defaultProducts;
 let sellers = JSON.parse(localStorage.getItem("bazaarhub-sellers") || "null") || defaultSellers;
 let customers = JSON.parse(localStorage.getItem("bazaarhub-customers") || "null") || defaultCustomers;
