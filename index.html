@@ -13,27 +13,22 @@
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Manrope:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/global.css?v=3.0">
-  <link rel="stylesheet" href="css/responsive.css?v=3.0">
-  <script src="js/main.js?v=3.0" defer></script>
+  <link rel="stylesheet" href="css/global.css?v=3.5">
+  <link rel="stylesheet" href="css/responsive.css?v=3.5">
+  <script src="js/main.js?v=3.5" defer></script>
 </head>
 
 <body>
-  <!-- Top Announcement Strip with Quick Role Demo Bar -->
+  <!-- Top Announcement Strip with Shop Contact Info -->
   <div class="top-strip">
     <div class="container top-strip__inner">
       <div class="top-strip__left">
         <span class="pulse-dot"></span>
-        <span>✨ Welcome to BazaarHub Clothing Nepal <b>·</b> Free delivery on orders over Rs. 2,500</span>
+        <span>✨ Welcome to BazaarHub Clothing Store Nepal <b>·</b> Free delivery on orders over Rs. 2,500</span>
       </div>
-      <div class="top-strip__right">
-        <span class="role-bar-label">Quick Switch:</span>
-        <div class="role-bar-pills">
-          <button class="role-pill" data-quick-role="storefront" title="Back to Marketplace">🛒 Store</button>
-          <button class="role-pill" data-quick-role="customer" title="Switch to Customer">🛍️ Customer</button>
-          <button class="role-pill" data-quick-role="seller" title="Switch to Seller">🏪 Seller</button>
-          <button class="role-pill" data-quick-role="admin" title="Switch to Admin">🛡️ Admin</button>
-        </div>
+      <div class="top-strip__right top-strip__contact">
+        <span>📞 WhatsApp / Phone: <b>+977 9841234567</b></span>
+        <span>📍 New Baneshwor, Kathmandu</span>
       </div>
     </div>
   </div>
@@ -52,8 +47,7 @@
             <p>Fresh urban streetwear, relaxed oversized fits, and timeless everyday essentials tailored for you.</p>
             <div class="hero-actions">
               <a class="button button--light" href="#featured">Shop clothing <span>↗</span></a>
-              <button class="button button--outline-light" id="hero-seller-btn">Sell on BazaarHub
-                <span>🏪</span></button>
+              <a class="button button--outline-light" href="#categories">Explore collections <span>✨</span></a>
             </div>
           </div>
           <div class="hero-art hero-art--fashion">
@@ -107,50 +101,23 @@
       </div>
     </section>
 
-    <!-- Role Showcase Banner -->
-    <section class="portal-cta-strip container">
-      <div class="portal-cta-box customer-box">
-        <span class="portal-icon">🛍️</span>
-        <div>
-          <h4>Customer Zone</h4>
-          <p>Track orders, manage wishlist & wallet</p>
-        </div>
-        <button class="portal-btn" data-open-dashboard="customer">Customer Portal →</button>
-      </div>
-      <div class="portal-cta-box seller-box">
-        <span class="portal-icon">🏪</span>
-        <div>
-          <h4>Seller Hub</h4>
-          <p>List products, fulfill orders & track revenue</p>
-        </div>
-        <button class="portal-btn" data-open-dashboard="seller">Seller Portal →</button>
-      </div>
-      <div class="portal-cta-box admin-box">
-        <span class="portal-icon">🛡️</span>
-        <div>
-          <h4>Admin Portal</h4>
-          <p>Approve sellers, moderate & oversee platform</p>
-        </div>
-        <button class="portal-btn" data-open-dashboard="admin">Admin Portal →</button>
-      </div>
-    </section>
-
-    <section class="benefits container">
+    <!-- Store Highlights Banner -->
+    <section class="benefits container" style="margin-top: 14px;">
       <div>
-        <span>↗</span>
-        <p><b>Fast delivery</b><small>Doorstep in 24-48 hrs</small></p>
+        <span style="color:var(--primary); font-size:22px;">✨</span>
+        <p><b>100% Cotton & Cashmere</b><small>Certified quality fabrics</small></p>
       </div>
       <div>
-        <span>◇</span>
-        <p><b>Verified sellers</b><small>100% authentic picks</small></p>
+        <span style="color:var(--primary); font-size:22px;">🚚</span>
+        <p><b>Doorstep Delivery</b><small>All Nepal in 24-48 hrs</small></p>
       </div>
       <div>
-        <span>♧</span>
-        <p><b>Easy returns</b><small>7-day hassle free return</small></p>
+        <span style="color:var(--primary); font-size:22px;">🔄</span>
+        <p><b>7-Day Easy Exchange</b><small>Size & fit replacement</small></p>
       </div>
       <div>
-        <span>⌑</span>
-        <p><b>Secure payments</b><small>eSewa, Khalti & COD</small></p>
+        <span style="color:var(--primary); font-size:22px;">🛡️</span>
+        <p><b>Nepal QR Pay & COD</b><small>eSewa, Fonepay & Bank QR</small></p>
       </div>
     </section>
 
@@ -254,50 +221,40 @@
     </div>
   </aside>
 
-  <!-- Authentication Modal (Customer / Seller / Admin) -->
+  <!-- Customer Sign In & Registration Modal -->
   <div class="auth-overlay" id="auth-overlay"></div>
   <div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
     <button class="auth-close-btn" id="close-auth" aria-label="Close modal">×</button>
 
     <div class="auth-modal-header">
-      <div class="auth-brand-badge">B</div>
-      <h3 id="auth-title">Welcome to BazaarHub</h3>
-      <p id="auth-subtitle">Select your account role to sign in</p>
+      <div class="auth-brand-badge">👗</div>
+      <h3 id="auth-title">BazaarHub Clothing</h3>
+      <p id="auth-subtitle">Sign in or register your customer account</p>
     </div>
 
-    <!-- Role Selection Tabs -->
-    <div class="auth-role-tabs" id="auth-role-tabs">
-      <button class="auth-role-tab is-active" data-role="customer">
-        <span class="auth-role-icon">🛍️</span>
-        <span class="auth-role-text">Customer</span>
+    <!-- Sign In vs Register Switch Tabs -->
+    <div class="auth-role-tabs" style="grid-template-columns: 1fr 1fr; margin-bottom: 18px;">
+      <button class="auth-role-tab is-active" id="tab-auth-login" type="button">
+        <span class="auth-role-icon">👤</span>
+        <span class="auth-role-text">Customer Sign In</span>
       </button>
-      <button class="auth-role-tab" data-role="seller">
-        <span class="auth-role-icon">🏪</span>
-        <span class="auth-role-text">Seller</span>
-      </button>
-      <button class="auth-role-tab" data-role="admin">
-        <span class="auth-role-icon">🛡️</span>
-        <span class="auth-role-text">Admin</span>
+      <button class="auth-role-tab" id="tab-auth-register" type="button">
+        <span class="auth-role-icon">📝</span>
+        <span class="auth-role-text">Register Account</span>
       </button>
     </div>
 
-    <!-- 1-Click Fast Demo Login Buttons -->
-    <div class="demo-quick-box">
-      <div class="demo-label">⚡ 1-Click Instant Demo Login:</div>
-      <div class="demo-buttons">
-        <button type="button" class="demo-btn" data-demo-role="customer">
-          🛍️ Sarah (Customer)
-        </button>
-        <button type="button" class="demo-btn" data-demo-role="seller">
-          🏪 Ram (Seller)
-        </button>
-        <button type="button" class="demo-btn" data-demo-role="admin">
-          🛡️ Admin (Control)
+    <!-- Quick 1-Click Fast Customer Login for testing -->
+    <div class="demo-quick-box" id="customer-demo-box">
+      <div class="demo-label">⚡ Fast Customer Sign In:</div>
+      <div class="demo-buttons" style="grid-template-columns: 1fr;">
+        <button type="button" class="demo-btn" id="btn-demo-sarah">
+          🛍️ Sign In as Sarah Shrestha (Approved Customer)
         </button>
       </div>
     </div>
 
-    <!-- Standard Login / Register Form -->
+    <!-- Customer Form -->
     <form id="auth-form" class="auth-form">
       <div class="form-group" id="name-group" style="display: none;">
         <label for="auth-name">Full Name</label>
@@ -308,26 +265,11 @@
         <input type="tel" id="auth-phone" placeholder="98XXXXXXXX">
       </div>
       <div class="form-group" id="city-group" style="display: none;">
-        <label for="auth-city">City / Delivery Address</label>
+        <label for="auth-city">Delivery Address (Street, Ward, City)</label>
         <input type="text" id="auth-city" placeholder="e.g. New Baneshwor, Kathmandu">
       </div>
-      <div class="form-group" id="store-name-group" style="display: none;">
-        <label for="auth-store-name">Store Name (For Clothing Sellers)</label>
-        <input type="text" id="auth-store-name" placeholder="e.g. Urban Threads Kathmandu">
-      </div>
-      <div class="form-group" id="store-cat-group" style="display: none;">
-        <label for="auth-store-cat">Clothing & Apparel Category</label>
-        <select id="auth-store-cat" class="form-select">
-          <option value="Men's Fashion">Men's Fashion</option>
-          <option value="Women's Fashion">Women's Fashion</option>
-          <option value="Winterwear & Jackets">Winterwear & Jackets</option>
-          <option value="Streetwear & Hoodies">Streetwear & Hoodies</option>
-          <option value="Traditional & Ethnic">Traditional & Ethnic</option>
-          <option value="Activewear & Loungewear">Activewear & Loungewear</option>
-        </select>
-      </div>
       <div class="form-group">
-        <label for="auth-email">Email or Username</label>
+        <label for="auth-email">Email Address</label>
         <input type="email" id="auth-email" required placeholder="name@example.com" value="sarah@customer.com">
       </div>
       <div class="form-group">
@@ -340,15 +282,68 @@
         </label>
         <a href="#forgot" class="forgot-link" id="auth-forgot">Forgot password?</a>
       </div>
+      <div id="register-approval-hint" style="display: none; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 11.5px; color: #b45309;">
+        ℹ️ <b>Store Verification:</b> Newly registered accounts are approved by store admin before purchasing.
+      </div>
       <button type="submit" class="button button--primary button--full" id="auth-submit-btn">
-        Sign In as Customer <span>→</span>
+        Sign In to Account <span>→</span>
       </button>
     </form>
 
-    <div class="auth-modal-footer">
+    <div class="auth-modal-footer" style="margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px;">
       <p id="auth-toggle-text">
         Don't have an account? <button type="button" id="toggle-auth-action" class="link-btn">Create one now</button>
       </p>
+      <p style="margin-top: 8px; font-size: 11px;">
+        <a href="#admin" id="link-open-admin-login" style="color: #94a3b8; text-decoration: none;">🔐 Store Staff / Admin Login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Store Admin Secret / Dedicated Login Modal -->
+  <div class="admin-login-overlay modal-overlay" id="admin-login-overlay"></div>
+  <div class="auth-modal" id="admin-login-modal" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
+    <button class="auth-close-btn" id="close-admin-login-modal" aria-label="Close modal">×</button>
+    <div class="auth-modal-header">
+      <div class="auth-brand-badge" style="background:#0b1329;">🔐</div>
+      <h3 id="admin-login-title">Store Admin Login</h3>
+      <p>Authorized shop managers & inventory owners only</p>
+    </div>
+    <form id="admin-login-form" class="auth-form">
+      <div class="form-group">
+        <label for="admin-login-email">Admin Email</label>
+        <input type="email" id="admin-login-email" required value="admin@bazaarhub.com">
+      </div>
+      <div class="form-group">
+        <label for="admin-login-password">Admin Password</label>
+        <input type="password" id="admin-login-password" required value="admin123">
+      </div>
+      <button type="submit" class="button button--primary button--full">
+        Sign In to Store Admin Portal <span>→</span>
+      </button>
+      <button type="button" class="demo-slip-btn" id="btn-quick-admin-fill" style="width:100%; justify-content:center; margin-top:10px;">
+        ⚡ Instant 1-Click Admin Access
+      </button>
+    </form>
+  </div>
+
+  <!-- Customer Account Pending Approval Modal -->
+  <div class="approval-modal-overlay modal-overlay" id="approval-overlay"></div>
+  <div class="auth-modal" id="approval-modal" role="dialog" aria-modal="true">
+    <button class="auth-close-btn" id="close-approval-modal" aria-label="Close modal">×</button>
+    <div class="auth-modal-header">
+      <div class="auth-brand-badge" style="background:#fef3c7; color:#b45309;">⏳</div>
+      <h3>Account Pending Approval</h3>
+      <p id="approval-modal-desc">Your customer account is currently being reviewed by the store admin.</p>
+    </div>
+    <div class="approval-notice-card">
+      <h4>Why is approval required?</h4>
+      <p>To ensure genuine customer orders and prevent fake carts, our store admin reviews and approves each new account. You can browse all clothes now and will be able to add to cart and order via Nepal QR immediately upon approval!</p>
+    </div>
+    <div style="text-align:center; margin-top:14px;">
+      <button type="button" class="button button--primary button--full" id="btn-ack-approval">
+        Understood, Continue Browsing Clothes <span>✓</span>
+      </button>
     </div>
   </div>
 

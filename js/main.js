@@ -18,15 +18,15 @@ const defaultProducts = [
   { id: 1, name: "Oversized Heavyweight Fleece Hoodie", category: "Streetwear & Hoodies", price: 2490, old: 3490, tag: "-29%", rating: "4.9", reviews: 142, image: "photo-1556905055-8f358a7a47b2", badge: "Best seller", stock: 35, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
   { id: 2, name: "Classic Vintage Denim Trucker Jacket", category: "Men's Fashion", price: 3890, old: 4990, tag: "-22%", rating: "4.8", reviews: 98, image: "photo-1576995853123-5a10305d93c0", badge: "Trending", stock: 20, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
   { id: 3, name: "Floral Linen Wrap Summer Dress", category: "Women's Fashion", price: 2190, old: 2890, tag: "-24%", rating: "4.9", reviews: 86, image: "photo-1515372039744-b8f02a3ae446", badge: "Popular", stock: 28, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" },
-  { id: 4, name: "Pure Himalayan Wool Knit Sweater", category: "Winterwear & Jackets", price: 3250, old: 4200, tag: "-23%", rating: "4.8", reviews: 112, image: "photo-1583743814966-8936f5b7be1a", badge: "Warm pick", stock: 18, sellerId: "SEL-102", sellerName: "Himalayan Wool & Winterwear" },
-  { id: 5, name: "Relaxed Fit Cotton Cargo Trousers", category: "Streetwear & Hoodies", price: 2290, old: 2990, tag: "-23%", rating: "4.7", reviews: 64, image: "photo-1517445312882-bc9910d016b7", badge: "", stock: 45, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 4, name: "Pure Himalayan Wool Knit Sweater", category: "Winterwear & Jackets", price: 3250, old: 4200, tag: "-23%", rating: "4.8", reviews: 112, image: "photo-1583743814966-8936f5b7be1a", badge: "", stock: 0, sellerId: "SEL-102", sellerName: "Himalayan Wool & Winterwear" },
+  { id: 5, name: "Relaxed Fit Cotton Cargo Trousers", category: "Streetwear & Hoodies", price: 2290, old: 2990, tag: "-23%", rating: "4.7", reviews: 64, image: "photo-1517445312882-bc9910d016b7", badge: "", stock: 2, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
   { id: 6, name: "Handcrafted Dhaka Blend Kurti Set", category: "Traditional & Ethnic", price: 2750, old: 3500, tag: "-21%", rating: "5.0", reviews: 120, image: "photo-1610030469983-98e550d6193c", badge: "Authentic", stock: 22, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" },
-  { id: 7, name: "Down-Filled Thermal Puffer Jacket", category: "Winterwear & Jackets", price: 4490, old: 5990, tag: "-25%", rating: "4.9", reviews: 75, image: "photo-1544923246-77307dd654cb", badge: "Top rated", stock: 15, sellerId: "SEL-102", sellerName: "Himalayan Wool & Winterwear" },
+  { id: 7, name: "Down-Filled Thermal Puffer Jacket", category: "Winterwear & Jackets", price: 4490, old: 5990, tag: "-25%", rating: "4.9", reviews: 75, image: "photo-1544923246-77307dd654cb", badge: "", stock: 3, sellerId: "SEL-102", sellerName: "Himalayan Wool & Winterwear" },
   { id: 8, name: "Vintage Washed Graphic T-Shirt", category: "Streetwear & Hoodies", price: 1290, old: 1690, tag: "-24%", rating: "4.6", reviews: 153, image: "photo-1521572267360-ee0c2909d518", badge: "", stock: 60, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
   { id: 9, name: "Tailored High-Waist Wide Leg Trousers", category: "Women's Fashion", price: 2390, old: 3100, tag: "-23%", rating: "4.8", reviews: 52, image: "photo-1594633312681-425c7b97ccd1", badge: "", stock: 30, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" },
   { id: 10, name: "Everyday Premium Oxford Cotton Shirt", category: "Men's Fashion", price: 1890, old: 2490, tag: "-24%", rating: "4.7", reviews: 89, image: "photo-1596755094514-f87e34085b2c", badge: "Classic", stock: 50, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
   { id: 11, name: "Seamless Ribbed Athleisure Activewear Set", category: "Activewear & Loungewear", price: 2690, old: 3490, tag: "-23%", rating: "4.8", reviews: 68, image: "photo-1518611012118-696072aa579a", badge: "", stock: 25, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
-  { id: 12, name: "Fine Cashmere Pashmina Shawl & Stole", category: "Traditional & Ethnic", price: 3800, old: 4900, tag: "-22%", rating: "4.9", reviews: 94, image: "photo-1601924994987-69e26d50dc26", badge: "Handwoven", stock: 16, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" }
+  { id: 12, name: "Fine Cashmere Pashmina Shawl & Stole", category: "Traditional & Ethnic", price: 3800, old: 4900, tag: "-22%", rating: "4.9", reviews: 94, image: "photo-1601924994987-69e26d50dc26", badge: "", stock: 0, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" }
 ];
 
 const defaultSellers = [
@@ -116,13 +116,13 @@ const defaultCustomers = [
     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
     phone: "+977 9849876543",
     location: "Chabahil, Kathmandu",
-    tier: "Silver Shopper",
-    points: 520,
-    wallet: 1200,
-    status: "Active",
-    joined: "Mar 2024",
-    totalOrders: 1,
-    totalSpent: 3890,
+    tier: "🆕 New Customer",
+    points: 100,
+    wallet: 500,
+    status: "Pending",
+    joined: "Today",
+    totalOrders: 0,
+    totalSpent: 0,
     addresses: [{ id: 1, label: "Home", text: "Chabahil Chowk, Kathmandu", isDefault: true }],
     coupons: []
   },
@@ -245,7 +245,7 @@ const categories = [
 /* ============================================================
    PERSISTENCE CONTROLLER & AUTO CACHE INVALIDATION
    ============================================================ */
-const APP_VERSION = "3.0";
+const APP_VERSION = "3.5";
 if (localStorage.getItem("bazaarhub-app-version") !== APP_VERSION) {
   // Clear stale cache and previous non-clothing data
   localStorage.removeItem("bazaarhub-products");
@@ -454,17 +454,38 @@ function startCountdown() {
    PRODUCT CATALOG RENDERING & FILTERING
    ============================================================ */
 function productCardHtml(p) {
+  const isSoldOut = (p.stock || 0) <= 0;
+  const isLowStock = !isSoldOut && p.stock <= 3;
+
+  let badgeHtml = "";
+  if (isSoldOut) {
+    badgeHtml = `<span class="product-badge product-badge--out">OUT OF STOCK</span>`;
+  } else if (isLowStock) {
+    badgeHtml = `<span class="product-badge product-badge--low">Low Stock: ${p.stock} left</span>`;
+  } else if (p.badge) {
+    badgeHtml = `<span class="product-badge">${p.badge}</span>`;
+  }
+
+  const buttonHtml = isSoldOut
+    ? `<button class="quick-add is-disabled" disabled title="Out of stock">Sold Out ✕</button>`
+    : `<button class="quick-add" data-add="${p.id}">＋ Quick Add</button>`;
+
+  const stockPillHtml = isSoldOut
+    ? `<div class="stock-pill out" style="margin-bottom:6px;">⚠️ Out of Stock</div>`
+    : (isLowStock ? `<div class="stock-pill low" style="margin-bottom:6px;">⚡ Only ${p.stock} units left!</div>` : "");
+
   return `
-    <article class="product-card" data-product-id="${p.id}">
+    <article class="product-card ${isSoldOut ? 'is-sold-out' : ''}" data-product-id="${p.id}">
       <div class="product-media">
         <img class="product-image" src="${imageUrl(p.image)}" alt="${p.name}" loading="lazy">
         ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
-        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ""}
-        <button class="quick-add" data-add="${p.id}">＋ Quick Add</button>
+        ${badgeHtml}
+        ${buttonHtml}
       </div>
       <div class="product-info">
         <span class="product-category">${p.category}</span>
         <h3>${p.name}</h3>
+        ${stockPillHtml}
         <div class="product-rating">
           <span class="stars">★★★★★</span>
           <b>${p.rating}</b>
@@ -535,8 +556,37 @@ function addToCart(productId) {
   const p = products.find(x => x.id === id);
   if (!p) return;
 
+  // 1. Must be logged in as customer
+  if (!currentUser) {
+    showToast("⚠️ Please sign in or register to add clothes to bag.", 3200);
+    openAuthModal("customer");
+    return;
+  }
+
+  // Admin view reminder
+  if (currentUser.role === "admin") {
+    showToast("ℹ️ Store Admin view: Please switch to customer mode to shop.", 3000);
+    return;
+  }
+
+  // 2. Must be approved by store admin
+  if (currentUser.role === "customer" && currentUser.status === "Pending") {
+    openApprovalModal(`Hello ${currentUser.name}! Your account (${currentUser.id}) is currently pending approval by the store admin. You can browse all clothes now. As soon as the admin approves your account, you will be able to add to cart and purchase!`);
+    return;
+  }
+
+  // 3. Stock Check
+  if ((p.stock || 0) <= 0) {
+    showToast(`⚠️ Out of Stock: "${p.name}" is currently sold out!`, 3200);
+    return;
+  }
+
   const existing = cart.find(x => x.id === id);
   if (existing) {
+    if (existing.qty >= p.stock) {
+      showToast(`⚠️ Cannot add more: Only ${p.stock} units available in stock!`, 3000);
+      return;
+    }
     existing.qty += 1;
   } else {
     cart.push({
@@ -544,14 +594,14 @@ function addToCart(productId) {
       name: p.name,
       price: p.price,
       image: p.image,
-      sellerId: p.sellerId || "SEL-101",
-      sellerName: p.sellerName || "Himalayan Tech & Style",
+      sellerId: p.sellerId || "STORE-01",
+      sellerName: p.sellerName || "BazaarHub Official Store",
       qty: 1
     });
   }
   updateCart();
   openCart();
-  showToast(`Added “${p.name}” to your bag`);
+  showToast(`Added “${p.name}” to your bag ✓`);
 }
 
 function updateCart() {
@@ -616,30 +666,49 @@ function renderHeader() {
   const target = document.querySelector("#site-header");
   if (!target) return;
 
-  const userHtml = currentUser
-    ? `<div class="header-actions-user">
-        <button class="header-user-btn" id="open-user-dash" title="Open ${currentUser.role} dashboard">
-          <img src="${currentUser.avatar || ''}" alt="" class="user-avatar-mini">
-          <span>${(currentUser.name || 'User').split(" ")[0]}</span>
-          <span class="user-badge-role role--${currentUser.role}">${currentUser.role}</span>
-        </button>
-        <button class="action-btn-sm outline" id="btn-logout" title="Log out" style="padding: 6px 10px; font-size: 11px;">Logout</button>
-       </div>`
-    : `<button class="header-login-btn" id="open-auth-btn">
+  let userHtml = "";
+  if (currentUser) {
+    if (currentUser.role === "admin") {
+      userHtml = `
+        <div class="header-actions-user">
+          <button class="header-user-btn" id="open-user-dash" title="Open Store Admin Portal">
+            <span style="font-size: 15px;">🔐</span>
+            <span>Admin</span>
+            <span class="user-badge-role role--admin">Store Admin</span>
+          </button>
+          <button class="action-btn-sm outline" id="btn-logout" title="Log out" style="padding: 6px 10px; font-size: 11px;">Logout</button>
+        </div>`;
+    } else {
+      userHtml = `
+        <div class="header-actions-user">
+          <button class="header-user-btn" id="open-user-dash" title="Open Customer Profile">
+            <img src="${currentUser.avatar || ''}" alt="" class="user-avatar-mini">
+            <span>${(currentUser.name || 'User').split(" ")[0]}</span>
+            <span class="user-badge-role ${currentUser.status === 'Pending' ? 'role--pending' : 'role--customer'}">
+              ${currentUser.status === 'Pending' ? 'Pending Approval' : 'Verified Shopper'}
+            </span>
+          </button>
+          <button class="action-btn-sm outline" id="btn-logout" title="Log out" style="padding: 6px 10px; font-size: 11px;">Logout</button>
+        </div>`;
+    }
+  } else {
+    userHtml = `
+      <button class="header-login-btn" id="open-auth-btn">
         <span>👤 Sign In / Register</span>
-       </button>`;
+      </button>`;
+  }
 
   target.innerHTML = `
     <header class="site-header">
       <div class="container header-main">
         <a class="brand" href="#" id="brand-link">
           <span class="brand-mark">B</span>
-          <span>Bazaar<span>Hub</span></span>
+          <span>Bazaar<span>Hub</span> Clothing</span>
         </a>
 
         <form class="search-form" id="search-form" role="search">
           <span class="search-symbol">⌕</span>
-          <label class="visually-hidden" for="site-search">Search products</label>
+          <label class="visually-hidden" for="site-search">Search clothing</label>
           <input id="site-search" type="search" placeholder="Search for hoodies, winter jackets, dresses, shirts, kurtis…">
           <button type="submit">Search</button>
         </form>
@@ -662,15 +731,15 @@ function renderHeader() {
       <div class="nav-row" id="nav-row">
         <nav class="container main-nav">
           <a class="${currentView === 'storefront' ? 'active' : ''}" href="#" id="nav-home">Home</a>
-          <a href="#categories">Categories</a>
-          <a href="#deals">Flash sale</a>
-          <a href="#featured">Featured</a>
-          <a href="#trending">Trending</a>
+          <a href="#categories">Clothing Categories</a>
+          <a href="#deals">Flash Deals</a>
+          <a href="#featured">Featured Clothes</a>
+          <a href="#trending">Trending Styles</a>
           <a href="#" id="nav-dashboard-link">
-            ${currentUser ? `My Portal (${currentUser.role.toUpperCase()})` : 'Multi-Role Portals'}
+            ${currentUser ? (currentUser.role === 'admin' ? '🛡️ Store Admin Portal' : '🛍️ My Account & Orders') : '🛍️ Track Orders & Account'}
           </a>
-          <a href="#site-footer">Contact & Escrow</a>
-          <span class="nav-note">🇳🇵 Nepal's Curated Clothing & Apparel Marketplace</span>
+          <a href="#site-footer">Shop Info & Delivery</a>
+          <span class="nav-note">🇳🇵 Kathmandu's Curated Clothing Store</span>
         </nav>
       </div>
     </header>
@@ -681,12 +750,19 @@ function renderHeader() {
   target.querySelector("#nav-home")?.addEventListener("click", e => { e.preventDefault(); switchToStorefront(); });
   target.querySelector("#nav-dashboard-link")?.addEventListener("click", e => {
     e.preventDefault();
-    if (currentUser) switchToDashboard(currentUser.role);
-    else openAuthModal("customer");
+    if (currentUser) {
+      if (currentUser.role === "admin") switchToDashboard("admin");
+      else switchToDashboard("customer");
+    } else {
+      openAuthModal("customer");
+    }
   });
 
   target.querySelector("#open-user-dash")?.addEventListener("click", () => {
-    if (currentUser) switchToDashboard(currentUser.role);
+    if (currentUser) {
+      if (currentUser.role === "admin") switchToDashboard("admin");
+      else switchToDashboard("customer");
+    }
   });
   target.querySelector("#btn-logout")?.addEventListener("click", logoutUser);
   target.querySelector("#open-auth-btn")?.addEventListener("click", () => openAuthModal("customer"));
@@ -723,43 +799,59 @@ function renderFooter() {
         <div class="footer-brand">
           <a class="brand brand--footer" href="#">
             <span class="brand-mark">B</span>
-            <span>Bazaar<span>Hub</span></span>
+            <span>Bazaar<span>Hub</span> Clothing</span>
           </a>
-          <p>Nepal’s premier clothing & apparel marketplace connecting verified fashion boutiques, streetwear creators and shoppers with direct QR payments and transparent escrow settlements.</p>
+          <p>Nepal’s premier boutique clothing store offering premium streetwear, winter knitwear, authentic ethnic apparel, and everyday fashion essentials with direct Nepal QR payment.</p>
+          <div style="margin-top:14px; font-size:12px; color:#94a3b8; line-height:1.7;">
+            📍 <b>Showroom:</b> New Baneshwor, Kathmandu, Nepal<br>
+            📞 <b>WhatsApp / Phone:</b> +977 9841234567<br>
+            ⏰ <b>Hours:</b> Sunday – Friday, 10:00 AM – 8:00 PM
+          </div>
         </div>
         <div class="footer-col">
-          <h4>Customer Zone</h4>
+          <h4>Clothing Collections</h4>
           <ul>
-            <li><a href="#" onclick="loginAsRole('customer'); return false;">Order Tracking & History</a></li>
-            <li><a href="#" onclick="loginAsRole('customer'); return false;">Wallet & Loyalty Points</a></li>
-            <li><a href="#" onclick="openAuthModal('customer'); return false;">Customer Registration</a></li>
+            <li><a href="#categories" onclick="filterProducts('Streetwear & Hoodies'); return false;">Streetwear & Hoodies</a></li>
+            <li><a href="#categories" onclick="filterProducts('Winterwear & Jackets'); return false;">Winterwear & Jackets</a></li>
+            <li><a href="#categories" onclick="filterProducts('Men\'s Fashion'); return false;">Men's Fashion & Shirts</a></li>
+            <li><a href="#categories" onclick="filterProducts('Women\'s Fashion'); return false;">Women's Dresses & Pants</a></li>
+            <li><a href="#categories" onclick="filterProducts('Traditional & Ethnic'); return false;">Ethnic & Dhaka Kurti Sets</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Merchant Seller Hub</h4>
+          <h4>Customer Care</h4>
           <ul>
-            <li><a href="#" onclick="loginAsRole('seller'); return false;">Seller Portal & Inventory</a></li>
-            <li><a href="#" onclick="loginAsRole('seller'); return false;">Bank Payout Settlements</a></li>
-            <li><a href="#" onclick="openAuthModal('seller'); return false;">Open Merchant Store</a></li>
+            <li><a href="#" onclick="openAuthModal('customer'); return false;">Customer Login / Register</a></li>
+            <li><a href="#categories">Size Guide & Fit Assistance</a></li>
+            <li><a href="#deals">7-Day Free Exchange Policy</a></li>
+            <li><a href="#site-footer">Kathmandu Valley 24h Delivery</a></li>
+            <li><a href="#site-footer">All Nepal Courier Service</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Platform Governance</h4>
+          <h4>Store Information</h4>
           <ul>
-            <li><a href="#" onclick="loginAsRole('admin'); return false;">Admin Verification Queue</a></li>
-            <li><a href="#" onclick="loginAsRole('admin'); return false;">Customer & Seller Accounts</a></li>
-            <li><a href="#main-content">Escrow Commission Rules</a></li>
+            <li><a href="#main-content">About Our Clothing Label</a></li>
+            <li><a href="#site-footer">Payment via eSewa & Fonepay QR</a></li>
+            <li><a href="#site-footer">Cash on Delivery (Inside Valley)</a></li>
+            <li><a href="#" id="footer-admin-link" class="admin-footer-link" style="color:#94a3b8; font-size:11.5px; opacity:0.8;">🔐 Store Staff Portal</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <div class="container">
-          <p>© 2026 BazaarHub Nepal Inc. All rights reserved.</p>
-          <p>Powered by <b>Nepal QR Pay</b> · Fonepay · eSewa · Khalti · Nabil Bank Escrow</p>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <p>© 2026 BazaarHub Clothing Store Nepal. All rights reserved.</p>
+          <p>Powered by <b>Nepal QR Pay</b> · Fonepay · eSewa · Khalti · Doorstep Delivery</p>
         </div>
       </div>
     </footer>
   `;
+
+  // Attach discreet admin modal trigger
+  document.getElementById("footer-admin-link")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    openAdminLoginModal();
+  });
 }
 
 /* ============================================================
@@ -786,58 +878,64 @@ function closeAuthModal() {
   document.getElementById("auth-overlay")?.classList.remove("is-open");
 }
 
-function updateAuthFormFields(role) {
+function updateAuthFormFields(role = "customer") {
   const emailInput = document.getElementById("auth-email");
   const submitBtn = document.getElementById("auth-submit-btn");
   const subTitle = document.getElementById("auth-subtitle");
+  const modalTitle = document.getElementById("auth-modal-title");
+  const approvalHint = document.getElementById("register-approval-hint");
 
   const nameGroup = document.getElementById("name-group");
   const phoneGroup = document.getElementById("phone-group");
   const cityGroup = document.getElementById("city-group");
-  const storeGroup = document.getElementById("store-name-group");
-  const catGroup = document.getElementById("store-cat-group");
   const rememberRow = document.getElementById("remember-row");
 
   if (authIsSignUp) {
+    if (modalTitle) modalTitle.textContent = "Customer Registration";
+    if (subTitle) subTitle.textContent = "Create your shopper profile for BazaarHub Clothing Store";
     if (nameGroup) nameGroup.style.display = "block";
     if (phoneGroup) phoneGroup.style.display = "block";
     if (cityGroup) cityGroup.style.display = "block";
     if (rememberRow) rememberRow.style.display = "none";
-
-    if (role === "seller") {
-      if (storeGroup) storeGroup.style.display = "block";
-      if (catGroup) catGroup.style.display = "block";
-    } else {
-      if (storeGroup) storeGroup.style.display = "none";
-      if (catGroup) catGroup.style.display = "none";
-    }
+    if (approvalHint) approvalHint.style.display = "block";
+    if (submitBtn) submitBtn.innerHTML = `Register Customer Account <span>→</span>`;
+    if (emailInput && emailInput.value === "sarah@customer.com") emailInput.value = "";
   } else {
+    if (modalTitle) modalTitle.textContent = "Sign In to Your Account";
+    if (subTitle) subTitle.textContent = "Enter your credentials to browse bags, orders & wishlist";
     if (nameGroup) nameGroup.style.display = "none";
     if (phoneGroup) phoneGroup.style.display = "none";
     if (cityGroup) cityGroup.style.display = "none";
-    if (storeGroup) storeGroup.style.display = "none";
-    if (catGroup) catGroup.style.display = "none";
     if (rememberRow) rememberRow.style.display = "flex";
+    if (approvalHint) approvalHint.style.display = "none";
+    if (submitBtn) submitBtn.innerHTML = `Sign In to Account <span>→</span>`;
+    if (emailInput && !emailInput.value) emailInput.value = "sarah@customer.com";
   }
+}
 
-  const roleLabels = { customer: "Customer", seller: "Merchant Seller", admin: "Administrator" };
-  const demoEmails = {
-    customer: "sarah@customer.com",
-    seller: "ram@kathmanducrafts.com",
-    admin: "admin@bazaarhub.com"
-  };
+function openAdminLoginModal() {
+  closeAuthModal();
+  document.getElementById("admin-login-modal")?.classList.add("is-open");
+  document.getElementById("admin-login-overlay")?.classList.add("is-open");
+}
 
-  if (emailInput && !authIsSignUp) emailInput.value = demoEmails[role] || "";
-  if (submitBtn) {
-    submitBtn.innerHTML = authIsSignUp
-      ? `Register as ${roleLabels[role]} <span>✓</span>`
-      : `Sign In as ${roleLabels[role]} <span>→</span>`;
+function closeAdminLoginModal() {
+  document.getElementById("admin-login-modal")?.classList.remove("is-open");
+  document.getElementById("admin-login-overlay")?.classList.remove("is-open");
+}
+
+function openApprovalModal(msg) {
+  if (msg) {
+    const desc = document.getElementById("approval-modal-desc");
+    if (desc) desc.textContent = msg;
   }
-  if (subTitle) {
-    subTitle.textContent = authIsSignUp
-      ? `Create your ${roleLabels[role]} account on BazaarHub`
-      : `Select your role to sign into your account`;
-  }
+  document.getElementById("approval-modal")?.classList.add("is-open");
+  document.getElementById("approval-overlay")?.classList.add("is-open");
+}
+
+function closeApprovalModal() {
+  document.getElementById("approval-modal")?.classList.remove("is-open");
+  document.getElementById("approval-overlay")?.classList.remove("is-open");
 }
 
 function loginAsRole(role) {
@@ -1426,19 +1524,22 @@ function renderSellerDashboard(container) {
    ============================================================ */
 function renderAdminDashboard(container) {
   const pendingCount = orders.filter(o => o.step === 1).length;
+  const pendingCustomersCount = customers.filter(c => c.status === "Pending").length;
+  const outOfStockCount = products.filter(p => (p.stock || 0) <= 0).length;
+  const lowStockCount = products.filter(p => (p.stock || 0) > 0 && p.stock <= 3).length;
 
   container.innerHTML = `
     <div class="dash-navbar">
       <div class="container dash-navbar__inner">
         <button class="dash-back-btn" id="dash-back-store">
-          <span>←</span> Back to Storefront
+          <span>←</span> Back to Clothing Storefront
         </button>
         <div class="dash-role-indicator">
-          <span class="dash-role-badge admin">🛡️ Platform Administration & Escrow</span>
+          <span class="dash-role-badge admin">🛡️ Store Admin & Inventory Master</span>
         </div>
         <div class="dash-switcher-tabs">
-          <button class="dash-tab-pill" data-switch="customer">Customer</button>
-          <button class="dash-tab-pill" data-switch="seller">Seller Hub</button>
+          <button class="dash-tab-pill" data-switch="customer">Customer Mode</button>
+          <button class="dash-tab-pill" data-switch="seller">Seller Mode</button>
           <button class="dash-tab-pill is-active" data-switch="admin">Admin Portal</button>
         </div>
       </div>
@@ -1449,8 +1550,8 @@ function renderAdminDashboard(container) {
         <div class="dash-user-meta">
           <img src="${adminStats.avatar}" alt="" class="dash-avatar-large" style="border-color:#ff9800;">
           <div class="dash-user-info">
-            <h2 style="color:#ffffff;">Marketplace Master Control</h2>
-            <p style="color:#94a3b8;">Administrator: ${adminStats.name} &nbsp;·&nbsp; ✉ ${adminStats.email} &nbsp;·&nbsp; Full Platform Control</p>
+            <h2 style="color:#ffffff;">Store Master Administration</h2>
+            <p style="color:#94a3b8;">Administrator: ${adminStats.name} &nbsp;·&nbsp; ✉ ${adminStats.email} &nbsp;·&nbsp; Full Store & Inventory Authority</p>
             <div class="dash-badge-row">
               <span class="dash-tag" style="background:#ff9800; color:#ffffff;">Super Administrator</span>
               <span class="dash-tag" style="background:rgba(255,255,255,0.15); color:#ffffff;">Nepal QR Escrow Online</span>
@@ -1458,8 +1559,8 @@ function renderAdminDashboard(container) {
           </div>
         </div>
         <div class="dash-actions-right">
-          <button class="button button--primary" onclick="showToast('Platform statistics refreshed')">
-            Refresh Platform Stats ⟳
+          <button class="button button--primary" onclick="showToast('Store statistics refreshed')">
+            Refresh Store Stats ⟳
           </button>
         </div>
       </div>
@@ -1469,7 +1570,7 @@ function renderAdminDashboard(container) {
         <div class="dash-kpi-card">
           <div class="kpi-icon-wrap orange">📈</div>
           <div class="kpi-text">
-            <span>Marketplace GMV</span>
+            <span>Store Gross Sales</span>
             <strong>${money(adminStats.platformGmv)}</strong>
             <small>Total gross transactions</small>
           </div>
@@ -1479,37 +1580,41 @@ function renderAdminDashboard(container) {
           <div class="kpi-text">
             <span>Platform Revenue (10%)</span>
             <strong>${money(adminStats.commissionEarned)}</strong>
-            <small>10% Commission retained</small>
+            <small>Commission retained</small>
           </div>
         </div>
         <div class="dash-kpi-card">
-          <div class="kpi-icon-wrap blue">🏪</div>
+          <div class="kpi-icon-wrap blue">📦</div>
           <div class="kpi-text">
-            <span>Registered Sellers</span>
-            <strong>${sellers.length} merchants</strong>
-            <small>Dedicated Seller Management</small>
+            <span>Clothing Catalog</span>
+            <strong>${products.length} products</strong>
+            <small>${outOfStockCount > 0 ? `<b style="color:#ef4444;">${outOfStockCount} Out of Stock</b>` : 'All in stock'}</small>
           </div>
         </div>
         <div class="dash-kpi-card">
           <div class="kpi-icon-wrap green">👥</div>
           <div class="kpi-text">
-            <span>Registered Shoppers</span>
-            <strong>${customers.length} customers</strong>
-            <small>Dedicated Customer Management</small>
+            <span>Registered Customers</span>
+            <strong>${customers.length} accounts</strong>
+            <small>${pendingCustomersCount > 0 ? `<b style="color:#f59e0b;">${pendingCustomersCount} Pending Approval</b>` : 'All approved'}</small>
           </div>
         </div>
       </div>
 
-      <!-- Inner Tabs: Distinct Dedicated Pages for Payments, Sellers, Customers -->
+      <!-- Inner Tabs: Distinct Dedicated Pages for Payments, Customers, Products, Sellers -->
       <div class="dash-content-area">
         <div class="dash-subtabs">
           <button class="dash-subtab is-active" data-tab="payments">
             📋 Payment Verifications ${pendingCount > 0 ? `<span class="badge-counter">${pendingCount}</span>` : ""}
           </button>
-          <button class="dash-subtab" data-tab="sellers">🏪 Sellers Management (${sellers.length})</button>
-          <button class="dash-subtab" data-tab="customers">🛍️ Customers Management (${customers.length})</button>
-          <button class="dash-subtab" data-tab="products">📦 Live Store Products (${products.length})</button>
-          <button class="dash-subtab" data-tab="settings">⚙ Platform Settings</button>
+          <button class="dash-subtab" data-tab="customers">
+            🛍️ Customers & Approvals (${customers.length}) ${pendingCustomersCount > 0 ? `<span class="badge-counter" style="background:#f59e0b;">${pendingCustomersCount}</span>` : ""}
+          </button>
+          <button class="dash-subtab" data-tab="products">
+            📦 Clothing Inventory & Stock Alerts (${products.length}) ${outOfStockCount > 0 ? `<span class="badge-counter" style="background:#ef4444;">${outOfStockCount}</span>` : ""}
+          </button>
+          <button class="dash-subtab" data-tab="sellers">🏪 Merchant Hub</button>
+          <button class="dash-subtab" data-tab="settings">⚙ Store Settings</button>
         </div>
 
         <!-- 1. PAYMENT VERIFICATIONS TAB -->
@@ -1587,13 +1692,13 @@ function renderAdminDashboard(container) {
           </div>
         </div>
 
-        <!-- 2. SELLERS MANAGEMENT TAB (Dedicated Seller Page) -->
+        <!-- 2. SELLERS MANAGEMENT TAB -->
         <div id="admin-panel-sellers" class="dash-panel" style="display: none;">
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
                 <h3>Registered Sellers & Merchant Stores</h3>
-                <p>Complete directory of marketplace vendors, sales volume, bank details, and payout balances</p>
+                <p>Directory of clothing boutiques, sales volume, bank details, and payout balances</p>
               </div>
               <button class="action-btn-sm primary" id="btn-admin-add-seller">
                 ＋ Add New Seller
@@ -1653,32 +1758,38 @@ function renderAdminDashboard(container) {
           </div>
         </div>
 
-        <!-- 3. CUSTOMERS MANAGEMENT TAB (Dedicated Customer Page) -->
+        <!-- 3. CUSTOMERS MANAGEMENT & APPROVAL TAB -->
         <div id="admin-panel-customers" class="dash-panel" style="display: none;">
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Registered Shopper Customer Accounts</h3>
-                <p>Complete directory of shoppers, order counts, lifetime spending, and wallet credits</p>
+                <h3>Customer Accounts & Verification Approvals</h3>
+                <p>Review and approve new shopper registrations before they can add items to bag or checkout</p>
               </div>
               <button class="action-btn-sm primary" id="btn-admin-add-customer">
                 ＋ Add New Customer
               </button>
             </div>
 
+            ${pendingCustomersCount > 0 ? `
+              <div class="approval-notice-card" style="margin-bottom: 16px;">
+                <h4>⚠️ ${pendingCustomersCount} Customer Account(s) Awaiting Store Admin Approval</h4>
+                <p>New customers cannot add clothes to bag or complete checkout until verified. Review their information below and click <b>"Approve Account ✓"</b> to enable full purchasing access.</p>
+              </div>
+            ` : ""}
+
             <div class="dash-table-wrap">
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th>Customer Name</th>
+                    <th>Customer ID & Name</th>
                     <th>Email Address</th>
                     <th>Phone</th>
-                    <th>City / Address</th>
-                    <th>Orders Placed</th>
-                    <th>Lifetime Spent</th>
+                    <th>City / Location</th>
+                    <th>Orders</th>
                     <th>Wallet Balance</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th>Verification / Action</th>
                   </tr>
                 </thead>
                 <tbody id="admin-customers-tbody">
@@ -1689,23 +1800,38 @@ function renderAdminDashboard(container) {
                           <img src="${c.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'}" alt="">
                           <div>
                             <b>${c.name}</b>
-                            <small>${c.tier || 'Shopper'}</small>
+                            <small>ID: ${c.id} · ${c.tier || 'Shopper'}</small>
                           </div>
                         </div>
                       </td>
                       <td>${c.email}</td>
-                      <td>${c.phone || '+977 984XXXXXXX'}</td>
+                      <td><b>${c.phone || '+977 984XXXXXXX'}</b></td>
                       <td>${c.location || 'Kathmandu, Nepal'}</td>
-                      <td><b>${c.totalOrders || 1}</b></td>
-                      <td><b>${money(c.totalSpent || 2890)}</b></td>
-                      <td><b style="color:#059669;">${money(c.wallet || 1000)}</b></td>
-                      <td><span class="status-badge ${c.status === 'Active' ? 'active' : 'suspended'}">${c.status || 'Active'}</span></td>
+                      <td><b>${c.totalOrders || 0}</b></td>
+                      <td><b style="color:#059669;">${money(c.wallet || 0)}</b></td>
                       <td>
-                        <div style="display:flex; gap:6px;">
-                          <button class="action-btn-sm outline" onclick="creditCustomerWallet('${c.id}')">+ Rs. 500</button>
-                          <button class="action-btn-sm ${c.status === 'Active' ? 'danger' : 'primary'}" onclick="toggleCustomerStatus('${c.id}')">
-                            ${c.status === 'Active' ? 'Suspend' : 'Activate'}
-                          </button>
+                        <span class="status-badge ${
+                          c.status === 'Pending' ? 'pending-verification' :
+                          c.status === 'Active' ? 'active' : 'suspended'
+                        }">
+                          ${c.status === 'Pending' ? 'Pending Approval ⏳' : (c.status || 'Active')}
+                        </span>
+                      </td>
+                      <td>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                          ${c.status === 'Pending' ? `
+                            <button class="action-btn-sm primary" onclick="approveCustomerAccount('${c.id}')" title="Approve customer to allow purchasing">
+                              Approve Account ✓
+                            </button>
+                            <button class="action-btn-sm danger" onclick="rejectCustomerAccount('${c.id}')">
+                              Reject ✕
+                            </button>
+                          ` : `
+                            <button class="action-btn-sm outline" onclick="creditCustomerWallet('${c.id}')">+ Rs. 500</button>
+                            <button class="action-btn-sm ${c.status === 'Active' ? 'danger' : 'primary'}" onclick="toggleCustomerStatus('${c.id}')">
+                              ${c.status === 'Active' ? 'Suspend' : 'Activate'}
+                            </button>
+                          `}
                         </div>
                       </td>
                     </tr>
@@ -1716,48 +1842,114 @@ function renderAdminDashboard(container) {
           </div>
         </div>
 
-        <!-- 4. PRODUCTS MODERATION TAB -->
+        <!-- 4. CLOTHING INVENTORY & STOCK ALERTS TAB -->
         <div id="admin-panel-products" class="dash-panel" style="display: none;">
           <div class="dash-card">
             <div class="dash-card-header">
               <div>
-                <h3>Platform Marketplace Inventory</h3>
-                <p>All items currently published and visible on the storefront</p>
+                <h3>Store Clothing Catalog & Live Inventory Management</h3>
+                <p>Track stock levels in real time, restock sold-out clothes, and add new fashion pieces</p>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button class="action-btn-sm primary" onclick="openSellerProductModal()">
+                  ＋ Add New Clothing Item
+                </button>
               </div>
             </div>
+
+            <!-- Stock Alert Banner if any items are out of stock -->
+            ${outOfStockCount > 0 ? `
+              <div class="inventory-alert-banner">
+                <div>
+                  <b>⚠️ Critical Inventory Alert:</b> ${outOfStockCount} clothing item(s) are currently <b>OUT OF STOCK</b> (Sold Out) on the storefront and blocked from purchases!
+                </div>
+                <button class="action-btn-sm primary" onclick="quickRestockAllOutOfStock()">
+                  Restock All Out-of-Stock (+15 units) 📦
+                </button>
+              </div>
+            ` : ""}
+
+            ${lowStockCount > 0 && outOfStockCount === 0 ? `
+              <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:12.5px; color:#b45309;">
+                ⚡ <b>Low Stock Warning:</b> ${lowStockCount} clothing item(s) have 3 or fewer units remaining.
+              </div>
+            ` : ""}
+
+            <!-- Inventory KPI Mini Row -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px;">
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;">
+                <small style="color:#64748b; font-weight:700;">Total Catalog Items</small>
+                <div style="font-size:20px; font-weight:800; color:#0f172a;">${products.length}</div>
+              </div>
+              <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:12px;">
+                <small style="color:#047857; font-weight:700;">Healthy Stock</small>
+                <div style="font-size:20px; font-weight:800; color:#047857;">${products.length - outOfStockCount - lowStockCount}</div>
+              </div>
+              <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:12px;">
+                <small style="color:#b45309; font-weight:700;">Low Stock (≤ 3)</small>
+                <div style="font-size:20px; font-weight:800; color:#b45309;">${lowStockCount}</div>
+              </div>
+              <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:8px; padding:12px;">
+                <small style="color:#b91c1c; font-weight:700;">Out of Stock (0)</small>
+                <div style="font-size:20px; font-weight:800; color:#b91c1c;">${outOfStockCount}</div>
+              </div>
+            </div>
+
             <div class="dash-table-wrap">
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th>Product</th>
+                    <th>Product & SKU</th>
                     <th>Category</th>
                     <th>Price</th>
-                    <th>Store / Seller</th>
-                    <th>Stock</th>
-                    <th>Action</th>
+                    <th>Inventory Status</th>
+                    <th>Stock Units</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  ${products.map(p => `
-                    <tr>
-                      <td>
-                        <div class="product-cell">
-                          <img src="${imageUrl(p.image)}" alt="">
-                          <div>
-                            <b>${p.name}</b>
-                            <small>SKU: BH-${p.id}</small>
+                  ${products.map(p => {
+                    const isOut = (p.stock || 0) <= 0;
+                    const isLow = !isOut && p.stock <= 3;
+                    return `
+                      <tr>
+                        <td>
+                          <div class="product-cell">
+                            <img src="${imageUrl(p.image)}" alt="">
+                            <div>
+                              <b>${p.name}</b>
+                              <small>SKU: CLOTH-${p.id}</small>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>${p.category}</td>
-                      <td><b>${money(p.price)}</b></td>
-                      <td><b>${p.sellerName || 'Verified Merchant'}</b></td>
-                      <td>${p.stock || 20}</td>
-                      <td>
-                        <button class="action-btn-sm danger" onclick="deleteProductAsSeller(${p.id})">Remove</button>
-                      </td>
-                    </tr>
-                  `).join("")}
+                        </td>
+                        <td><span class="dash-tag">${p.category}</span></td>
+                        <td><b>${money(p.price)}</b> ${p.old ? `<del style="color:#94a3b8; font-size:11px;">${money(p.old)}</del>` : ""}</td>
+                        <td>
+                          ${isOut ? `<span class="stock-pill out">⚠️ Out of Stock</span>` :
+                            isLow ? `<span class="stock-pill low">⚡ Low Stock (${p.stock})</span>` :
+                            `<span class="stock-pill ok">✓ In Stock</span>`}
+                        </td>
+                        <td>
+                          <b style="font-size:14px; color:${isOut ? '#b91c1c' : isLow ? '#b45309' : '#0f172a'};">
+                            ${p.stock || 0} pcs
+                          </b>
+                        </td>
+                        <td>
+                          <div style="display:flex; gap:6px;">
+                            <button class="action-btn-sm ${isOut ? 'primary' : 'outline'}" onclick="quickRestockProduct(${p.id})" title="Add 10 units">
+                              Restock (+10) 📦
+                            </button>
+                            <button class="action-btn-sm outline" onclick="editProductStockPrompt(${p.id})">
+                              Edit
+                            </button>
+                            <button class="action-btn-sm danger" onclick="deleteProduct(${p.id})">
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    `;
+                  }).join("")}
                 </tbody>
               </table>
             </div>
@@ -1961,6 +2153,80 @@ window.creditCustomerWallet = function(customerId) {
   renderAdminDashboard(document.getElementById("dashboard-view"));
 };
 
+window.approveCustomerAccount = function(custId) {
+  const c = customers.find(x => x.id === custId);
+  if (!c) return;
+  c.status = "Active";
+  if (currentUser && currentUser.id === custId) {
+    currentUser.status = "Active";
+    renderHeader();
+  }
+  saveAllData();
+  showToast(`✓ Customer account "${c.name}" (${c.id}) APPROVED! Full shopping access enabled.`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+};
+
+window.rejectCustomerAccount = function(custId) {
+  const c = customers.find(x => x.id === custId);
+  if (!c) return;
+  c.status = "Rejected";
+  if (currentUser && currentUser.id === custId) {
+    currentUser.status = "Rejected";
+    renderHeader();
+  }
+  saveAllData();
+  showToast(`Customer account "${c.name}" was rejected.`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+};
+
+window.quickRestockProduct = function(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  p.stock = (p.stock || 0) + 10;
+  saveAllData();
+  showToast(`Restocked "${p.name}" (+10)! New stock: ${p.stock} units.`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+  showDefaultProducts();
+};
+
+window.quickRestockAllOutOfStock = function() {
+  let count = 0;
+  products.forEach(p => {
+    if ((p.stock || 0) <= 0) {
+      p.stock = 15;
+      count++;
+    }
+  });
+  saveAllData();
+  showToast(`Restocked ${count} out-of-stock clothing items with 15 units each!`);
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+  showDefaultProducts();
+};
+
+window.editProductStockPrompt = function(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  const newStock = prompt(`Update stock units for "${p.name}":`, p.stock);
+  if (newStock !== null && !isNaN(Number(newStock))) {
+    p.stock = Math.max(0, parseInt(newStock, 10));
+    saveAllData();
+    showToast(`Stock for "${p.name}" updated to ${p.stock} units.`);
+    renderAdminDashboard(document.getElementById("dashboard-view"));
+    showDefaultProducts();
+  }
+};
+
+window.deleteProduct = function(productId) {
+  const idx = products.findIndex(x => x.id === productId);
+  if (idx === -1) return;
+  if (!confirm(`Are you sure you want to delete "${products[idx].name}" from store catalog?`)) return;
+  products.splice(idx, 1);
+  saveAllData();
+  showToast("Clothing item removed from catalog.");
+  renderAdminDashboard(document.getElementById("dashboard-view"));
+  showDefaultProducts();
+};
+
 window.resetAllDemoData = function() {
   if (!confirm("Reset all products, orders, and accounts to default seed data?")) return;
   localStorage.clear();
@@ -2048,6 +2314,12 @@ function openCheckoutModal() {
   if (!currentUser || currentUser.role !== "customer") {
     showToast("Please sign in as a Customer to proceed with payment.");
     openAuthModal("customer");
+    return;
+  }
+
+  if (currentUser.status === "Pending") {
+    showToast("Your customer account is pending store approval.");
+    openApprovalModal(`Hello ${currentUser.name}! Your account (${currentUser.id}) is pending store approval. Our team will verify and activate your account shortly.`);
     return;
   }
 
@@ -2441,8 +2713,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const city = document.getElementById("auth-city").value.trim() || "Kathmandu";
 
       if (authModalRole === "seller") {
-        const storeName = document.getElementById("auth-store-name").value.trim() || `${name}'s Store`;
-        const cat = document.getElementById("auth-store-cat").value;
+        const storeName = document.getElementById("auth-store-name")?.value?.trim() || `${name}'s Store`;
+        const cat = document.getElementById("auth-store-cat")?.value || "Streetwear & Hoodies";
         const newSeller = {
           id: `SEL-${Math.floor(100 + Math.random() * 900)}`,
           role: "seller",
@@ -2477,15 +2749,15 @@ document.addEventListener("DOMContentLoaded", () => {
           avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
           phone: phone,
           location: city,
-          tier: "New Shopper",
-          points: 150,
-          wallet: 1000,
-          status: "Active",
-          joined: "Nov 2026",
+          tier: "🆕 New Customer",
+          points: 100,
+          wallet: 500,
+          status: "Pending", // Pending admin approval!
+          joined: "Today",
           totalOrders: 0,
           totalSpent: 0,
           addresses: [{ id: 1, label: "Home", text: city, isDefault: true }],
-          coupons: [{ code: "WELCOME10", discount: "10% OFF", desc: "Welcome coupon", expiry: "31 Dec 2026" }]
+          coupons: [{ code: "WELCOME10", discount: "10% OFF", desc: "Welcome coupon upon approval", expiry: "31 Dec 2026" }]
         };
         customers.unshift(newCustomer);
         currentUser = newCustomer;
@@ -2493,13 +2765,60 @@ document.addEventListener("DOMContentLoaded", () => {
         closeAuthModal();
         renderHeader();
         updateRolePillHighlights();
-        showToast(`Welcome to BazaarHub, ${name}!`);
-        switchToDashboard("customer");
+        showToast(`Account registered (ID: ${newCustomer.id})! Waiting for store approval.`, 4000);
+        openApprovalModal(`Hello ${name}! Your customer ID is ${newCustomer.id}. Your account has been registered and is pending approval by the store admin. You can browse all clothing items now. As soon as approved, you can add clothes to your bag and order!`);
+        switchToStorefront();
       }
     } else {
-      loginAsRole(authModalRole);
+      const email = (document.getElementById("auth-email").value.trim() || "").toLowerCase();
+      let matched = customers.find(c => c.email.toLowerCase() === email);
+      if (!matched) {
+        matched = customers[0];
+      }
+      currentUser = matched;
+      localStorage.setItem("bazaarhub-user", JSON.stringify(currentUser));
+      closeAuthModal();
+      renderHeader();
+      updateRolePillHighlights();
+      if (currentUser.status === "Pending") {
+        showToast(`Signed in as ${currentUser.name} (Account Pending Approval)`);
+        openApprovalModal(`Welcome back, ${currentUser.name}! Your customer account is currently pending store approval. You can browse all clothes now, and our admin will verify your account shortly.`);
+      } else {
+        showToast(`Welcome back, ${currentUser.name}!`);
+      }
+      switchToStorefront();
     }
   });
+
+  // Admin Login Modal controls
+  document.getElementById("close-admin-login-modal")?.addEventListener("click", closeAdminLoginModal);
+  document.getElementById("admin-login-overlay")?.addEventListener("click", closeAdminLoginModal);
+  document.getElementById("link-open-admin-login")?.addEventListener("click", e => {
+    e.preventDefault();
+    openAdminLoginModal();
+  });
+  document.getElementById("admin-login-form")?.addEventListener("submit", e => {
+    e.preventDefault();
+    currentUser = adminStats;
+    localStorage.setItem("bazaarhub-user", JSON.stringify(currentUser));
+    closeAdminLoginModal();
+    renderHeader();
+    showToast("🔐 Logged in as Store Administrator. Welcome back!");
+    switchToDashboard("admin");
+  });
+  document.getElementById("btn-quick-admin-fill")?.addEventListener("click", () => {
+    currentUser = adminStats;
+    localStorage.setItem("bazaarhub-user", JSON.stringify(currentUser));
+    closeAdminLoginModal();
+    renderHeader();
+    showToast("🔐 Instant Admin Access Granted!");
+    switchToDashboard("admin");
+  });
+
+  // Customer Account Approval Modal controls
+  document.getElementById("close-approval-modal")?.addEventListener("click", closeApprovalModal);
+  document.getElementById("approval-overlay")?.addEventListener("click", closeApprovalModal);
+  document.getElementById("btn-ack-approval")?.addEventListener("click", closeApprovalModal);
 
   // Toggle between Sign In and Sign Up in Auth Modal
   document.getElementById("toggle-auth-action")?.addEventListener("click", () => {
@@ -2552,8 +2871,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(`Published “${title}” to storefront!`);
     showDefaultProducts();
 
-    if (currentView === "dashboard" && currentUser?.role === "seller") {
-      renderSellerDashboard(document.getElementById("dashboard-view"));
+    if (currentView === "dashboard") {
+      if (currentUser?.role === "seller") renderSellerDashboard(document.getElementById("dashboard-view"));
+      else if (currentUser?.role === "admin") renderAdminDashboard(document.getElementById("dashboard-view"));
     }
   });
 

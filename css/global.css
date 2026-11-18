@@ -2305,3 +2305,132 @@ img { display: block; max-width: 100%; }
   font-size: 12px;
   opacity: 0.6;
 }
+
+/* ============================================================
+   CLOTHING SHOP INVENTORY & APPROVAL SYSTEM EXTENSIONS
+   ============================================================ */
+.product-badge--out {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1px solid #fca5a5 !important;
+}
+
+.product-badge--low {
+  background: #fffbeb !important;
+  color: #b45309 !important;
+  border: 1px solid #fde68a !important;
+}
+
+.product-card.is-sold-out .product-image {
+  opacity: 0.65;
+  filter: grayscale(40%);
+}
+
+.quick-add.is-disabled {
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed !important;
+  opacity: 0.95 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.stock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stock-pill.out {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.stock-pill.low {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.stock-pill.ok {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.inventory-alert-banner {
+  background: #fff1f2;
+  border: 1.5px solid #fecdd3;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #9f1239;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.approval-notice-card {
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 16px 0;
+  text-align: left;
+}
+
+.approval-notice-card h4 {
+  margin: 0 0 6px;
+  color: #92400e;
+  font-size: 14.5px;
+  font-weight: 800;
+}
+
+.approval-notice-card p {
+  margin: 0;
+  color: #b45309;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.top-strip__contact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11.5px;
+  color: #cbd5e1;
+}
+
+.top-strip__contact b {
+  color: #ff9800;
+}
+
+.admin-footer-link {
+  color: #94a3b8;
+  font-size: 11.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.admin-footer-link:hover {
+  color: #ff9800;
+  border-color: #ff9800;
+}
+
+.user-badge-role.role--pending {
+  background: #fef3c7 !important;
+  color: #b45309 !important;
+}
+
