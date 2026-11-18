@@ -12,21 +12,21 @@ const imageUrl = id => {
 };
 
 /* ============================================================
-   DEFAULT PERSISTED DATA STORES
+   DEFAULT PERSISTED DATA STORES (100% CLOTHING & APPAREL CATALOG)
    ============================================================ */
 const defaultProducts = [
-  { id: 1, name: "CloudWalk Everyday Sneakers", category: "Fashion", price: 2890, old: 3990, tag: "-28%", rating: "4.8", reviews: 126, image: "photo-1542291026-7eec264c27ff", badge: "Best seller", stock: 32, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
-  { id: 2, name: "Aura Wireless Headphones", category: "Electronics", price: 3499, old: 4999, tag: "-30%", rating: "4.9", reviews: 84, image: "photo-1505740420928-5e560c06d30e", badge: "Hot pick", stock: 18, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
-  { id: 3, name: "Minimal Ceramic Table Lamp", category: "Home & Living", price: 1850, old: 2400, tag: "-23%", rating: "4.7", reviews: 53, image: "photo-1507473885765-e6ed057f782c", badge: "", stock: 24, sellerId: "SEL-103", sellerName: "Lalitpur Handicrafts" },
-  { id: 4, name: "Everyday Classic Backpack", category: "Fashion", price: 2190, old: 2790, tag: "-21%", rating: "4.8", reviews: 91, image: "photo-1553062407-98eeb64c6a62", badge: "Popular", stock: 40, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
-  { id: 5, name: "Smart Fitness Watch Ultra", category: "Electronics", price: 4299, old: 5999, tag: "-28%", rating: "4.6", reviews: 72, image: "photo-1523275335684-37898b6baf30", badge: "", stock: 15, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
-  { id: 6, name: "Glow Skin Care Revival Set", category: "Beauty", price: 1590, old: 1990, tag: "-20%", rating: "4.9", reviews: 148, image: "photo-1608248543803-ba4f8c70ae0b", badge: "Top rated", stock: 55, sellerId: "SEL-102", sellerName: "Pokhara Organic Teas" },
-  { id: 7, name: "Soft Knit Warm Throw Blanket", category: "Home & Living", price: 1990, old: 2590, tag: "-23%", rating: "4.7", reviews: 38, image: "photo-1600210492486-724fe5c67fb0", badge: "", stock: 20, sellerId: "SEL-103", sellerName: "Lalitpur Handicrafts" },
-  { id: 8, name: "Modern Polarized Sunglasses", category: "Accessories", price: 1290, old: 1790, tag: "-28%", rating: "4.5", reviews: 64, image: "photo-1511499767150-a48a237f0083", badge: "", stock: 50, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
-  { id: 9, name: "Portable Bass Bluetooth Speaker", category: "Electronics", price: 2490, old: 3290, tag: "-24%", rating: "4.8", reviews: 109, image: "photo-1608043152269-423dbba4e7e1", badge: "Trending", stock: 28, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" },
-  { id: 10, name: "Daily Canvas Cotton Tote Bag", category: "Fashion", price: 990, old: 1390, tag: "-29%", rating: "4.6", reviews: 42, image: "photo-1590874103328-eac38a683ce7", badge: "", stock: 65, sellerId: "SEL-103", sellerName: "Lalitpur Handicrafts" },
-  { id: 11, name: "Hydrating Vitamin Face Serum", category: "Beauty", price: 890, old: 1190, tag: "-25%", rating: "4.7", reviews: 97, image: "photo-1620916566398-39f1143ab7be", badge: "", stock: 30, sellerId: "SEL-102", sellerName: "Pokhara Organic Teas" },
-  { id: 12, name: "Insulated Sports Travel Bottle", category: "Sports", price: 790, old: 1090, tag: "-28%", rating: "4.8", reviews: 118, image: "photo-1602143407151-7111542de6e8", badge: "", stock: 75, sellerId: "SEL-101", sellerName: "Himalayan Tech & Style" }
+  { id: 1, name: "Oversized Heavyweight Fleece Hoodie", category: "Streetwear & Hoodies", price: 2490, old: 3490, tag: "-29%", rating: "4.9", reviews: 142, image: "photo-1556905055-8f358a7a47b2", badge: "Best seller", stock: 35, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 2, name: "Classic Vintage Denim Trucker Jacket", category: "Men's Fashion", price: 3890, old: 4990, tag: "-22%", rating: "4.8", reviews: 98, image: "photo-1576995853123-5a10305d93c0", badge: "Trending", stock: 20, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 3, name: "Floral Linen Wrap Summer Dress", category: "Women's Fashion", price: 2190, old: 2890, tag: "-24%", rating: "4.9", reviews: 86, image: "photo-1515372039744-b8f02a3ae446", badge: "Popular", stock: 28, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" },
+  { id: 4, name: "Pure Himalayan Wool Knit Sweater", category: "Winterwear & Jackets", price: 3250, old: 4200, tag: "-23%", rating: "4.8", reviews: 112, image: "photo-1583743814966-8936f5b7be1a", badge: "Warm pick", stock: 18, sellerId: "SEL-102", sellerName: "Himalayan Wool & Winterwear" },
+  { id: 5, name: "Relaxed Fit Cotton Cargo Trousers", category: "Streetwear & Hoodies", price: 2290, old: 2990, tag: "-23%", rating: "4.7", reviews: 64, image: "photo-1517445312882-bc9910d016b7", badge: "", stock: 45, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 6, name: "Handcrafted Dhaka Blend Kurti Set", category: "Traditional & Ethnic", price: 2750, old: 3500, tag: "-21%", rating: "5.0", reviews: 120, image: "photo-1610030469983-98e550d6193c", badge: "Authentic", stock: 22, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" },
+  { id: 7, name: "Down-Filled Thermal Puffer Jacket", category: "Winterwear & Jackets", price: 4490, old: 5990, tag: "-25%", rating: "4.9", reviews: 75, image: "photo-1544923246-77307dd654cb", badge: "Top rated", stock: 15, sellerId: "SEL-102", sellerName: "Himalayan Wool & Winterwear" },
+  { id: 8, name: "Vintage Washed Graphic T-Shirt", category: "Streetwear & Hoodies", price: 1290, old: 1690, tag: "-24%", rating: "4.6", reviews: 153, image: "photo-1521572267360-ee0c2909d518", badge: "", stock: 60, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 9, name: "Tailored High-Waist Wide Leg Trousers", category: "Women's Fashion", price: 2390, old: 3100, tag: "-23%", rating: "4.8", reviews: 52, image: "photo-1594633312681-425c7b97ccd1", badge: "", stock: 30, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" },
+  { id: 10, name: "Everyday Premium Oxford Cotton Shirt", category: "Men's Fashion", price: 1890, old: 2490, tag: "-24%", rating: "4.7", reviews: 89, image: "photo-1596755094514-f87e34085b2c", badge: "Classic", stock: 50, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 11, name: "Seamless Ribbed Athleisure Activewear Set", category: "Activewear & Loungewear", price: 2690, old: 3490, tag: "-23%", rating: "4.8", reviews: 68, image: "photo-1518611012118-696072aa579a", badge: "", stock: 25, sellerId: "SEL-101", sellerName: "Urban Threads Kathmandu" },
+  { id: 12, name: "Fine Cashmere Pashmina Shawl & Stole", category: "Traditional & Ethnic", price: 3800, old: 4900, tag: "-22%", rating: "4.9", reviews: 94, image: "photo-1601924994987-69e26d50dc26", badge: "Handwoven", stock: 16, sellerId: "SEL-103", sellerName: "Lalitpur Heritage Apparels" }
 ];
 
 const defaultSellers = [
@@ -34,12 +34,12 @@ const defaultSellers = [
     id: "SEL-101",
     role: "seller",
     name: "Ram Sharma",
-    storeName: "Himalayan Tech & Style",
-    email: "ram@kathmanducrafts.com",
+    storeName: "Urban Threads Kathmandu",
+    email: "ram@urbanthreads.np",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
     phone: "+977 9812345678",
-    location: "Durbarmarg, Kathmandu",
-    category: "Electronics & Fashion",
+    location: "Thamel, Kathmandu",
+    category: "Streetwear & Men's Fashion",
     status: "Approved",
     rating: "4.9 ★ (215 reviews)",
     revenue: 384500,
@@ -51,12 +51,12 @@ const defaultSellers = [
     id: "SEL-102",
     role: "seller",
     name: "Anup Gurung",
-    storeName: "Pokhara Organic Teas",
-    email: "anup@pokharateas.np",
+    storeName: "Himalayan Wool & Winterwear",
+    email: "anup@himalayanwool.np",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
     phone: "+977 9801234567",
     location: "Lakeside, Pokhara",
-    category: "Food & Beauty",
+    category: "Winterwear & Knitwear",
     status: "Approved",
     rating: "4.8 ★ (94 reviews)",
     revenue: 142000,
@@ -68,12 +68,12 @@ const defaultSellers = [
     id: "SEL-103",
     role: "seller",
     name: "Maya Maharjan",
-    storeName: "Lalitpur Handicrafts",
-    email: "maya@craftsnepal.com",
+    storeName: "Lalitpur Heritage Apparels",
+    email: "maya@heritageapparels.com",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
     phone: "+977 9860123456",
-    location: "Patan, Lalitpur",
-    category: "Home & Decor",
+    location: "Patan Durbar Square, Lalitpur",
+    category: "Traditional & Ethnic Wear",
     status: "Approved",
     rating: "5.0 ★ (42 reviews)",
     revenue: 89000,
@@ -98,14 +98,14 @@ const defaultCustomers = [
     status: "Active",
     joined: "Jan 2024",
     totalOrders: 3,
-    totalSpent: 8239,
+    totalSpent: 9630,
     addresses: [
       { id: 1, label: "Home", text: "House 42, Shanti Marga, New Baneshwor, Kathmandu", isDefault: true },
       { id: 2, label: "Office", text: "Tech Park Level 3, Pulchowk, Lalitpur", isDefault: false }
     ],
     coupons: [
-      { code: "ORANGE20", discount: "20% OFF", desc: "Applicable on orders above Rs. 2,000", expiry: "30 Nov 2026" },
-      { code: "FREESHIP", discount: "Free Delivery", desc: "Valid for all marketplace categories", expiry: "15 Dec 2026" }
+      { code: "STYLE20", discount: "20% OFF", desc: "Applicable on apparel orders above Rs. 2,000", expiry: "30 Nov 2026" },
+      { code: "FREESHIP", discount: "Free Delivery", desc: "Valid for all clothing categories", expiry: "15 Dec 2026" }
     ]
   },
   {
@@ -122,7 +122,7 @@ const defaultCustomers = [
     status: "Active",
     joined: "Mar 2024",
     totalOrders: 1,
-    totalSpent: 4299,
+    totalSpent: 3890,
     addresses: [{ id: 1, label: "Home", text: "Chabahil Chowk, Kathmandu", isDefault: true }],
     coupons: []
   },
@@ -140,7 +140,7 @@ const defaultCustomers = [
     status: "Active",
     joined: "Jun 2024",
     totalOrders: 1,
-    totalSpent: 5780,
+    totalSpent: 2750,
     addresses: [{ id: 1, label: "Home", text: "Suryabinayak, Ward 5, Bhaktapur", isDefault: true }],
     coupons: []
   }
@@ -155,21 +155,21 @@ const defaultOrders = [
     customerPhone: "+977 9841234567",
     customerAddress: "House 42, Shanti Marga, New Baneshwor, Kathmandu",
     sellerId: "SEL-101",
-    sellerName: "Himalayan Tech & Style",
+    sellerName: "Urban Threads Kathmandu",
     items: [
-      { id: 2, name: "Aura Wireless Headphones", price: 3499, qty: 1, image: "photo-1505740420928-5e560c06d30e" }
+      { id: 1, name: "Oversized Heavyweight Fleece Hoodie", price: 2490, qty: 1, image: "photo-1556905055-8f358a7a47b2" }
     ],
-    total: 3499,
+    total: 2490,
     commissionRate: 10,
-    commissionAmount: 350,
-    sellerPayout: 3149,
+    commissionAmount: 249,
+    sellerPayout: 2241,
     paymentMethod: "eSewa QR",
     txnRef: "TXN-87429184",
     proofImage: "sample-receipt-1",
     status: "In Transit",
     step: 3,
     settled: true,
-    remarks: "Admin verified TXN-87429184 and credited Rs. 3,149 to seller."
+    remarks: "Admin verified TXN-87429184 and credited Rs. 2,241 to Urban Threads Kathmandu."
   },
   {
     id: "ORD-9244",
@@ -179,14 +179,14 @@ const defaultOrders = [
     customerPhone: "+977 9841234567",
     customerAddress: "House 42, Shanti Marga, New Baneshwor, Kathmandu",
     sellerId: "SEL-101",
-    sellerName: "Himalayan Tech & Style",
+    sellerName: "Urban Threads Kathmandu",
     items: [
-      { id: 1, name: "CloudWalk Everyday Sneakers", price: 2890, qty: 1, image: "photo-1542291026-7eec264c27ff" }
+      { id: 2, name: "Classic Vintage Denim Trucker Jacket", price: 3890, qty: 1, image: "photo-1576995853123-5a10305d93c0" }
     ],
-    total: 2890,
+    total: 3890,
     commissionRate: 10,
-    commissionAmount: 289,
-    sellerPayout: 2601,
+    commissionAmount: 389,
+    sellerPayout: 3501,
     paymentMethod: "Khalti QR",
     txnRef: "TXN-65829103",
     proofImage: "sample-receipt-2",
@@ -202,15 +202,15 @@ const defaultOrders = [
     customerEmail: "sarah@customer.com",
     customerPhone: "+977 9841234567",
     customerAddress: "House 42, Shanti Marga, New Baneshwor, Kathmandu",
-    sellerId: "SEL-103",
-    sellerName: "Lalitpur Handicrafts",
+    sellerId: "SEL-102",
+    sellerName: "Himalayan Wool & Winterwear",
     items: [
-      { id: 3, name: "Minimal Ceramic Table Lamp", price: 1850, qty: 1, image: "photo-1507473885765-e6ed057f782c" }
+      { id: 4, name: "Pure Himalayan Wool Knit Sweater", price: 3250, qty: 1, image: "photo-1583743814966-8936f5b7be1a" }
     ],
-    total: 1850,
+    total: 3250,
     commissionRate: 10,
-    commissionAmount: 185,
-    sellerPayout: 1665,
+    commissionAmount: 325,
+    sellerPayout: 2925,
     paymentMethod: "Fonepay QR",
     txnRef: "TXN-41920482",
     proofImage: "sample-receipt-3",
@@ -234,20 +234,20 @@ const defaultAdmin = {
 };
 
 const categories = [
-  { name: "Fashion", sub: "Style for every day", icon: "✳", tone: "lavender", image: "photo-1483985988355-763728e1935b" },
-  { name: "Electronics", sub: "Tech made simple", icon: "⌁", tone: "blue", image: "photo-1498049794561-7780e7231661" },
-  { name: "Home & Living", sub: "Make it feel like home", icon: "⌂", tone: "peach", image: "photo-1616486338812-3dadae4b4ace" },
-  { name: "Beauty", sub: "A little self-care", icon: "✿", tone: "pink", image: "photo-1608248543803-ba4f8c70ae0b" },
-  { name: "Accessories", sub: "The finishing touch", icon: "◇", tone: "yellow", image: "photo-1529139574466-a303027c1d8b" },
-  { name: "Sports", sub: "Move your way", icon: "↗", tone: "green", image: "photo-1517836357463-d25dfeac3438" }
+  { name: "Men's Fashion", sub: "Shirts, denim, polos & casuals", icon: "👔", tone: "blue", image: "photo-1617137984095-74e4e5e3613f" },
+  { name: "Women's Fashion", sub: "Dresses, tops, skirts & trousers", icon: "👗", tone: "pink", image: "photo-1490481651871-ab68de25d43d" },
+  { name: "Winterwear & Jackets", sub: "Puffers, woolens, coats & knits", icon: "🧥", tone: "peach", image: "photo-1539571696357-5a69c17a67c6" },
+  { name: "Streetwear & Hoodies", sub: "Oversized hoodies, tees & cargos", icon: "🧢", tone: "lavender", image: "photo-1552374196-1ab2a1c593e8" },
+  { name: "Traditional & Ethnic", sub: "Dhaka kurtis, shawls & vest sets", icon: "✨", tone: "yellow", image: "photo-1610030469983-98e550d6193c" },
+  { name: "Activewear & Loungewear", sub: "Joggers, tracksuits & gym sets", icon: "🏃", tone: "green", image: "photo-1518611012118-696072aa579a" }
 ];
 
 /* ============================================================
    PERSISTENCE CONTROLLER & AUTO CACHE INVALIDATION
    ============================================================ */
-const APP_VERSION = "2.2";
+const APP_VERSION = "3.0";
 if (localStorage.getItem("bazaarhub-app-version") !== APP_VERSION) {
-  // Clear stale cache and previous schema data
+  // Clear stale cache and previous non-clothing data
   localStorage.removeItem("bazaarhub-products");
   localStorage.removeItem("bazaarhub-orders");
   localStorage.removeItem("bazaarhub-sellers");
@@ -640,7 +640,7 @@ function renderHeader() {
         <form class="search-form" id="search-form" role="search">
           <span class="search-symbol">⌕</span>
           <label class="visually-hidden" for="site-search">Search products</label>
-          <input id="site-search" type="search" placeholder="Search for products, tech, fashion, home essentials…">
+          <input id="site-search" type="search" placeholder="Search for hoodies, winter jackets, dresses, shirts, kurtis…">
           <button type="submit">Search</button>
         </form>
 
@@ -670,7 +670,7 @@ function renderHeader() {
             ${currentUser ? `My Portal (${currentUser.role.toUpperCase()})` : 'Multi-Role Portals'}
           </a>
           <a href="#site-footer">Contact & Escrow</a>
-          <span class="nav-note">🇳🇵 Verified Nepali QR Escrow & Merchant Payouts</span>
+          <span class="nav-note">🇳🇵 Nepal's Curated Clothing & Apparel Marketplace</span>
         </nav>
       </div>
     </header>
@@ -725,7 +725,7 @@ function renderFooter() {
             <span class="brand-mark">B</span>
             <span>Bazaar<span>Hub</span></span>
           </a>
-          <p>Nepal’s premier multi-role marketplace connecting verified local sellers and shoppers with direct QR payments and transparent escrow settlements.</p>
+          <p>Nepal’s premier clothing & apparel marketplace connecting verified fashion boutiques, streetwear creators and shoppers with direct QR payments and transparent escrow settlements.</p>
         </div>
         <div class="footer-col">
           <h4>Customer Zone</h4>
