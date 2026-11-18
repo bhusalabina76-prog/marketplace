@@ -245,7 +245,7 @@ const categories = [
 /* ============================================================
    PERSISTENCE CONTROLLER & AUTO CACHE INVALIDATION
    ============================================================ */
-const APP_VERSION = "3.5";
+const APP_VERSION = "4.0";
 if (localStorage.getItem("bazaarhub-app-version") !== APP_VERSION) {
   // Clear stale cache and previous non-clothing data
   localStorage.removeItem("bazaarhub-products");
@@ -731,15 +731,15 @@ function renderHeader() {
       <div class="nav-row" id="nav-row">
         <nav class="container main-nav">
           <a class="${currentView === 'storefront' ? 'active' : ''}" href="#" id="nav-home">Home</a>
-          <a href="#categories">Clothing Categories</a>
+          <a href="#categories">Categories</a>
           <a href="#deals">Flash Deals</a>
-          <a href="#featured">Featured Clothes</a>
-          <a href="#trending">Trending Styles</a>
+          <a href="#featured">Featured</a>
+          <a href="#trending">Trending</a>
           <a href="#" id="nav-dashboard-link">
-            ${currentUser ? (currentUser.role === 'admin' ? '🛡️ Store Admin Portal' : '🛍️ My Account & Orders') : '🛍️ Track Orders & Account'}
+            ${currentUser ? (currentUser.role === 'admin' ? '🛡️ Admin Portal' : '🛍️ My Orders') : '🛍️ Track Orders'}
           </a>
-          <a href="#site-footer">Shop Info & Delivery</a>
-          <span class="nav-note">🇳🇵 Kathmandu's Curated Clothing Store</span>
+          <a href="#site-footer">Shop Info</a>
+          <span class="nav-note">🇳🇵 Curated Clothing Store</span>
         </nav>
       </div>
     </header>
@@ -748,6 +748,11 @@ function renderHeader() {
   // Attach nav handlers
   target.querySelector("#brand-link")?.addEventListener("click", e => { e.preventDefault(); switchToStorefront(); });
   target.querySelector("#nav-home")?.addEventListener("click", e => { e.preventDefault(); switchToStorefront(); });
+  target.querySelectorAll(".main-nav a").forEach(a => {
+    a.addEventListener("click", () => {
+      target.querySelector("#nav-row")?.classList.remove("is-open");
+    });
+  });
   target.querySelector("#nav-dashboard-link")?.addEventListener("click", e => {
     e.preventDefault();
     if (currentUser) {
@@ -1976,9 +1981,9 @@ function renderAdminDashboard(container) {
                 <button class="action-btn-sm primary" style="margin-top:12px;" onclick="showToast('Commission rate saved at 10%')">Save Commission Rate</button>
               </div>
               <div class="dash-card-item">
-                <h4>Free Delivery Threshold</h4>
-                <p>Orders above this amount qualify for free delivery across Nepal: <b>Rs. 2,500</b></p>
-                <button class="action-btn-sm outline" onclick="showToast('Delivery threshold confirmed at Rs. 2,500')">Update Delivery Rules</button>
+                <h4>Store Shipping & Delivery</h4>
+                <p>Doorstep delivery across Kathmandu Valley & All Nepal: <b>FREE Delivery</b></p>
+                <button class="action-btn-sm outline" onclick="showToast('Delivery policy: Free Doorstep Delivery active!')">Update Delivery Rules</button>
               </div>
               <div class="dash-card-item">
                 <h4>Reset Demo Data</h4>
@@ -2330,7 +2335,7 @@ function openCheckoutModal() {
   if (!modal || !overlay) return;
 
   const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-  const delivery = subtotal >= 2500 ? 0 : 150;
+  const delivery = 0;
   const grandTotal = subtotal + delivery;
 
   // Populate items
@@ -2346,7 +2351,7 @@ function openCheckoutModal() {
 
   document.getElementById("checkout-items-count").textContent = `${cart.length} item(s)`;
   document.getElementById("checkout-subtotal").textContent = money(subtotal);
-  document.getElementById("checkout-delivery").textContent = delivery === 0 ? "FREE (Orders over Rs. 2,500)" : money(delivery);
+  document.getElementById("checkout-delivery").textContent = "FREE (Doorstep Delivery)";
   document.getElementById("checkout-grand-total").textContent = money(grandTotal);
 
   // Pre-fill user details
@@ -2552,7 +2557,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Use Demo Slip Button
   document.getElementById("btn-use-demo-receipt")?.addEventListener("click", () => {
     const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-    const delivery = subtotal >= 2500 ? 0 : 150;
+    const delivery = 0;
     const total = subtotal + delivery;
     const randomTxn = `TXN-${Math.floor(10000000 + Math.random() * 90000000)}`;
 
@@ -2597,7 +2602,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-    const delivery = subtotal >= 2500 ? 0 : 150;
+    const delivery = 0;
     const grandTotal = subtotal + delivery;
     const newOrderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
     const dateStr = new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });

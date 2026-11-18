@@ -169,18 +169,19 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 }
 .header-main {
-  height: 84px;
+  height: 80px;
   display: flex;
   align-items: center;
-  gap: 36px;
+  justify-content: space-between;
+  gap: 24px;
 }
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  font: 800 24px var(--heading);
-  letter-spacing: -1.2px;
+  font: 800 23px var(--heading);
+  letter-spacing: -1px;
   color: var(--ink);
 }
 .brand-mark {
@@ -204,7 +205,8 @@ img { display: block; max-width: 100%; }
   display: flex;
   align-items: center;
   flex: 1;
-  max-width: 540px;
+  min-width: 180px;
+  max-width: 480px;
   background: #f8fafc;
   border: 1.5px solid var(--line);
   border-radius: 12px;
@@ -251,7 +253,8 @@ img { display: block; max-width: 100%; }
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+  flex-shrink: 0;
   margin-left: auto;
 }
 .header-action {
@@ -360,7 +363,13 @@ img { display: block; max-width: 100%; }
   height: 48px;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 22px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.main-nav::-webkit-scrollbar {
+  display: none;
 }
 .main-nav a {
   font-size: 12.5px;
@@ -840,25 +849,31 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
   border-color: var(--primary-border);
 }
-.product-image {
+.product-media {
   position: relative;
-  height: 220px;
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
   background: #f8fafc;
   overflow: hidden;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
+.product-media img,
+.product-media .product-image,
 .product-image > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.product-card:hover .product-media img,
 .product-card:hover .product-image > img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
-.discount-tag {
+.product-tag, .discount-tag {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   padding: 4px 8px;
   border-radius: 6px;
   background: var(--primary);
@@ -866,11 +881,12 @@ img { display: block; max-width: 100%; }
   font-size: 10px;
   font-weight: 800;
   box-shadow: 0 2px 6px rgba(255, 87, 34, 0.4);
+  z-index: 2;
 }
 .product-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   padding: 4px 8px;
   border-radius: 6px;
   background: #ffffff;
@@ -878,6 +894,7 @@ img { display: block; max-width: 100%; }
   font-size: 9.5px;
   font-weight: 800;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 2;
 }
 .wish-button {
   position: absolute;
